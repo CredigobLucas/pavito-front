@@ -1,7 +1,21 @@
+"use client";
+
+import { Paper } from "@mui/material";
+import { LoginForm } from "./components";
+
 export default function Login() {
     return (
-        <div>
-            <h1>Login</h1>
-        </div>
+        <>
+            <Paper
+                elevation={3}
+                sx={{
+                    width: "50%",
+                    minWidth: "400px",
+                    padding: "20px"
+                }}
+            >
+                <LoginForm />
+            </Paper>
+        </>
     );
 }
