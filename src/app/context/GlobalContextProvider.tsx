@@ -9,7 +9,11 @@ export const GlobalContextProvider = ({
 }: {
     children: React.ReactNode;
 }) => {
-    const [user, setUser] = useState<User | undefined>(undefined);
+    const [sectionTitle, setSectionTitle] = useState<string>("Panel");
+    const [user, setUser] = useState<User | undefined>({
+        name: "John Doe",
+        role: "admin"
+    } as User);
     const [theme, setTheme] = useState<Theme>(darkTheme);
 
     const setUsr = (user?: User) => {
@@ -27,7 +31,9 @@ export const GlobalContextProvider = ({
         user: user,
         setUser: setUsr,
         theme: theme,
-        toggleTheme: toggleTheme
+        toggleTheme: toggleTheme,
+        sectionTitle: sectionTitle,
+        setSectionTitle: setSectionTitle
     };
 
     return (

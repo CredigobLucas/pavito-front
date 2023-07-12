@@ -1,4 +1,6 @@
 "use client";
+import { Navbar } from "../components";
+import { Container } from "@mui/material";
 export default function DashboardLayout({
     children
 }: {
@@ -6,10 +8,17 @@ export default function DashboardLayout({
 }) {
     return (
         <>
-            <header>
-                <h1>Panel</h1>
-            </header>
-            <main>{children}</main>
+            <Navbar />
+            <Container
+                component="main"
+                sx={{
+                    maxWidth: {
+                        lg: "100%"
+                    }
+                }}
+            >
+                {children}
+            </Container>
         </>
     );
 }

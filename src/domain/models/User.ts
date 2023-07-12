@@ -9,4 +9,5 @@ export interface User {
     email: string;
     cellphone: string;
     password?: string;
+    role?: string;
 }

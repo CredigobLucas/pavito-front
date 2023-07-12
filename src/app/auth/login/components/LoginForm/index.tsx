@@ -26,6 +26,9 @@ export function LoginForm() {
                     e.preventDefault();
                     submitForm();
                 }}
+                sx={{
+                    padding: "20px"
+                }}
             >
                 <TextField
                     label="Correo electrónico"

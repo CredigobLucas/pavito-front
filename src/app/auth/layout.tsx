@@ -1,13 +1,21 @@
 "use client";
-
+import { Container } from "@mui/material";
 export default function AuthLayout({
     children
 }: {
     children: React.ReactNode;
 }) {
     return (
-        <main className="flex items-center justify-center w-screen h-screen">
+        <Container
+            component="main"
+            sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                height: "100vh"
+            }}
+        >
             {children}
-        </main>
+        </Container>
     );
 }

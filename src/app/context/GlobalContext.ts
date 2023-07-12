@@ -5,6 +5,8 @@ import { Theme, createTheme } from "@mui/material";
 export interface IGlobalContext {
     user?: User;
     theme: Theme;
+    sectionTitle: string;
+    setSectionTitle: (title: string) => void;
     setUser: (user?: User) => void;
     toggleTheme: () => void;
 }
