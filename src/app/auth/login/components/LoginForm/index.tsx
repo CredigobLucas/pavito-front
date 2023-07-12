@@ -1,20 +1,55 @@
 "use client";
-import { TextField, Typography, Button, Link } from "@mui/material";
+import { TextField, Typography, Button, Link, Box } from "@mui/material";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { setCookie } from "@/app/actions";
 export function LoginForm() {
+    const router = useRouter();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    const submitForm = async () => {
+        console.log("login", email, password);
+        //TODO: send data to server
+        await setCookie({
+            name: "token",
+            value: "123456789"
+        });
+        router.push("/dashboard");
+    };
+
     return (
         <div>
-            <form>
+            <Box
+                component="form"
+                onSubmit={(e) => {
+                    e.preventDefault();
+                    submitForm();
+                }}
+            >
                 <TextField
                     label="Correo electrónico"
                     variant="outlined"
                     fullWidth
                     margin="normal"
+                    name="email"
+                    type="email"
+                    required={true}
+                    onChange={(e) => {
+                        setEmail(e.target.value);
+                    }}
                 />
                 <TextField
                     label="Contraseña"
                     variant="outlined"
                     fullWidth
                     margin="normal"
+                    name="password"
+                    type="password"
+                    required={true}
+                    onChange={(e) => {
+                        setPassword(e.target.value);
+                    }}
                 />
                 <Button
                     fullWidth
@@ -28,14 +63,15 @@ export function LoginForm() {
                     Te haz olvidado de tu contraseña?{" "}
                     <Link
                         underline="hover"
+                        component={"button"}
                         onClick={() => {
-                            console.log("forgot password");
+                            router.push("/auth/forgot-password");
                         }}
                     >
                         Recuperarala
                     </Link>
                 </Typography>
-            </form>
+            </Box>
         </div>
     );
 }
