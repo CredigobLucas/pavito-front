@@ -18,6 +18,7 @@ import {
     DarkMode,
     LightMode
 } from "@mui/icons-material";
+
 import { useGlobalContext } from "@/app/context";
 import { useState } from "react";
 
@@ -33,7 +34,13 @@ export const Navbar = () => {
         setAnchorEl(null);
     };
     return (
-        <AppBar position="static">
+        <AppBar
+            elevation={3}
+            position="static"
+            sx={{
+                boxShadow: "none"
+            }}
+        >
             <Toolbar>
                 <Typography
                     className="font-bold"
@@ -99,17 +106,21 @@ export const Navbar = () => {
                         >
                             <ListItemIcon>
                                 {theme.palette.mode === "dark" ? (
-                                    <DarkMode fontSize="small" />
-                                ) : (
                                     <LightMode fontSize="small" />
+                                ) : (
+                                    <DarkMode fontSize="small" />
                                 )}
                             </ListItemIcon>
                             <ListItemText
                                 className="capitalize"
-                                primary={`${theme.palette.mode} Mode`}
+                                primary={`Modo ${
+                                    theme.palette.mode === "dark"
+                                        ? "Claro"
+                                        : "Oscuro"
+                                }`}
                             />
                         </MenuItem>
-                        <MenuItem onClick={handleClose}>
+                        <MenuItem onClick={() => {}}>
                             <ListItemIcon>
                                 <Logout fontSize="small" />
                             </ListItemIcon>
