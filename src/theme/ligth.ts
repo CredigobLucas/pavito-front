@@ -17,7 +17,6 @@ export const ligthTheme = createTheme({
                 }
             }
         },
-        // sett navbar background color
         MuiAppBar: {
             styleOverrides: {
                 root: {
@@ -45,6 +44,14 @@ export const ligthTheme = createTheme({
             styleOverrides: {
                 root: {
                     borderRadius: "15px"
+                }
+            }
+        },
+        MuiButton: {
+            styleOverrides: {
+                root: {
+                    borderRadius: "15px",
+                    padding: "15px 20px"
                 }
             }
         }

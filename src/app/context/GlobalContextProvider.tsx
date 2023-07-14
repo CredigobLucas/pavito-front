@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { User } from "@/domain/models";
+import { MenuOption } from "@/domain/interface/MenuOption";
 import { Theme } from "@mui/material";
 import { GlobalContext, IGlobalContext } from "./GlobalContext";
 import { darkTheme, ligthTheme } from "@/theme";
@@ -10,6 +11,7 @@ export const GlobalContextProvider = ({
     children: React.ReactNode;
 }) => {
     const [sectionTitle, setSectionTitle] = useState<string>("Panel");
+    const [menuOptions, setMenuOptions] = useState<MenuOption[]>([]);
     const [user, setUser] = useState<User | undefined>({
         name: "John Doe",
         role: "admin"
@@ -31,6 +33,8 @@ export const GlobalContextProvider = ({
         user: user,
         setUser: setUsr,
         theme: theme,
+        menuOptions: menuOptions,
+        setMenuOptions: setMenuOptions,
         toggleTheme: toggleTheme,
         sectionTitle: sectionTitle,
         setSectionTitle: setSectionTitle

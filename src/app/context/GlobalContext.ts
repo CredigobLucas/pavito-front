@@ -1,11 +1,14 @@
 import { createContext, useContext } from "react";
 import { User } from "@/domain/models";
 import { Theme, createTheme } from "@mui/material";
+import { MenuOption } from "@/domain/interface/MenuOption";
 
 export interface IGlobalContext {
     user?: User;
     theme: Theme;
     sectionTitle: string;
+    menuOptions: MenuOption[];
+    setMenuOptions: (options: MenuOption[]) => void;
     setSectionTitle: (title: string) => void;
     setUser: (user?: User) => void;
     toggleTheme: () => void;

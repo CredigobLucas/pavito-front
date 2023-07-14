@@ -1,5 +1,5 @@
 "use client";
-import { Navbar } from "../components";
+import { MenuOptions, Navbar } from "../components";
 import { Box, Container, Paper } from "@mui/material";
 export default function ManagmentLayout({
     children
@@ -15,17 +15,7 @@ export default function ManagmentLayout({
                     height: "100vh"
                 }}
             >
-                <Paper
-                    elevation={3}
-                    className="p-4"
-                    sx={{
-                        borderRadius: "0px",
-                        height: "100%",
-                        boxShadow: "none"
-                    }}
-                >
-                    gaaa
-                </Paper>
+                <MenuOptions />
             </Box>
             <Box
                 component="div"

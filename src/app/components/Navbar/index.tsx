@@ -37,6 +37,7 @@ export const Navbar = () => {
         <AppBar
             elevation={3}
             position="static"
+            className="p-4"
             sx={{
                 boxShadow: "none"
             }}

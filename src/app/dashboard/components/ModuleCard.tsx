@@ -6,6 +6,7 @@ import { ModuleIcon } from "./ModuleIcon";
 import Link from "next/link";
 
 export const ModuleCard = ({ module }: { module: Module }) => {
+    const { setMenuOptions } = useGlobalContext();
     return (
         <Link
             href={module.link}

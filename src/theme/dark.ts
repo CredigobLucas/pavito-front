@@ -17,6 +17,14 @@ export const darkTheme = createTheme({
                     borderRadius: "15px"
                 }
             }
+        },
+        MuiButton: {
+            styleOverrides: {
+                root: {
+                    borderRadius: "15px",
+                    padding: "15px 20px"
+                }
+            }
         }
     }
 });

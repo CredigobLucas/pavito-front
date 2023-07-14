@@ -6,6 +6,7 @@ import { Module } from "@/domain/interface/Module";
 import { Settings, Person, DataObject } from "@mui/icons-material";
 
 import { UserBanner, ModuleCard } from "./components";
+import { accountOptions, adminOptions } from "./options";
 
 export default function Dashboard() {
     const { setSectionTitle, user } = useGlobalContext();
@@ -15,14 +16,16 @@ export default function Dashboard() {
             description: "Administra los usuarios y verifica tu licencia",
             icon: <Settings htmlColor="#0369A1" />,
             backgroundColor: "#BAE6FD",
-            link: "/managment/admin"
+            link: "/managment/admin/accounts",
+            menuOptions: adminOptions
         },
         {
             title: "Cuenta",
             description: "Administra tu cuenta y tus datos personales",
             icon: <Person htmlColor="#047857" />,
             backgroundColor: "#D1FAE5",
-            link: "/managment/account"
+            link: "/managment/account/user",
+            menuOptions: accountOptions
         },
         {
             title: "Pavito",
