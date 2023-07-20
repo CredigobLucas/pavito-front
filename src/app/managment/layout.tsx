@@ -29,7 +29,11 @@ export default function ManagmentLayout({
                     sx={{
                         maxWidth: {
                             lg: "100%"
-                        }
+                        },
+                        padding: "25px",
+                        paddingBottom: "0px",
+                        overflowY: "auto",
+                        height: "calc(85vh - 10px)"
                     }}
                 >
                     {children}
