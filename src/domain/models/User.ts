@@ -1,4 +1,4 @@
-import { EDocumentType } from "../enum";
+import { EDocumentType, EStatusType } from "../enum";
 
 export interface User {
     id: string;
@@ -8,6 +8,7 @@ export interface User {
     documentNumber: string;
     email: string;
     cellphone: string;
+    status?: EStatusType;
     password?: string;
     role?: string;
 }

@@ -16,7 +16,7 @@ export const GlobalContextProvider = ({
         name: "John Doe",
         role: "admin"
     } as User);
-    const [theme, setTheme] = useState<Theme>(ligthTheme);
+    const [theme, setTheme] = useState<Theme>(darkTheme);
 
     const setUsr = (user?: User) => {
         setUser(user);

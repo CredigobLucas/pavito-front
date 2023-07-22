@@ -1,7 +1,10 @@
 import { createTheme } from "@mui/material/styles";
 export const darkTheme = createTheme({
     palette: {
-        mode: "dark"
+        mode: "dark",
+        primary: {
+            main: "rgb(84, 72, 146)"
+        }
     },
     components: {
         MuiAppBar: {

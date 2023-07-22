@@ -17,8 +17,8 @@ export const GeneralContainer = ({
             elevation={3}
             sx={{
                 padding: "25px",
-                height: "99%",
-                overflowY: "auto",
+                height: "99.5%",
+                overflowY: "hidden",
                 ...sx
             }}
         >
