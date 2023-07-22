@@ -1,4 +1,5 @@
 "use client";
+import "./navbar.css";
 import {
     AppBar,
     Toolbar,
@@ -16,13 +17,22 @@ import {
     Person,
     Logout,
     DarkMode,
-    LightMode
+    LightMode,
+    Menu as MenuIcon
 } from "@mui/icons-material";
 
 import { useGlobalContext } from "@/app/context";
 import { useState } from "react";
 
-export const Navbar = () => {
+interface NavbarProps {
+    hasMenu?: boolean;
+    onMenuClick?: () => void;
+}
+
+export const Navbar = ({
+    hasMenu = false,
+    onMenuClick = undefined
+}: NavbarProps) => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const { user, toggleTheme, theme, sectionTitle } = useGlobalContext();
 
@@ -43,6 +53,17 @@ export const Navbar = () => {
             }}
         >
             <Toolbar>
+                {hasMenu && onMenuClick !== undefined && (
+                    <IconButton
+                        size="large"
+                        edge="start"
+                        color="inherit"
+                        aria-label="menu"
+                        sx={{ mr: 1 }}
+                    >
+                        <MenuIcon />
+                    </IconButton>
+                )}
                 <Typography
                     className="font-bold"
                     variant="h4"

@@ -1,0 +1,10 @@
+.boxMenu {
+    display: block;
+}
+
+/*media 875px*/
+@media (max-width: 875px) {
+    .boxMenu {
+        display: none;
+    }
+}
