@@ -106,6 +106,206 @@ const rows: User[] = [
         email: "aaa@aasd.dasd",
         cellphone: "123456789",
         status: EStatusType.SUSPENDED
+    },
+    {
+        id: "1",
+        name: "Juan",
+        lastName: "Perez",
+        documentType: EDocumentType.CC,
+        documentNumber: "123456789",
+        email: "juan@perez.com",
+        cellphone: "123456789",
+        status: EStatusType.ACTIVE
+    },
+    {
+        id: "2",
+        name: "Juan",
+        lastName: "Perez",
+        documentType: EDocumentType.CC,
+        documentNumber: "123456789",
+        email: "aaa@aasd.dasd",
+        cellphone: "123456789",
+        status: EStatusType.SUSPENDED
+    },
+    {
+        id: "2",
+        name: "Juan",
+        lastName: "Perez",
+        documentType: EDocumentType.CC,
+        documentNumber: "123456789",
+        email: "aaa@aasd.dasd",
+        cellphone: "123456789",
+        status: EStatusType.SUSPENDED
+    },
+    {
+        id: "2",
+        name: "Juan",
+        lastName: "Perez",
+        documentType: EDocumentType.CC,
+        documentNumber: "123456789",
+        email: "aaa@aasd.dasd",
+        cellphone: "123456789",
+        status: EStatusType.SUSPENDED
+    },
+    {
+        id: "2",
+        name: "Juan",
+        lastName: "Perez",
+        documentType: EDocumentType.CC,
+        documentNumber: "123456789",
+        email: "aaa@aasd.dasd",
+        cellphone: "123456789",
+        status: EStatusType.SUSPENDED
+    },
+    {
+        id: "2",
+        name: "Juan",
+        lastName: "Perez",
+        documentType: EDocumentType.CC,
+        documentNumber: "123456789",
+        email: "aaa@aasd.dasd",
+        cellphone: "123456789",
+        status: EStatusType.SUSPENDED
+    },
+    {
+        id: "2",
+        name: "Juan",
+        lastName: "Perez",
+        documentType: EDocumentType.CC,
+        documentNumber: "123456789",
+        email: "aaa@aasd.dasd",
+        cellphone: "123456789",
+        status: EStatusType.SUSPENDED
+    },
+    {
+        id: "2",
+        name: "Juan",
+        lastName: "Perez",
+        documentType: EDocumentType.CC,
+        documentNumber: "123456789",
+        email: "aaa@aasd.dasd",
+        cellphone: "123456789",
+        status: EStatusType.SUSPENDED
+    },
+    {
+        id: "2",
+        name: "Juan",
+        lastName: "Perez",
+        documentType: EDocumentType.CC,
+        documentNumber: "123456789",
+        email: "aaa@aasd.dasd",
+        cellphone: "123456789",
+        status: EStatusType.SUSPENDED
+    },
+    {
+        id: "2",
+        name: "Juan",
+        lastName: "Perez",
+        documentType: EDocumentType.CC,
+        documentNumber: "123456789",
+        email: "aaa@aasd.dasd",
+        cellphone: "123456789",
+        status: EStatusType.SUSPENDED
+    },
+    {
+        id: "1",
+        name: "Juan",
+        lastName: "Perez",
+        documentType: EDocumentType.CC,
+        documentNumber: "123456789",
+        email: "juan@perez.com",
+        cellphone: "123456789",
+        status: EStatusType.ACTIVE
+    },
+    {
+        id: "2",
+        name: "Juan",
+        lastName: "Perez",
+        documentType: EDocumentType.CC,
+        documentNumber: "123456789",
+        email: "aaa@aasd.dasd",
+        cellphone: "123456789",
+        status: EStatusType.SUSPENDED
+    },
+    {
+        id: "2",
+        name: "Juan",
+        lastName: "Perez",
+        documentType: EDocumentType.CC,
+        documentNumber: "123456789",
+        email: "aaa@aasd.dasd",
+        cellphone: "123456789",
+        status: EStatusType.SUSPENDED
+    },
+    {
+        id: "2",
+        name: "Juan",
+        lastName: "Perez",
+        documentType: EDocumentType.CC,
+        documentNumber: "123456789",
+        email: "aaa@aasd.dasd",
+        cellphone: "123456789",
+        status: EStatusType.SUSPENDED
+    },
+    {
+        id: "2",
+        name: "Juan",
+        lastName: "Perez",
+        documentType: EDocumentType.CC,
+        documentNumber: "123456789",
+        email: "aaa@aasd.dasd",
+        cellphone: "123456789",
+        status: EStatusType.SUSPENDED
+    },
+    {
+        id: "2",
+        name: "Juan",
+        lastName: "Perez",
+        documentType: EDocumentType.CC,
+        documentNumber: "123456789",
+        email: "aaa@aasd.dasd",
+        cellphone: "123456789",
+        status: EStatusType.SUSPENDED
+    },
+    {
+        id: "2",
+        name: "Juan",
+        lastName: "Perez",
+        documentType: EDocumentType.CC,
+        documentNumber: "123456789",
+        email: "aaa@aasd.dasd",
+        cellphone: "123456789",
+        status: EStatusType.SUSPENDED
+    },
+    {
+        id: "2",
+        name: "Juan",
+        lastName: "Perez",
+        documentType: EDocumentType.CC,
+        documentNumber: "123456789",
+        email: "aaa@aasd.dasd",
+        cellphone: "123456789",
+        status: EStatusType.SUSPENDED
+    },
+    {
+        id: "2",
+        name: "Juan",
+        lastName: "Perez",
+        documentType: EDocumentType.CC,
+        documentNumber: "123456789",
+        email: "aaa@aasd.dasd",
+        cellphone: "123456789",
+        status: EStatusType.SUSPENDED
+    },
+    {
+        id: "2",
+        name: "Juan",
+        lastName: "Perez",
+        documentType: EDocumentType.CC,
+        documentNumber: "123456789",
+        email: "aaa@aasd.dasd",
+        cellphone: "123456789",
+        status: EStatusType.SUSPENDED
     }
 ];
 
@@ -114,16 +314,22 @@ export default function Admin() {
         <GeneralContainer>
             <Box
                 component={"div"}
-                className="flex items-center justify-between"
+                className="flex flex-col justify-between md:flex-row"
                 sx={{
                     marginBottom: "16px",
                     padding: "0 20px"
                 }}
             >
-                <Box component={"div"} className="flex items-center">
+                <Box
+                    component={"div"}
+                    className="flex items-center justify-end mb-4 md:mb-0"
+                >
                     gaa
                 </Box>
-                <Box component={"div"} className="flex items-center">
+                <Box
+                    component={"div"}
+                    className="flex items-center justify-end"
+                >
                     <Typography
                         sx={{
                             marginRight: "30px"
@@ -202,7 +408,7 @@ export default function Admin() {
                         )
                     }
                 ]}
-                height={"58vh"}
+                height={"52vh"}
             />
             <Box
                 component={"div"}
@@ -211,7 +417,7 @@ export default function Admin() {
                     padding: "16px 8px"
                 }}
             >
-                <Pagination color="primary" count={10} shape="rounded" />
+                <Pagination color="primary" count={3} shape="rounded" />
             </Box>
         </GeneralContainer>
     );

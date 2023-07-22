@@ -47,7 +47,10 @@ export const MenuOptions = () => {
             >
                 <Typography
                     variant="h4"
-                    className="mt-2 mb-8 font-bold text-center"
+                    className="font-bold text-center"
+                    sx={{
+                        marginBottom: "32px"
+                    }}
                 >
                     Credigob
                 </Typography>
@@ -71,7 +74,10 @@ export const MenuOptions = () => {
                         <Typography
                             variant="body1"
                             component="span"
-                            className="ml-6 capitalize font-bold"
+                            className="capitalize font-bold"
+                            sx={{
+                                marginLeft: "24px"
+                            }}
                         >
                             {option.title}
                         </Typography>
