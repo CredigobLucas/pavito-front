@@ -3,14 +3,21 @@ import { TextField, Typography, Button, Link, Box } from "@mui/material";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { setCookie } from "@/app/actions";
+
+import { login } from "@/services/pavito_back/auth/login";
 export function LoginForm() {
     const router = useRouter();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
     const submitForm = async () => {
-        console.log("login", email, password);
         //TODO: send data to server
+        const response = await login({
+            email,
+            password
+        });
+        // response
+        console.log(response);
         await setCookie({
             name: "token",
             value: "123456789"
