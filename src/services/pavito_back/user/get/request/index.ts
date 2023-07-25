@@ -1,19 +1,11 @@
 import { PavitoBackApi } from "../../../PavitoBackApi";
-import { LoginPayload } from "../payload";
-import { LoginResponse } from "../response";
+import { UserMeResponse } from "../response";
 import { isAxiosError } from "axios";
 import { ErrorFactory } from "@/domain/errors/ErrorFactory";
-export const login = async (payload: LoginPayload): Promise<LoginResponse> => {
+export const userMe = async (): Promise<UserMeResponse> => {
     const api = new PavitoBackApi();
     try {
-        const response: LoginResponse = await api.post<LoginResponse>(
-            "/auth/login",
-            payload
-        );
-        api.setHeader(
-            "Authorization",
-            `Bearer ${response.body.authentication_result.id_token} ${response.body.authentication_result.access_token}`
-        );
+        const response: UserMeResponse = await api.get<UserMeResponse>("/user");
         return response;
     } catch (error) {
         if (isAxiosError(error)) {
@@ -22,12 +14,6 @@ export const login = async (payload: LoginPayload): Promise<LoginResponse> => {
                 throw ErrorFactory.create(
                     "Error en el servidor, intente nuevamente",
                     "Unknown"
-                );
-            }
-            if (response.data.body.message === "New password required") {
-                throw ErrorFactory.create(
-                    "Debes cambiar tu contraseña",
-                    "NewPasswordRequired"
                 );
             }
             if (response.status === 401) {

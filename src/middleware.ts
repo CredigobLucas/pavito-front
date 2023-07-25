@@ -5,7 +5,6 @@ export function middleware(request: NextRequest) {
     if (!token) {
         return NextResponse.redirect(new URL("/auth/login", request.nextUrl));
     }
-    //TODO: validate token, redirect to login if invalid
     return NextResponse.next();
 }
 

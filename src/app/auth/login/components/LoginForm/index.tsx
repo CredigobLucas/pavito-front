@@ -22,7 +22,8 @@ export function LoginForm() {
             });
             await setCookie({
                 name: "token",
-                value: response.body.authentication_result.access_token
+                value: `${response.body.authentication_result.id_token} ${response.body.authentication_result.access_token}`,
+                expiration: response.body.authentication_result.expires_in
             });
             router.push("/dashboard");
         } catch (error) {

@@ -5,7 +5,7 @@ let singleton: PavitoBackApi | null = null;
 export class PavitoBackApi extends Api {
     constructor() {
         if (!singleton) {
-            super("https://admin.back.pavito.credigob.pe/api/v1/");
+            super(process.env.NEXT_PUBLIC_PAVITO_API_URL || "");
             singleton = this;
         }
         //get culqiToken from localStorage

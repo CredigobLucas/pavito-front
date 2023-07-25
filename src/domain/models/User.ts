@@ -1,14 +1,13 @@
-import { EDocumentType, EStatusType } from "../enum";
-
+import { Group } from "./Group";
 export interface User {
-    id: string;
+    last_name: string;
     name: string;
-    lastName: string;
-    documentType: EDocumentType;
-    documentNumber: string;
     email: string;
-    cellphone: string;
-    status?: EStatusType;
-    password?: string;
-    role?: string;
+    phone_number: string;
+    document_number: string;
+    document_type: string;
+    id: string;
+    is_active: boolean;
+    groups: Group[];
+    is_admin: boolean;
 }
