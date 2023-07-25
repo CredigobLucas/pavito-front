@@ -80,14 +80,14 @@ export const Navbar = ({
                             component="div"
                             sx={{ flexGrow: 1, fontWeight: "bold" }}
                         >
-                            {user?.name}
+                            {`${user?.name} ${user?.last_name}`}
                         </Typography>
                         <Typography
                             variant="body2"
                             component="div"
                             sx={{ flexGrow: 1 }}
                         >
-                            {user?.role}
+                            {user?.is_admin ? "Administrador" : "Usuario"}
                         </Typography>
                     </div>
                     <IconButton

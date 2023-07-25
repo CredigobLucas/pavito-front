@@ -1,7 +1,16 @@
 import { ThemeProvider, CssBaseline, Snackbar, Alert } from "@mui/material";
+import { useEffect } from "react";
+import { userMe } from "@/services/pavito_back/user/get";
+
 import { useGlobalContext } from "@/app/context";
 export const PavitoTheme = ({ children }: { children: React.ReactNode }) => {
-    const { theme, openAlert, setOpenAlert, alertMessage } = useGlobalContext();
+    const { theme, openAlert, setOpenAlert, alertMessage, setUser } =
+        useGlobalContext();
+    useEffect(() => {
+        userMe().then((res) => {
+            setUser(res.body);
+        });
+    }, []);
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />

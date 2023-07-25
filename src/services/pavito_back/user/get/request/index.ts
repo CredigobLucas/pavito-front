@@ -2,9 +2,15 @@ import { PavitoBackApi } from "../../../PavitoBackApi";
 import { UserMeResponse } from "../response";
 import { isAxiosError } from "axios";
 import { ErrorFactory } from "@/domain/errors/ErrorFactory";
+import { getCookie } from "@/app/actions";
+
 export const userMe = async (): Promise<UserMeResponse> => {
     const api = new PavitoBackApi();
     try {
+        const token = await getCookie("token");
+        if (token) {
+            api.setHeader("Authorization", `Bearer ${token}`);
+        }
         const response: UserMeResponse = await api.get<UserMeResponse>("/user");
         return response;
     } catch (error) {
