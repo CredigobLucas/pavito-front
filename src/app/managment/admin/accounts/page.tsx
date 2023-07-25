@@ -15,16 +15,7 @@ const rows: User[] = [
         document_type: "ID",
         id: "user123",
         is_active: true,
-        groups: [
-            {
-                id: 1,
-                name: "Group A"
-            },
-            {
-                id: 2,
-                name: "Group B"
-            }
-        ],
+        groups: [],
         is_admin: false
     },
     {
@@ -48,12 +39,7 @@ const rows: User[] = [
         document_type: "ID",
         id: "user789",
         is_active: true,
-        groups: [
-            {
-                id: 3,
-                name: "Group C"
-            }
-        ],
+        groups: [],
         is_admin: false
     },
     {
@@ -77,12 +63,7 @@ const rows: User[] = [
         document_type: "ID",
         id: "user111",
         is_active: true,
-        groups: [
-            {
-                id: 4,
-                name: "Group D"
-            }
-        ],
+        groups: [],
         is_admin: false
     }
 ];
