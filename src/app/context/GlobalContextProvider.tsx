@@ -14,8 +14,16 @@ export const GlobalContextProvider = ({
     const [sectionTitle, setSectionTitle] = useState<string>("Panel");
     const [menuOptions, setMenuOptions] = useState<MenuOption[]>([]);
     const [user, setUser] = useState<User | undefined>({
-        name: "John Doe",
-        role: "admin"
+        last_name: "",
+        name: "",
+        email: "",
+        phone_number: "",
+        document_number: "",
+        document_type: "",
+        id: "",
+        is_active: false,
+        groups: [],
+        is_admin: false
     } as User);
     const [theme, setTheme] = useState<Theme>(darkTheme);
 
