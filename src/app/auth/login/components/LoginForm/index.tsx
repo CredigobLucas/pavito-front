@@ -3,26 +3,41 @@ import { TextField, Typography, Button, Link, Box } from "@mui/material";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { setCookie } from "@/app/actions";
-
+import { TError } from "@/domain/errors/ErrorFactory";
 import { login } from "@/services/pavito_back/auth/login";
+import { useGlobalContext } from "@/app/context";
+
 export function LoginForm() {
     const router = useRouter();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
+    const { openAlertMessage } = useGlobalContext();
+
     const submitForm = async () => {
-        //TODO: send data to server
-        const response = await login({
-            email,
-            password
-        });
-        // response
-        console.log(response);
-        await setCookie({
-            name: "token",
-            value: "123456789"
-        });
-        router.push("/dashboard");
+        try {
+            const response = await login({
+                email,
+                password
+            });
+            await setCookie({
+                name: "token",
+                value: response.body.authentication_result.access_token
+            });
+            router.push("/dashboard");
+        } catch (error) {
+            if (error instanceof TError) {
+                openAlertMessage({
+                    horizontal: "center",
+                    vertical: "top",
+                    severity: "error",
+                    message: error.message
+                });
+                if (error.type === "NewPasswordRequired") {
+                    router.push("/auth/new-password");
+                }
+            }
+        }
     };
 
     return (

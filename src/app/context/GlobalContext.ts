@@ -2,6 +2,7 @@ import { createContext, useContext } from "react";
 import { User } from "@/domain/models";
 import { Theme, createTheme } from "@mui/material";
 import { MenuOption } from "@/domain/interface/MenuOption";
+import { AlertMessage } from "@/domain/interface/AlertMessage";
 
 export interface IGlobalContext {
     user?: User;
@@ -12,6 +13,11 @@ export interface IGlobalContext {
     setSectionTitle: (title: string) => void;
     setUser: (user?: User) => void;
     toggleTheme: () => void;
+
+    openAlertMessage: (alert: AlertMessage) => void;
+    openAlert: boolean;
+    alertMessage: AlertMessage;
+    setOpenAlert: (open: boolean) => void;
 }
 
 export const GlobalContext = createContext<IGlobalContext | undefined>(

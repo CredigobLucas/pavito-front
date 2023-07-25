@@ -2,8 +2,9 @@
 import { useState } from "react";
 import { User } from "@/domain/models";
 import { MenuOption } from "@/domain/interface/MenuOption";
-import { Theme } from "@mui/material";
+import { Theme, Snackbar, Alert } from "@mui/material";
 import { GlobalContext, IGlobalContext } from "./GlobalContext";
+import { AlertMessage } from "@/domain/interface/AlertMessage";
 import { darkTheme, ligthTheme } from "@/theme";
 export const GlobalContextProvider = ({
     children
@@ -17,6 +18,19 @@ export const GlobalContextProvider = ({
         role: "admin"
     } as User);
     const [theme, setTheme] = useState<Theme>(darkTheme);
+
+    const [openAlert, setOpenAlert] = useState<boolean>(false);
+    const [alertMessage, setAlertMessage] = useState<AlertMessage>({
+        horizontal: "left",
+        vertical: "top",
+        severity: "info",
+        message: ""
+    } as AlertMessage);
+
+    const openAlertMessage = (alert: AlertMessage) => {
+        setAlertMessage(alert);
+        setOpenAlert(true);
+    };
 
     const setUsr = (user?: User) => {
         setUser(user);
@@ -37,7 +51,11 @@ export const GlobalContextProvider = ({
         setMenuOptions: setMenuOptions,
         toggleTheme: toggleTheme,
         sectionTitle: sectionTitle,
-        setSectionTitle: setSectionTitle
+        setSectionTitle: setSectionTitle,
+        openAlertMessage: openAlertMessage,
+        openAlert: openAlert,
+        setOpenAlert: setOpenAlert,
+        alertMessage: alertMessage
     };
 
     return (
