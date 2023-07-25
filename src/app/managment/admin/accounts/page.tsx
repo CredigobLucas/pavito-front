@@ -3,309 +3,87 @@ import { GeneralContainer } from "@/app/components";
 import { PavitoTable } from "@/app/components/PavitoTable";
 import { Box, Button, Typography, Pagination } from "@mui/material";
 import { User } from "@/domain/models";
-import { EDocumentType, EStatusType } from "@/domain/enum";
 import { MoreVert, Add } from "@mui/icons-material";
 
 const rows: User[] = [
     {
-        id: "1",
-        name: "Juan",
-        lastName: "Perez",
-        documentType: EDocumentType.CC,
-        documentNumber: "123456789",
-        email: "juan@perez.com",
-        cellphone: "123456789",
-        status: EStatusType.ACTIVE
+        last_name: "Gonzalez",
+        name: "Maria",
+        email: "maria@example.com",
+        phone_number: "555-123-4567",
+        document_number: "12345678",
+        document_type: "ID",
+        id: "user123",
+        is_active: true,
+        groups: [
+            {
+                id: 1,
+                name: "Group A"
+            },
+            {
+                id: 2,
+                name: "Group B"
+            }
+        ],
+        is_admin: false
     },
     {
-        id: "2",
-        name: "Juan",
-        lastName: "Perez",
-        documentType: EDocumentType.CC,
-        documentNumber: "123456789",
-        email: "aaa@aasd.dasd",
-        cellphone: "123456789",
-        status: EStatusType.SUSPENDED
+        last_name: "Smith",
+        name: "John",
+        email: "john@example.com",
+        phone_number: "555-987-6543",
+        document_number: "87654321",
+        document_type: "Passport",
+        id: "user456",
+        is_active: true,
+        groups: [],
+        is_admin: true
     },
     {
-        id: "2",
-        name: "Juan",
-        lastName: "Perez",
-        documentType: EDocumentType.CC,
-        documentNumber: "123456789",
-        email: "aaa@aasd.dasd",
-        cellphone: "123456789",
-        status: EStatusType.SUSPENDED
+        last_name: "Lopez",
+        name: "Carlos",
+        email: "carlos@example.com",
+        phone_number: "555-555-5555",
+        document_number: "135790",
+        document_type: "ID",
+        id: "user789",
+        is_active: true,
+        groups: [
+            {
+                id: 3,
+                name: "Group C"
+            }
+        ],
+        is_admin: false
     },
     {
-        id: "2",
-        name: "Juan",
-        lastName: "Perez",
-        documentType: EDocumentType.CC,
-        documentNumber: "123456789",
-        email: "aaa@aasd.dasd",
-        cellphone: "123456789",
-        status: EStatusType.SUSPENDED
+        last_name: "Brown",
+        name: "Emily",
+        email: "emily@example.com",
+        phone_number: "555-222-3333",
+        document_number: "24681357",
+        document_type: "Driver's License",
+        id: "user101",
+        is_active: true,
+        groups: [],
+        is_admin: false
     },
     {
-        id: "2",
-        name: "Juan",
-        lastName: "Perez",
-        documentType: EDocumentType.CC,
-        documentNumber: "123456789",
-        email: "aaa@aasd.dasd",
-        cellphone: "123456789",
-        status: EStatusType.SUSPENDED
-    },
-    {
-        id: "2",
-        name: "Juan",
-        lastName: "Perez",
-        documentType: EDocumentType.CC,
-        documentNumber: "123456789",
-        email: "aaa@aasd.dasd",
-        cellphone: "123456789",
-        status: EStatusType.SUSPENDED
-    },
-    {
-        id: "2",
-        name: "Juan",
-        lastName: "Perez",
-        documentType: EDocumentType.CC,
-        documentNumber: "123456789",
-        email: "aaa@aasd.dasd",
-        cellphone: "123456789",
-        status: EStatusType.SUSPENDED
-    },
-    {
-        id: "2",
-        name: "Juan",
-        lastName: "Perez",
-        documentType: EDocumentType.CC,
-        documentNumber: "123456789",
-        email: "aaa@aasd.dasd",
-        cellphone: "123456789",
-        status: EStatusType.SUSPENDED
-    },
-    {
-        id: "2",
-        name: "Juan",
-        lastName: "Perez",
-        documentType: EDocumentType.CC,
-        documentNumber: "123456789",
-        email: "aaa@aasd.dasd",
-        cellphone: "123456789",
-        status: EStatusType.SUSPENDED
-    },
-    {
-        id: "2",
-        name: "Juan",
-        lastName: "Perez",
-        documentType: EDocumentType.CC,
-        documentNumber: "123456789",
-        email: "aaa@aasd.dasd",
-        cellphone: "123456789",
-        status: EStatusType.SUSPENDED
-    },
-    {
-        id: "1",
-        name: "Juan",
-        lastName: "Perez",
-        documentType: EDocumentType.CC,
-        documentNumber: "123456789",
-        email: "juan@perez.com",
-        cellphone: "123456789",
-        status: EStatusType.ACTIVE
-    },
-    {
-        id: "2",
-        name: "Juan",
-        lastName: "Perez",
-        documentType: EDocumentType.CC,
-        documentNumber: "123456789",
-        email: "aaa@aasd.dasd",
-        cellphone: "123456789",
-        status: EStatusType.SUSPENDED
-    },
-    {
-        id: "2",
-        name: "Juan",
-        lastName: "Perez",
-        documentType: EDocumentType.CC,
-        documentNumber: "123456789",
-        email: "aaa@aasd.dasd",
-        cellphone: "123456789",
-        status: EStatusType.SUSPENDED
-    },
-    {
-        id: "2",
-        name: "Juan",
-        lastName: "Perez",
-        documentType: EDocumentType.CC,
-        documentNumber: "123456789",
-        email: "aaa@aasd.dasd",
-        cellphone: "123456789",
-        status: EStatusType.SUSPENDED
-    },
-    {
-        id: "2",
-        name: "Juan",
-        lastName: "Perez",
-        documentType: EDocumentType.CC,
-        documentNumber: "123456789",
-        email: "aaa@aasd.dasd",
-        cellphone: "123456789",
-        status: EStatusType.SUSPENDED
-    },
-    {
-        id: "2",
-        name: "Juan",
-        lastName: "Perez",
-        documentType: EDocumentType.CC,
-        documentNumber: "123456789",
-        email: "aaa@aasd.dasd",
-        cellphone: "123456789",
-        status: EStatusType.SUSPENDED
-    },
-    {
-        id: "2",
-        name: "Juan",
-        lastName: "Perez",
-        documentType: EDocumentType.CC,
-        documentNumber: "123456789",
-        email: "aaa@aasd.dasd",
-        cellphone: "123456789",
-        status: EStatusType.SUSPENDED
-    },
-    {
-        id: "2",
-        name: "Juan",
-        lastName: "Perez",
-        documentType: EDocumentType.CC,
-        documentNumber: "123456789",
-        email: "aaa@aasd.dasd",
-        cellphone: "123456789",
-        status: EStatusType.SUSPENDED
-    },
-    {
-        id: "2",
-        name: "Juan",
-        lastName: "Perez",
-        documentType: EDocumentType.CC,
-        documentNumber: "123456789",
-        email: "aaa@aasd.dasd",
-        cellphone: "123456789",
-        status: EStatusType.SUSPENDED
-    },
-    {
-        id: "2",
-        name: "Juan",
-        lastName: "Perez",
-        documentType: EDocumentType.CC,
-        documentNumber: "123456789",
-        email: "aaa@aasd.dasd",
-        cellphone: "123456789",
-        status: EStatusType.SUSPENDED
-    },
-    {
-        id: "1",
-        name: "Juan",
-        lastName: "Perez",
-        documentType: EDocumentType.CC,
-        documentNumber: "123456789",
-        email: "juan@perez.com",
-        cellphone: "123456789",
-        status: EStatusType.ACTIVE
-    },
-    {
-        id: "2",
-        name: "Juan",
-        lastName: "Perez",
-        documentType: EDocumentType.CC,
-        documentNumber: "123456789",
-        email: "aaa@aasd.dasd",
-        cellphone: "123456789",
-        status: EStatusType.SUSPENDED
-    },
-    {
-        id: "2",
-        name: "Juan",
-        lastName: "Perez",
-        documentType: EDocumentType.CC,
-        documentNumber: "123456789",
-        email: "aaa@aasd.dasd",
-        cellphone: "123456789",
-        status: EStatusType.SUSPENDED
-    },
-    {
-        id: "2",
-        name: "Juan",
-        lastName: "Perez",
-        documentType: EDocumentType.CC,
-        documentNumber: "123456789",
-        email: "aaa@aasd.dasd",
-        cellphone: "123456789",
-        status: EStatusType.SUSPENDED
-    },
-    {
-        id: "2",
-        name: "Juan",
-        lastName: "Perez",
-        documentType: EDocumentType.CC,
-        documentNumber: "123456789",
-        email: "aaa@aasd.dasd",
-        cellphone: "123456789",
-        status: EStatusType.SUSPENDED
-    },
-    {
-        id: "2",
-        name: "Juan",
-        lastName: "Perez",
-        documentType: EDocumentType.CC,
-        documentNumber: "123456789",
-        email: "aaa@aasd.dasd",
-        cellphone: "123456789",
-        status: EStatusType.SUSPENDED
-    },
-    {
-        id: "2",
-        name: "Juan",
-        lastName: "Perez",
-        documentType: EDocumentType.CC,
-        documentNumber: "123456789",
-        email: "aaa@aasd.dasd",
-        cellphone: "123456789",
-        status: EStatusType.SUSPENDED
-    },
-    {
-        id: "2",
-        name: "Juan",
-        lastName: "Perez",
-        documentType: EDocumentType.CC,
-        documentNumber: "123456789",
-        email: "aaa@aasd.dasd",
-        cellphone: "123456789",
-        status: EStatusType.SUSPENDED
-    },
-    {
-        id: "2",
-        name: "Juan",
-        lastName: "Perez",
-        documentType: EDocumentType.CC,
-        documentNumber: "123456789",
-        email: "aaa@aasd.dasd",
-        cellphone: "123456789",
-        status: EStatusType.SUSPENDED
-    },
-    {
-        id: "2",
-        name: "Juan",
-        lastName: "Perez",
-        documentType: EDocumentType.CC,
-        documentNumber: "123456789",
-        email: "aaa@aasd.dasd",
-        cellphone: "123456789",
-        status: EStatusType.SUSPENDED
+        last_name: "Kim",
+        name: "David",
+        email: "david@example.com",
+        phone_number: "555-444-7777",
+        document_number: "864209",
+        document_type: "ID",
+        id: "user111",
+        is_active: true,
+        groups: [
+            {
+                id: 4,
+                name: "Group D"
+            }
+        ],
+        is_admin: false
     }
 ];
 
@@ -384,7 +162,7 @@ export default function Admin() {
                 columns={[
                     {
                         label: "Usuario",
-                        value: (user) => `${user.name} ${user.lastName}`
+                        value: (user) => `${user.name} ${user.last_name}`
                     },
                     {
                         label: "Correo",
@@ -392,11 +170,13 @@ export default function Admin() {
                     },
                     {
                         label: "Celular",
-                        value: (user) => user.cellphone
+                        value: (user) => user.phone_number
                     },
                     {
                         label: "Estado",
-                        value: (user) => user.status
+                        value: (user) => (
+                            <div>{JSON.stringify(user.is_active)}</div>
+                        )
                     },
                     {
                         label: "Acciones",
