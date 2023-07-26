@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { setCookie } from "@/app/actions";
 import { TError } from "@/domain/errors/ErrorFactory";
 import { login } from "@/services/pavito_back/auth/login";
+import { userMe } from "@/services/pavito_back/user/get";
 import { useGlobalContext } from "@/app/context";
 
 export function LoginForm() {
@@ -12,7 +13,7 @@ export function LoginForm() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const { openAlertMessage } = useGlobalContext();
+    const { openAlertMessage, setUser } = useGlobalContext();
 
     const submitForm = async () => {
         try {
@@ -25,6 +26,8 @@ export function LoginForm() {
                 value: `${response.body.authentication_result.id_token} ${response.body.authentication_result.access_token}`,
                 expiration: response.body.authentication_result.expires_in
             });
+            const user = await userMe();
+            setUser(user.body);
             router.push("/dashboard");
         } catch (error) {
             if (error instanceof TError) {
