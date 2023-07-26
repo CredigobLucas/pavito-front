@@ -13,71 +13,54 @@ import {
 } from "@mui/material";
 import { User } from "@/domain/models";
 import { MoreVert, Add } from "@mui/icons-material";
-
-const rows: User[] = [
-    {
-        last_name: "Gonzalez",
-        name: "Maria",
-        email: "maria@example.com",
-        phone_number: "555-123-4567",
-        document_number: "12345678",
-        document_type: "ID",
-        id: "user123",
-        is_active: true,
-        groups: [],
-        is_admin: false
-    },
-    {
-        last_name: "Smith",
-        name: "John",
-        email: "john@example.com",
-        phone_number: "555-987-6543",
-        document_number: "87654321",
-        document_type: "Passport",
-        id: "user456",
-        is_active: true,
-        groups: [],
-        is_admin: true
-    },
-    {
-        last_name: "Lopez",
-        name: "Carlos",
-        email: "carlos@example.com",
-        phone_number: "555-555-5555",
-        document_number: "135790",
-        document_type: "ID",
-        id: "user789",
-        is_active: true,
-        groups: [],
-        is_admin: false
-    },
-    {
-        last_name: "Brown",
-        name: "Emily",
-        email: "emily@example.com",
-        phone_number: "555-222-3333",
-        document_number: "24681357",
-        document_type: "Driver's License",
-        id: "user101",
-        is_active: true,
-        groups: [],
-        is_admin: false
-    },
-    {
-        last_name: "Kim",
-        name: "David",
-        email: "david@example.com",
-        phone_number: "555-444-7777",
-        document_number: "864209",
-        document_type: "ID",
-        id: "user111",
-        is_active: true,
-        groups: [],
-        is_admin: false
-    }
-];
+import { useState, useEffect, useMemo } from "react";
+import { getUsers } from "@/services/pavito_back/enterprise/users";
+import { useGlobalContext } from "@/app/context";
+import { TError } from "@/domain/errors/ErrorFactory";
+import { useRouter } from "next/navigation";
 
 export default function Admin() {
+    const [rows, setRows] = useState<User[]>([]);
+    const [page, setPage] = useState<number>(1);
+    const [rowsPerPage, setRowsPerPage] = useState<number>(10);
+    const [totalPages, setTotalPages] = useState<number>(0);
+    const [onlyActive, setOnlyActive] = useState<boolean>(false);
+    const { openAlertMessage } = useGlobalContext();
+    const router = useRouter();
+
+    const getAllUsers = async () => {
+        try {
+            const response = await getUsers({
+                items_per_page: rowsPerPage,
+                page_number: page,
+                active_only: onlyActive
+            });
+            setRows(response.body.users);
+            setPage(response.body.pagination.page_number);
+            setRowsPerPage(response.body.pagination.items_per_page);
+            setTotalPages(response.body.pagination.total_num_pages);
+        } catch (error) {
+            if (error instanceof TError) {
+                openAlertMessage({
+                    horizontal: "center",
+                    vertical: "top",
+                    severity: "error",
+                    message: error.message
+                });
+                if (error.type === "Unauthorized") {
+                    router.push("/auth/login");
+                }
+            }
+        }
+    };
+    useEffect(() => {
+        getAllUsers();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+    useMemo(() => {
+        getAllUsers();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [page, rowsPerPage, onlyActive]);
     return (
         <GeneralContainer
             sx={{
@@ -89,7 +72,7 @@ export default function Admin() {
         >
             <Box
                 component={"div"}
-                className="flex flex-col justify-between md:flex-row"
+                className="flex flex-col-reverse justify-between md:flex-row"
                 sx={{
                     marginBottom: "16px",
                     padding: "0 20px"
@@ -97,7 +80,7 @@ export default function Admin() {
             >
                 <Box
                     component={"div"}
-                    className="flex items-center justify-start md:justify-end mb-4 md:mb-0"
+                    className="flex items-center justify-end md:justify-end mt-4 md:mt-0"
                 >
                     <Box component={"div"}>
                         <Typography component="div" className="font-medium">
@@ -105,8 +88,12 @@ export default function Admin() {
                             <Select
                                 className="mx-3 font-medium"
                                 size="small"
-                                defaultValue={10}
+                                value={rowsPerPage}
+                                onChange={(e) => {
+                                    setRowsPerPage(e.target.value as number);
+                                }}
                             >
+                                <MenuItem value={5}>5</MenuItem>
                                 <MenuItem value={10}>10</MenuItem>
                                 <MenuItem value={15}>15</MenuItem>
                                 <MenuItem value={20}>20</MenuItem>
@@ -117,9 +104,9 @@ export default function Admin() {
                 </Box>
                 <Box
                     component={"div"}
-                    className="flex items-center justify-between md:justify-end"
+                    className="flex items-center justify-end md:justify-end"
                 >
-                    <Typography
+                    {/*<Typography
                         sx={{
                             marginRight: "30px"
                         }}
@@ -141,10 +128,10 @@ export default function Admin() {
                             // set primary color
                             color={"#544892"}
                         >
-                            {30}
+                            {totalRows}
                         </Typography>{" "}
                         usuarios disponibles
-                    </Typography>
+                    </Typography>*/}
                     <Button
                         className="capitalize font-bold text-sm"
                         variant="contained"
@@ -213,7 +200,15 @@ export default function Admin() {
                     padding: "0 8px"
                 }}
             >
-                <Pagination color="primary" count={3} shape="rounded" />
+                <Pagination
+                    color="primary"
+                    count={totalPages}
+                    page={page}
+                    shape="rounded"
+                    onChange={(_e, page) => {
+                        setPage(page);
+                    }}
+                />
             </Box>
         </GeneralContainer>
     );
