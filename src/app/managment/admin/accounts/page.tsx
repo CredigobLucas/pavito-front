@@ -1,7 +1,16 @@
 "use client";
 import { GeneralContainer } from "@/app/components";
 import { PavitoTable } from "@/app/components/PavitoTable";
-import { Box, Button, Typography, Pagination } from "@mui/material";
+import {
+    Box,
+    Button,
+    Typography,
+    Pagination,
+    Chip,
+    Select,
+    MenuItem,
+    IconButton
+} from "@mui/material";
 import { User } from "@/domain/models";
 import { MoreVert, Add } from "@mui/icons-material";
 
@@ -83,7 +92,21 @@ export default function Admin() {
                     component={"div"}
                     className="flex items-center justify-end mb-4 md:mb-0"
                 >
-                    gaa
+                    <Box component={"div"}>
+                        <Typography component="div" className="font-medium">
+                            Mostrar
+                            <Select
+                                className="mx-3 font-medium"
+                                size="small"
+                                defaultValue={10}
+                            >
+                                <MenuItem value={10}>10</MenuItem>
+                                <MenuItem value={15}>15</MenuItem>
+                                <MenuItem value={20}>20</MenuItem>
+                            </Select>
+                            usuarios
+                        </Typography>
+                    </Box>
                 </Box>
                 <Box
                     component={"div"}
@@ -156,16 +179,24 @@ export default function Admin() {
                     {
                         label: "Estado",
                         value: (user) => (
-                            <div>{JSON.stringify(user.is_active)}</div>
+                            <Chip
+                                color={user.is_active ? "success" : "error"}
+                                label={user.is_active ? "Activo" : "Inactivo"}
+                            />
                         )
                     },
                     {
                         label: "Acciones",
                         align: "center",
                         value: (user) => (
-                            <div className="flex justify-center">
-                                <MoreVert color="primary" />
-                            </div>
+                            <Box
+                                component="div"
+                                className="flex justify-center"
+                            >
+                                <IconButton>
+                                    <MoreVert color="primary" />
+                                </IconButton>
+                            </Box>
                         )
                     }
                 ]}
