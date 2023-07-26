@@ -79,7 +79,14 @@ const rows: User[] = [
 
 export default function Admin() {
     return (
-        <GeneralContainer>
+        <GeneralContainer
+            sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                paddingBottom: "15px"
+            }}
+        >
             <Box
                 component={"div"}
                 className="flex flex-col justify-between md:flex-row"
@@ -203,7 +210,7 @@ export default function Admin() {
                 component={"div"}
                 className="flex items-end justify-end"
                 sx={{
-                    padding: "16px 8px"
+                    padding: "0 8px"
                 }}
             >
                 <Pagination color="primary" count={3} shape="rounded" />
