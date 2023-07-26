@@ -90,7 +90,7 @@ export default function Admin() {
             >
                 <Box
                     component={"div"}
-                    className="flex items-center justify-end mb-4 md:mb-0"
+                    className="flex items-center justify-start md:justify-end mb-4 md:mb-0"
                 >
                     <Box component={"div"}>
                         <Typography component="div" className="font-medium">
@@ -110,7 +110,7 @@ export default function Admin() {
                 </Box>
                 <Box
                     component={"div"}
-                    className="flex items-center justify-end"
+                    className="flex items-center justify-between md:justify-end"
                 >
                     <Typography
                         sx={{
@@ -123,7 +123,6 @@ export default function Admin() {
                         <Typography
                             component="span"
                             fontWeight="bold"
-                            fontSize={"14px"}
                             color={"#544892"}
                         >
                             {20}
@@ -132,7 +131,6 @@ export default function Admin() {
                         <Typography
                             component="span"
                             fontWeight="bold"
-                            fontSize={"14px"}
                             // set primary color
                             color={"#544892"}
                         >
@@ -141,19 +139,18 @@ export default function Admin() {
                         usuarios disponibles
                     </Typography>
                     <Button
-                        className="rounded-lg capitalize font-bold"
+                        className="capitalize font-bold text-sm"
                         variant="contained"
                         sx={{
-                            padding: "8px 12px ",
-                            fontSize: "12px",
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "center"
                         }}
+                        size="small"
                     >
                         <Add
                             sx={{
-                                marginRight: "8px"
+                                marginRight: "2px"
                             }}
                             fontSize="small"
                         />
