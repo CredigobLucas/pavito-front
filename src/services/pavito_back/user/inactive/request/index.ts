@@ -1,17 +1,15 @@
 import { PavitoBackApi } from "../../../PavitoBackApi";
-import { UserMeResponse } from "../response";
+import { InactiveUserResponse } from "../response";
 import { isAxiosError } from "axios";
 import { ErrorFactory } from "@/domain/errors/ErrorFactory";
-import { getCookie } from "@/app/actions";
 
-export const userMe = async (): Promise<UserMeResponse> => {
+export const inactiveUser = async (
+    id: string
+): Promise<InactiveUserResponse> => {
     const api = new PavitoBackApi();
     try {
-        const token = await getCookie("token");
-        if (token) {
-            api.setHeader("Authorization", `Bearer ${token}`);
-        }
-        const response: UserMeResponse = await api.get<UserMeResponse>("/user");
+        const response: InactiveUserResponse =
+            await api.put<InactiveUserResponse>(`/user/disable/${id}`);
         return response;
     } catch (error) {
         if (isAxiosError(error)) {
@@ -30,7 +28,7 @@ export const userMe = async (): Promise<UserMeResponse> => {
             }
         }
         throw ErrorFactory.create(
-            "Error en el servidor, intente nuevamente",
+            "No se pudo activar el usuario, intente nuevamente",
             "Unknown"
         );
     }

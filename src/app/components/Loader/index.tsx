@@ -20,7 +20,7 @@ export const Loader = ({ open }: LoaderProps) => {
                 }}
                 component="div"
             >
-                <Paper>
+                <Paper elevation={3}>
                     <img
                         style={{
                             width: "90%",

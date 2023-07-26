@@ -26,7 +26,7 @@ export class Api {
         return response.data;
     }
 
-    public async put<T>(url: string, data: Payload): Promise<T> {
+    public async put<T>(url: string, data?: Payload): Promise<T> {
         const response = await this.instance.put<T>(url, data);
         return response.data;
     }

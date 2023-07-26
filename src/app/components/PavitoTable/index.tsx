@@ -13,7 +13,7 @@ import {
 interface Column<Data> {
     width?: number | string;
     align?: "right" | "left" | "center";
-    label: string;
+    label: React.ReactNode;
     value: (row: Data) => React.ReactNode;
 }
 

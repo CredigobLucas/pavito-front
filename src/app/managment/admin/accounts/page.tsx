@@ -8,16 +8,21 @@ import {
     Pagination,
     Chip,
     Select,
+    Switch,
+    Menu,
     MenuItem,
-    IconButton
+    IconButton,
+    FormControlLabel
 } from "@mui/material";
 import { User } from "@/domain/models";
-import { MoreVert, Add } from "@mui/icons-material";
+import { MoreVert, Add, FilterList } from "@mui/icons-material";
 import { useState, useEffect, useMemo } from "react";
 import { getUsers } from "@/services/pavito_back/enterprise/users";
 import { useGlobalContext } from "@/app/context";
 import { TError } from "@/domain/errors/ErrorFactory";
 import { useRouter } from "next/navigation";
+import { inactiveUser } from "@/services/pavito_back/user/inactive";
+import { activeUser } from "@/services/pavito_back/user/active";
 
 export default function Admin() {
     const [rows, setRows] = useState<User[]>([]);
@@ -26,6 +31,14 @@ export default function Admin() {
     const [totalPages, setTotalPages] = useState<number>(0);
     const [onlyActive, setOnlyActive] = useState<boolean>(false);
     const { openAlertMessage, setOpenLoading } = useGlobalContext();
+    const [anchorStatus, setAnchorStatus] = useState<null | HTMLElement>(null);
+    const [anchorActions, setAnchorActions] = useState<null | HTMLElement>(
+        null
+    );
+    const [selectedUser, setSelectedUser] = useState<User | null>(null);
+    const openChangeStatus = Boolean(anchorStatus);
+    const openActions = Boolean(anchorActions);
+
     const router = useRouter();
 
     const getAllUsers = async () => {
@@ -64,6 +77,83 @@ export default function Admin() {
         getAllUsers();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [page, rowsPerPage, onlyActive]);
+
+    const inactive = async (id: string) => {
+        try {
+            setOpenLoading(true);
+            const response = await inactiveUser(id);
+            if (response.body.status_update === false) {
+                openAlertMessage({
+                    horizontal: "center",
+                    vertical: "top",
+                    severity: "error",
+                    message: "No se pudo desactivar el usuario"
+                });
+            } else {
+                openAlertMessage({
+                    horizontal: "center",
+                    vertical: "top",
+                    severity: "success",
+                    message: "Usuario desactivado con éxito"
+                });
+                await getAllUsers();
+                setAnchorActions(null);
+            }
+        } catch (error) {
+            if (error instanceof TError) {
+                openAlertMessage({
+                    horizontal: "center",
+                    vertical: "top",
+                    severity: "error",
+                    message: error.message
+                });
+                if (error.type === "Unauthorized") {
+                    router.push("/auth/login");
+                }
+            }
+        } finally {
+            setOpenLoading(false);
+        }
+    };
+
+    const active = async (id: string) => {
+        try {
+            setOpenLoading(true);
+            const response = await activeUser(id);
+            if (response.body.status_update === false) {
+                openAlertMessage({
+                    horizontal: "center",
+                    vertical: "top",
+                    severity: "error",
+                    message: "No se pudo activar el usuario"
+                });
+            } else {
+                openAlertMessage({
+                    horizontal: "center",
+                    vertical: "top",
+                    severity: "success",
+                    message: "Usuario desactivado con éxito"
+                });
+                await getAllUsers();
+                setAnchorActions(null);
+            }
+        } catch (error) {
+            if (error instanceof TError) {
+                openAlertMessage({
+                    horizontal: "center",
+                    vertical: "top",
+                    severity: "error",
+                    message: error.message
+                });
+                if (error.type === "Unauthorized") {
+                    router.push("/auth/login");
+                }
+            }
+        } finally {
+            setOpenLoading(false);
+        }
+    };
+
     return (
         <GeneralContainer
             sx={{
@@ -171,7 +261,21 @@ export default function Admin() {
                         value: (user) => user.phone_number
                     },
                     {
-                        label: "Estado",
+                        label: (
+                            <Box
+                                component="div"
+                                className="cursor-pointer flex items-center underline"
+                                onClick={(e) => {
+                                    setAnchorStatus(e.currentTarget);
+                                }}
+                            >
+                                Estado
+                                <FilterList
+                                    className="ml-1"
+                                    fontSize="inherit"
+                                />
+                            </Box>
+                        ),
                         value: (user) => (
                             <Chip
                                 color={user.is_active ? "success" : "error"}
@@ -187,7 +291,12 @@ export default function Admin() {
                                 component="div"
                                 className="flex justify-center"
                             >
-                                <IconButton>
+                                <IconButton
+                                    onClick={(e) => {
+                                        setSelectedUser(user);
+                                        setAnchorActions(e.currentTarget);
+                                    }}
+                                >
                                     <MoreVert color="primary" />
                                 </IconButton>
                             </Box>
@@ -213,6 +322,51 @@ export default function Admin() {
                     }}
                 />
             </Box>
+            <Menu
+                anchorEl={anchorStatus}
+                open={openChangeStatus}
+                onClose={() => {
+                    setAnchorStatus(null);
+                }}
+            >
+                <FormControlLabel
+                    className="ml-2"
+                    control={
+                        <Switch
+                            size="small"
+                            checked={onlyActive}
+                            onChange={() => {
+                                setOnlyActive(!onlyActive);
+                                setAnchorStatus(null);
+                            }}
+                        />
+                    }
+                    label={onlyActive ? "Solo activos" : "Todos"}
+                />
+            </Menu>
+            <Menu
+                anchorEl={anchorActions}
+                open={openActions}
+                onClose={() => {
+                    setAnchorActions(null);
+                }}
+            >
+                <MenuItem
+                    onClick={() => {
+                        if (selectedUser) {
+                            if (selectedUser.is_active) {
+                                inactive(selectedUser.id);
+                            } else {
+                                active(selectedUser.id);
+                            }
+                            return;
+                        }
+                        setAnchorActions(null);
+                    }}
+                >
+                    {selectedUser?.is_active ? "Desactivar" : "Activar"}
+                </MenuItem>
+            </Menu>
         </GeneralContainer>
     );
 }
