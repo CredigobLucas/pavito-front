@@ -23,6 +23,7 @@ import { TError } from "@/domain/errors/ErrorFactory";
 import { useRouter } from "next/navigation";
 import { inactiveUser } from "@/services/pavito_back/user/inactive";
 import { activeUser } from "@/services/pavito_back/user/active";
+import { CreateUser } from "./components/CreateUser";
 
 export default function Admin() {
     const [rows, setRows] = useState<User[]>([]);
@@ -30,7 +31,10 @@ export default function Admin() {
     const [rowsPerPage, setRowsPerPage] = useState<number>(10);
     const [totalPages, setTotalPages] = useState<number>(0);
     const [onlyActive, setOnlyActive] = useState<boolean>(false);
+    const [openCreateUser, setOpenCreateUser] = useState<boolean>(false);
+
     const { openAlertMessage, setOpenLoading } = useGlobalContext();
+
     const [anchorStatus, setAnchorStatus] = useState<null | HTMLElement>(null);
     const [anchorActions, setAnchorActions] = useState<null | HTMLElement>(
         null
@@ -234,6 +238,9 @@ export default function Admin() {
                             justifyContent: "center"
                         }}
                         size="small"
+                        onClick={() => {
+                            setOpenCreateUser(true);
+                        }}
                     >
                         <Add
                             sx={{
@@ -367,6 +374,15 @@ export default function Admin() {
                     {selectedUser?.is_active ? "Desactivar" : "Activar"}
                 </MenuItem>
             </Menu>
+            <CreateUser
+                open={openCreateUser}
+                close={(reload: boolean) => {
+                    setOpenCreateUser(false);
+                    if (reload) {
+                        getAllUsers();
+                    }
+                }}
+            />
         </GeneralContainer>
     );
 }
