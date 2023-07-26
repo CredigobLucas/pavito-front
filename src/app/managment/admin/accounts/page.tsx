@@ -33,7 +33,8 @@ export default function Admin() {
     const [onlyActive, setOnlyActive] = useState<boolean>(false);
     const [openCreateUser, setOpenCreateUser] = useState<boolean>(false);
 
-    const { openAlertMessage, setOpenLoading } = useGlobalContext();
+    const { openAlertMessage, setOpenLoading, setSectionTitle } =
+        useGlobalContext();
 
     const [anchorStatus, setAnchorStatus] = useState<null | HTMLElement>(null);
     const [anchorActions, setAnchorActions] = useState<null | HTMLElement>(
@@ -74,6 +75,7 @@ export default function Admin() {
         }
     };
     useEffect(() => {
+        setSectionTitle("Usuarios");
         getAllUsers();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
