@@ -27,6 +27,8 @@ export const GlobalContextProvider = ({
     } as User);
     const [theme, setTheme] = useState<Theme>(darkTheme);
 
+    const [openLoading, setOpenLoading] = useState<boolean>(false);
+
     const [openAlert, setOpenAlert] = useState<boolean>(false);
     const [alertMessage, setAlertMessage] = useState<AlertMessage>({
         horizontal: "left",
@@ -63,7 +65,9 @@ export const GlobalContextProvider = ({
         openAlertMessage: openAlertMessage,
         openAlert: openAlert,
         setOpenAlert: setOpenAlert,
-        alertMessage: alertMessage
+        alertMessage: alertMessage,
+        openLoading: openLoading,
+        setOpenLoading: setOpenLoading
     };
 
     return (

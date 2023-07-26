@@ -13,11 +13,13 @@ export interface IGlobalContext {
     setSectionTitle: (title: string) => void;
     setUser: (user?: User) => void;
     toggleTheme: () => void;
-
     openAlertMessage: (alert: AlertMessage) => void;
     openAlert: boolean;
     alertMessage: AlertMessage;
     setOpenAlert: (open: boolean) => void;
+
+    openLoading: boolean;
+    setOpenLoading: (open: boolean) => void;
 }
 
 export const GlobalContext = createContext<IGlobalContext | undefined>(

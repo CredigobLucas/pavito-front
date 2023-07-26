@@ -25,11 +25,12 @@ export default function Admin() {
     const [rowsPerPage, setRowsPerPage] = useState<number>(10);
     const [totalPages, setTotalPages] = useState<number>(0);
     const [onlyActive, setOnlyActive] = useState<boolean>(false);
-    const { openAlertMessage } = useGlobalContext();
+    const { openAlertMessage, setOpenLoading } = useGlobalContext();
     const router = useRouter();
 
     const getAllUsers = async () => {
         try {
+            setOpenLoading(true);
             const response = await getUsers({
                 items_per_page: rowsPerPage,
                 page_number: page,
@@ -51,6 +52,8 @@ export default function Admin() {
                     router.push("/auth/login");
                 }
             }
+        } finally {
+            setOpenLoading(false);
         }
     };
     useEffect(() => {

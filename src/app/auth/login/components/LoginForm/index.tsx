@@ -13,10 +13,11 @@ export function LoginForm() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const { openAlertMessage, setUser } = useGlobalContext();
+    const { openAlertMessage, setUser, setOpenLoading } = useGlobalContext();
 
     const submitForm = async () => {
         try {
+            setOpenLoading(true);
             const response = await login({
                 email,
                 password
@@ -41,6 +42,8 @@ export function LoginForm() {
                     router.push("/auth/new-password");
                 }
             }
+        } finally {
+            setOpenLoading(false);
         }
     };
 
