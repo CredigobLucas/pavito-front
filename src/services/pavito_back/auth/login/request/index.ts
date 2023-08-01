@@ -36,6 +36,12 @@ export const login = async (payload: LoginPayload): Promise<LoginResponse> => {
                     "Unauthorized"
                 );
             }
+            if (response.status === 403) {
+                throw ErrorFactory.create(
+                    "El usuario no tiene permisos para acceder a esta aplicación",
+                    "Forbidden"
+                );
+            }
         }
         throw ErrorFactory.create(
             "Error en el servidor, intente nuevamente",
