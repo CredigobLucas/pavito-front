@@ -4,8 +4,10 @@ interface LabeledInputProps {
     label: string;
     placeholder: string;
     type?: string;
+    initialValue?: string;
     width?: string;
     required?: boolean;
+    readonly?: boolean;
     onChange: (e: any) => void;
 }
 
@@ -15,6 +17,8 @@ export const LabeledInput = ({
     required = false,
     type = "text",
     width = "100%",
+    readonly = false,
+    initialValue = undefined,
     onChange
 }: LabeledInputProps) => {
     return (
@@ -27,6 +31,10 @@ export const LabeledInput = ({
                     className="mt-2"
                     placeholder={placeholder}
                     fullWidth
+                    value={initialValue}
+                    InputProps={{
+                        readOnly: readonly
+                    }}
                     required={required}
                     onChange={onChange}
                 />
@@ -36,7 +44,8 @@ export const LabeledInput = ({
             sx={{
                 ".MuiFormControlLabel-label": {
                     textAlign: "left",
-                    width: "100%"
+                    width: "100%",
+                    fontWeight: "600"
                 },
                 ".MuiFormControlLabel-asterisk": {
                     display: "none"
