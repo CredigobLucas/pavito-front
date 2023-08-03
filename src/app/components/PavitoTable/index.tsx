@@ -93,7 +93,7 @@ export function PavitoTable<Data>({
                         >
                             <Paper
                                 className="p-4 overflow-x-hidden"
-                                elevation={3}
+                                elevation={4}
                             >
                                 {columns.map((column, index) => {
                                     const value = column.value(row);
