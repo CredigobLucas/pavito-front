@@ -1,9 +1,10 @@
 "use client";
 import { useGlobalContext } from "@/app/context";
-import { Box, Paper } from "@mui/material";
+import { Box, Paper, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { getEnterprise } from "@/services/pavito_back/enterprise/get";
 import { TError } from "@/domain/errors/ErrorFactory";
+import { LicenseCard } from "./components";
 import { useRouter } from "next/navigation";
 import { License } from "@/domain/models/License";
 
@@ -27,21 +28,9 @@ export default function Licenses() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return (
-        <Box component="div" className="flex flex-wrap gap-3">
+        <Box component="div" className="flex flex-wrap gap-3 overflow-y-auto">
             {licenses.map((license, index) => {
-                return (
-                    <Box
-                        component="div"
-                        className="flex flex-col gap-2"
-                        key={index}
-                    >
-                        <Paper className="p-2" elevation={3}>
-                            <pre>
-                                <code>{JSON.stringify(license, null, 2)}</code>
-                            </pre>
-                        </Paper>
-                    </Box>
-                );
+                return <LicenseCard key={index} license={license} />;
             })}
         </Box>
     );

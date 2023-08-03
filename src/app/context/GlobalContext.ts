@@ -3,6 +3,7 @@ import { User } from "@/domain/models";
 import { Theme, createTheme } from "@mui/material";
 import { MenuOption } from "@/domain/interface/MenuOption";
 import { AlertMessage } from "@/domain/interface/AlertMessage";
+import { Region } from "@/domain/models/Region";
 
 export interface IGlobalContext {
     user?: User;
@@ -17,6 +18,7 @@ export interface IGlobalContext {
     openAlert: boolean;
     alertMessage: AlertMessage;
     setOpenAlert: (open: boolean) => void;
+    getAvaibleRegions: () => Region[];
 
     openLoading: boolean;
     setOpenLoading: (open: boolean) => void;

@@ -6,6 +6,7 @@ import { Theme, Snackbar, Alert } from "@mui/material";
 import { GlobalContext, IGlobalContext } from "./GlobalContext";
 import { AlertMessage } from "@/domain/interface/AlertMessage";
 import { darkTheme, ligthTheme } from "@/theme";
+import { Region } from "@/domain/models/Region";
 export const GlobalContextProvider = ({
     children
 }: {
@@ -53,6 +54,28 @@ export const GlobalContextProvider = ({
             setTheme(darkTheme);
         }
     };
+    const getAvaibleRegions = (): Region[] => {
+        const permissions = user?.groups.map((group) => {
+            return group.permissions;
+        });
+        const permissionsDepartment = permissions?.reduce((acc, curr) => {
+            return [
+                ...acc,
+                ...curr.filter((permission) => permission.key === "department")
+            ];
+        }, []);
+        const regions = permissionsDepartment?.map((permission) => {
+            return {
+                id: permission.id,
+                value: permission.value
+            } as Region;
+        });
+        const regionsWithoutDuplicates = regions?.filter(
+            (region, index, self) =>
+                index === self.findIndex((t) => t.id === region.id)
+        );
+        return regionsWithoutDuplicates || [];
+    };
     const value: IGlobalContext = {
         user: user,
         setUser: setUsr,
@@ -67,7 +90,8 @@ export const GlobalContextProvider = ({
         setOpenAlert: setOpenAlert,
         alertMessage: alertMessage,
         openLoading: openLoading,
-        setOpenLoading: setOpenLoading
+        setOpenLoading: setOpenLoading,
+        getAvaibleRegions: getAvaibleRegions
     };
 
     return (
