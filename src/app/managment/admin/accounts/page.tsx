@@ -36,12 +36,10 @@ export default function Admin() {
     const { openAlertMessage, setOpenLoading, setSectionTitle } =
         useGlobalContext();
 
-    const [anchorStatus, setAnchorStatus] = useState<null | HTMLElement>(null);
     const [anchorActions, setAnchorActions] = useState<null | HTMLElement>(
         null
     );
     const [selectedUser, setSelectedUser] = useState<User | null>(null);
-    const openChangeStatus = Boolean(anchorStatus);
     const openActions = Boolean(anchorActions);
 
     const router = useRouter();
@@ -250,9 +248,24 @@ export default function Admin() {
                             }}
                             fontSize="small"
                         />
-                        Crear Usuario
+                        Usuario
                     </Button>
                 </Box>
+            </Box>
+            <Box className="flex w-full items-center justify-end mb-2">
+                <FormControlLabel
+                    className="mr-5"
+                    control={
+                        <Switch
+                            size="small"
+                            checked={onlyActive}
+                            onChange={() => {
+                                setOnlyActive(!onlyActive);
+                            }}
+                        />
+                    }
+                    label={onlyActive ? "Todos" : "Solo activos"}
+                />
             </Box>
             <PavitoTable<User>
                 rows={rows}
@@ -270,21 +283,7 @@ export default function Admin() {
                         value: (user) => user.phone_number
                     },
                     {
-                        label: (
-                            <Box
-                                component="div"
-                                className="cursor-pointer flex items-center underline"
-                                onClick={(e) => {
-                                    setAnchorStatus(e.currentTarget);
-                                }}
-                            >
-                                Estado
-                                <FilterList
-                                    className="ml-1"
-                                    fontSize="inherit"
-                                />
-                            </Box>
-                        ),
+                        label: "Estado",
                         value: (user) => (
                             <Chip
                                 color={user.is_active ? "success" : "error"}
@@ -331,28 +330,6 @@ export default function Admin() {
                     }}
                 />
             </Box>
-            <Menu
-                anchorEl={anchorStatus}
-                open={openChangeStatus}
-                onClose={() => {
-                    setAnchorStatus(null);
-                }}
-            >
-                <FormControlLabel
-                    className="ml-2"
-                    control={
-                        <Switch
-                            size="small"
-                            checked={onlyActive}
-                            onChange={() => {
-                                setOnlyActive(!onlyActive);
-                                setAnchorStatus(null);
-                            }}
-                        />
-                    }
-                    label={onlyActive ? "Solo activos" : "Todos"}
-                />
-            </Menu>
             <Menu
                 anchorEl={anchorActions}
                 open={openActions}

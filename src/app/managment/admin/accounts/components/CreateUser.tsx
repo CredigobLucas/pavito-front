@@ -87,8 +87,12 @@ export const CreateUser = ({ open, close }: CreateUserProps) => {
     };
     return (
         <Modal
+            disableEscapeKeyDown
             open={open}
-            onClose={() => {
+            onClose={(event, reason) => {
+                if (reason === "backdropClick") {
+                    return;
+                }
                 close(false);
             }}
             aria-labelledby="modal-modal-title"
@@ -238,6 +242,18 @@ export const CreateUser = ({ open, close }: CreateUserProps) => {
                             className="w-full flex justify-end"
                         >
                             <Button
+                                variant="outlined"
+                                color="error"
+                                size="small"
+                                className="capitalize font-bold mr-3"
+                                type="button"
+                                onClick={() => {
+                                    close(false);
+                                }}
+                            >
+                                Cancelar
+                            </Button>
+                            <Button
                                 variant="contained"
                                 color="primary"
                                 size="small"
@@ -245,7 +261,7 @@ export const CreateUser = ({ open, close }: CreateUserProps) => {
                                 type="submit"
                                 disabled={password !== repeatPassword}
                             >
-                                Añadir usuario
+                                Crear
                             </Button>
                         </Box>
                     </Box>
