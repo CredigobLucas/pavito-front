@@ -17,11 +17,11 @@ export const ModuleCard = ({ module }: { module: Module }) => {
             <Box
                 sx={{
                     width: {
-                        xs: "100%",
+                        xs: "90vw",
                         sm: "250px"
                     },
                     maxWidth: {
-                        xs: "100%",
+                        xs: "90vw",
                         sm: "250px"
                     }
                 }}
