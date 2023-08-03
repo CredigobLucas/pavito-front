@@ -61,8 +61,7 @@ export default function ManagmentLayout({
                         },
                         padding: "25px",
                         paddingBottom: "0px",
-                        overflowY: "auto",
-                        height: "calc(85vh - 10px)"
+                        minHeight: "calc(87vh - 10px)"
                     }}
                 >
                     {children}

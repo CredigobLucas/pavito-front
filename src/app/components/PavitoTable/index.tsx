@@ -7,7 +7,9 @@ import {
     TableCell,
     TableBody,
     Table,
-    Box
+    Box,
+    Grid,
+    Paper
 } from "@mui/material";
 
 interface Column<Data> {
@@ -31,7 +33,11 @@ export function PavitoTable<Data>({
     return (
         <Box sx={{ width: "100%" }}>
             <TableContainer
-                sx={{ height: `${height} !important`, overflow: "auto" }}
+                sx={{
+                    height: `${height} !important`,
+                    overflow: "auto",
+                    display: { xs: "none", md: "block" }
+                }}
             >
                 <Table stickyHeader aria-label="sticky table">
                     <TableHead>
@@ -51,7 +57,7 @@ export function PavitoTable<Data>({
                     <TableBody>
                         {rows.map((row, index) => {
                             return (
-                                <TableRow key={`${row}-${index}`}>
+                                <TableRow key={`${index}-table`}>
                                     {columns.map((column, index) => {
                                         const value = column.value(row);
                                         return (
@@ -69,6 +75,43 @@ export function PavitoTable<Data>({
                     </TableBody>
                 </Table>
             </TableContainer>
+            <Grid
+                container
+                sx={{
+                    display: {
+                        md: "none"
+                    }
+                }}
+            >
+                {rows.map((row, index) => {
+                    return (
+                        <Grid
+                            key={`${index}-grid`}
+                            xs={12}
+                            sm={6}
+                            className="p-2"
+                        >
+                            <Paper
+                                className="p-4 overflow-x-hidden"
+                                elevation={3}
+                            >
+                                {columns.map((column, index) => {
+                                    const value = column.value(row);
+                                    return (
+                                        <Box
+                                            key={`${column.label}-${index}-grid`}
+                                            className="flex p-2 items-center"
+                                        >
+                                            <Box>{column.label}</Box>
+                                            <Box className="ml-5">{value}</Box>
+                                        </Box>
+                                    );
+                                })}
+                            </Paper>
+                        </Grid>
+                    );
+                })}
+            </Grid>
         </Box>
     );
 }

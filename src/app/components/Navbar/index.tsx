@@ -46,7 +46,7 @@ export const Navbar = ({
     return (
         <AppBar
             elevation={3}
-            position="static"
+            position="sticky"
             className="p-4"
             sx={{
                 boxShadow: "none"

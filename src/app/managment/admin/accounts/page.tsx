@@ -315,7 +315,7 @@ export default function Admin() {
             />
             <Box
                 component={"div"}
-                className="flex items-end justify-end"
+                className="flex items-end justify-end mt-6"
                 sx={{
                     padding: "0 8px"
                 }}
