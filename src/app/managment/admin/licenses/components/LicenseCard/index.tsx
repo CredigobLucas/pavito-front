@@ -31,7 +31,7 @@ export const LicenseCard = ({ license }: LicenseProps) => {
                         title="Contrato"
                     />
                     <Grid container spacing={2}>
-                        <Grid item xs={6}>
+                        <Grid item xs={12} md={6}>
                             <ItemIconCard
                                 color="rgb(80, 135, 170)"
                                 backgroundIcon="rgb(235, 244, 253)"
@@ -43,7 +43,7 @@ export const LicenseCard = ({ license }: LicenseProps) => {
                                 icon={<CalendarTodayIcon />}
                             />
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid item xs={12} md={6}>
                             <ItemIconCard
                                 color="rgb(80, 135, 170)"
                                 backgroundIcon="rgb(235, 244, 253)"
@@ -64,7 +64,7 @@ export const LicenseCard = ({ license }: LicenseProps) => {
                         title="Usuarios"
                     />
                     <Grid container spacing={2}>
-                        <Grid item xs={6}>
+                        <Grid item xs={12} md={6}>
                             <ItemIconCard
                                 color="rgb(5, 150, 105)"
                                 backgroundIcon="rgb(209, 250, 229)"
@@ -73,7 +73,7 @@ export const LicenseCard = ({ license }: LicenseProps) => {
                                 icon={<GroupIcon />}
                             />
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid item xs={12} md={6}>
                             <ItemIconCard
                                 color="rgb(5, 150, 105)"
                                 backgroundIcon="rgb(209, 250, 229)"
