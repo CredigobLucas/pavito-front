@@ -85,15 +85,12 @@ export const LicenseCard = ({ license }: LicenseProps) => {
                     </Grid>
                 </Grid>
                 <Grid item xs={12} md={6}>
-                    <Paper className="p-4" sx={{ height: "305px" }}>
-                        <LicenseCardTitle title="Regiones Disponibles" />
-                        <Grid
-                            container
-                            spacing={2}
-                            component="div"
-                            sx={{ height: "210px" }}
-                            className="overflow-y-auto mt-2"
-                        >
+                    <LicenseCardTitle title="Regiones Disponibles" />
+                    <Paper
+                        className="px-4 py-2 mt-2 overflow-y-auto"
+                        sx={{ height: "260px" }}
+                    >
+                        <Grid container component="div" className="mt-2">
                             {regions.map((region, index) => (
                                 <Grid
                                     key={index}
@@ -103,6 +100,7 @@ export const LicenseCard = ({ license }: LicenseProps) => {
                                     component="div"
                                 >
                                     <Box
+                                        className="p-3"
                                         component={"div"}
                                         sx={{
                                             width: "100%",
