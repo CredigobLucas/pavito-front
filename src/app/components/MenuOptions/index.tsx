@@ -6,6 +6,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 
+interface MenuOtionsProps {
+    onMenuClick?: () => void;
+}
 const modules = [
     {
         rootPath: "/managment/admin",
@@ -17,7 +20,7 @@ const modules = [
     }
 ];
 
-export const MenuOptions = () => {
+export const MenuOptions = ({ onMenuClick = undefined }: MenuOtionsProps) => {
     const { menuOptions, setMenuOptions } = useGlobalContext();
     const path = usePathname();
     useEffect(() => {
@@ -69,6 +72,11 @@ export const MenuOptions = () => {
                         color="primary"
                         fullWidth
                         className="mb-4 flex justify-start items-center"
+                        onClick={() => {
+                            if (onMenuClick) {
+                                onMenuClick();
+                            }
+                        }}
                     >
                         {option.icon}
                         <Typography

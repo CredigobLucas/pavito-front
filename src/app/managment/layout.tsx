@@ -33,7 +33,11 @@ export default function ManagmentLayout({
                         height: "100vh"
                     }}
                 >
-                    <MenuOptions />
+                    <MenuOptions
+                        onMenuClick={() => {
+                            setOpenSubmenu(false);
+                        }}
+                    />
                 </Box>
             </Drawer>
             <Box
@@ -45,6 +49,7 @@ export default function ManagmentLayout({
                 <Navbar
                     hasMenu={true}
                     onMenuClick={() => {
+                        console.log("click");
                         setOpenSubmenu(true);
                     }}
                 />

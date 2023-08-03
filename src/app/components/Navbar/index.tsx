@@ -55,11 +55,15 @@ export const Navbar = ({
             <Toolbar>
                 {hasMenu && onMenuClick !== undefined && (
                     <IconButton
+                        className="buttonMenu"
                         size="large"
                         edge="start"
                         color="inherit"
                         aria-label="menu"
                         sx={{ mr: 1 }}
+                        onClick={() => {
+                            onMenuClick();
+                        }}
                     >
                         <MenuIcon />
                     </IconButton>
