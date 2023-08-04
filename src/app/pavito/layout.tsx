@@ -9,16 +9,7 @@ export default function PavitoLayout({
     return (
         <>
             <Navbar />
-            <Container
-                component="main"
-                sx={{
-                    maxWidth: {
-                        lg: "100%"
-                    }
-                }}
-            >
-                {children}
-            </Container>
+            <Container component="main">{children}</Container>
         </>
     );
 }

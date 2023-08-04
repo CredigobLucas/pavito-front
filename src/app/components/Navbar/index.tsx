@@ -23,6 +23,7 @@ import {
 
 import { useGlobalContext } from "@/app/context";
 import { useState } from "react";
+import { CredigobLogo } from "../CredigobLogo";
 
 interface NavbarProps {
     hasMenu?: boolean;
@@ -74,7 +75,7 @@ export const Navbar = ({
                     component="div"
                     sx={{ flexGrow: 1 }}
                 >
-                    {sectionTitle}
+                    {sectionTitle === "logo" ? <CredigobLogo /> : sectionTitle}
                 </Typography>
 
                 <div className="flex items-center justify-center">

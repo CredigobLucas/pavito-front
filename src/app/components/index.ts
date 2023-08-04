@@ -3,3 +3,4 @@ export * from "./Navbar";
 export * from "./MenuOptions";
 export * from "./GeneralContainer";
 export * from "./ItemIconCard";
+export * from "./CredigobLogo";

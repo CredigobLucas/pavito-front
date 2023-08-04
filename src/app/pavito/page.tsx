@@ -5,13 +5,18 @@ import { Box, Typography } from "@mui/material";
 export default function Pavito() {
     const { setSectionTitle } = useGlobalContext();
     useEffect(() => {
-        setSectionTitle("Data");
+        setSectionTitle("logo");
     }, []);
     return (
         <>
             <Box className="mt-10" component="section">
-                <Typography variant="h4" component="h1">
-                    Pavito
+                <Typography
+                    className="font-bold"
+                    variant="h4"
+                    component="h1"
+                    color={"primary"}
+                >
+                    Prospectos
                 </Typography>
             </Box>
         </>

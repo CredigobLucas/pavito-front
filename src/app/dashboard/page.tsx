@@ -36,7 +36,7 @@ export default function Dashboard() {
         }
     ];
     useEffect(() => {
-        setSectionTitle("Panel");
+        setSectionTitle("logo");
     }, []);
     return (
         <>
