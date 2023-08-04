@@ -11,16 +11,18 @@ interface CookieOptions {
 export const validateJWT = async (token: string): Promise<boolean> => {
     try {
         const [idToken, accessToken] = token.split(' ');
+        const userPoolId = process.env.USER_POOL_ID || "";
+        const clientId = process.env.CLIENT_ID || "";
         const idTokenVerifier = CognitoJwtVerifier.create({
-            userPoolId: "us-west-2_TB2L69Hf4",
+            userPoolId: userPoolId,
             tokenUse: "id",
-            clientId: "491qv1t0ml2q202cgohhuqatbq",
+            clientId: clientId,
         });
         await idTokenVerifier.verify(idToken);
         const accessTokenVerifier = CognitoJwtVerifier.create({
-            userPoolId: "us-west-2_TB2L69Hf4",
+            userPoolId: userPoolId,
             tokenUse: "access",
-            clientId: "491qv1t0ml2q202cgohhuqatbq",
+            clientId: clientId,
         });
         await accessTokenVerifier.verify(accessToken);
         return true;
