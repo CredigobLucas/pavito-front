@@ -1,6 +1,8 @@
 import { createContext, useContext } from "react";
 
-export interface IPavitoDataContext {}
+export interface IPavitoDataContext {
+    sectors: string[];
+}
 
 export const PavitoDataContext = createContext<IPavitoDataContext | undefined>(
     undefined

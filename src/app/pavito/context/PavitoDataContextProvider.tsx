@@ -5,7 +5,18 @@ export const PavitoDataContextProvider = ({
 }: {
     children: React.ReactNode;
 }) => {
-    const value: IPavitoDataContext = {};
+    const sectors: string[] = [
+        "TODOS",
+        "SALUD",
+        "AGRICULTURA",
+        "INTERIOR",
+        "EDUCACION",
+        "SEDE ADMINISTRATIVA",
+        "VIVIENDA CONSTRUCCION Y SANEAMIENTO"
+    ];
+    const value: IPavitoDataContext = {
+        sectors: sectors
+    };
 
     return (
         <PavitoDataContext.Provider value={value}>

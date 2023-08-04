@@ -8,7 +8,7 @@ import {
     ToggleButtonGroup
 } from "@mui/material";
 import { FilterForm } from "./component/FilterForm";
-import { IconButton } from "@mui/material";
+import { IconButton, TablePagination } from "@mui/material";
 import {
     ShareOutlined,
     FileDownloadOutlined,
@@ -28,7 +28,7 @@ export default function Pavito() {
     return (
         <Box
             component={"div"}
-            className="flex mt-5"
+            className="flex mt-5 flex-col lg:flex-row"
             sx={{
                 gap: "60px"
             }}
@@ -143,6 +143,22 @@ export default function Pavito() {
                         </ToggleButton>
                     </ToggleButtonGroup>
                 </Box>
+                <Box className="mt-6">gaa</Box>
+                <TablePagination
+                    className="mt-6"
+                    count={100}
+                    page={1}
+                    rowsPerPage={10}
+                    onPageChange={() => {}}
+                    color="primary"
+                    sx={{
+                        border: "none",
+                        "& .MuiToolbar-root": {
+                            padding: 0
+                        }
+                    }}
+                    component={"div"}
+                />
             </Box>
         </Box>
     );
