@@ -8,7 +8,8 @@ import { Settings, Person, DataObject } from "@mui/icons-material";
 import { UserBanner, ModuleCard } from "./components";
 import { accountOptions, adminOptions } from "./options";
 
-export default function Dashboard() {
+
+export default function Dashboard(): JSX.Element {
     const { setSectionTitle, user } = useGlobalContext();
     const modules: Module[] = [
         {

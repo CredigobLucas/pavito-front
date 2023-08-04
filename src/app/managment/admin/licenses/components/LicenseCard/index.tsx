@@ -1,5 +1,5 @@
 "use client";
-import { Box, Paper, Grid, Button } from "@mui/material";
+import { Box, Paper, Grid } from "@mui/material";
 import { TRANSFORM_STRING_DATE_TO_FORMAT } from "@/app/utils";
 import { License } from "@/domain/models/License";
 import { LicenseCardTitle } from "./components";
@@ -10,16 +10,19 @@ import { useGlobalContext } from "@/app/context";
 import { Region } from "@/domain/models/Region";
 import { useEffect, useState } from "react";
 
+
 interface LicenseProps {
     license: License;
 }
 
-export const LicenseCard = ({ license }: LicenseProps) => {
+export const LicenseCard = ({ license }: LicenseProps): JSX.Element => {
     const { getAvaibleRegions } = useGlobalContext();
     const [regions, setRegions] = useState<Region[]>([]);
+    
     useEffect(() => {
         setRegions(getAvaibleRegions());
     }, [getAvaibleRegions]);
+
     return (
         <Box component="div" className="p-4" sx={{ width: "100%" }}>
             <Grid container spacing={2}>

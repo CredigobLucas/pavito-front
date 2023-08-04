@@ -1,10 +1,11 @@
 "use client";
 import { Container } from "@mui/material";
+
 export default function AuthLayout({
     children
 }: {
     children: React.ReactNode;
-}) {
+}): JSX.Element {
     return (
         <Container
             component="main"

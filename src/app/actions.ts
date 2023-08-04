@@ -1,6 +1,8 @@
 "use server";
 import { cookies } from "next/headers";
 import { CognitoJwtVerifier } from "aws-jwt-verify";
+import { SimpleJwksCache } from "aws-jwt-verify/jwk";
+import { SimpleJsonFetcher } from "aws-jwt-verify/https";
 
 interface CookieOptions {
     name: string;
@@ -8,26 +10,36 @@ interface CookieOptions {
     expiration: number;
 }
 
+
 export const validateJWT = async (token: string): Promise<boolean> => {
     try {
+        const maxTimeout = 1e6;
         const [idToken, accessToken] = token.split(' ');
-        const userPoolId = process.env.USER_POOL_ID || "";
-        const clientId = process.env.CLIENT_ID || "";
-        const idTokenVerifier = CognitoJwtVerifier.create({
+        const userPoolId: string = process.env.USER_POOL_ID || "";
+        const clientId: string = process.env.CLIENT_ID || "";
+
+        const tokenVerifier = CognitoJwtVerifier.create({
             userPoolId: userPoolId,
+            clientId: clientId,
+            timeOut: maxTimeout,
+            jwksCache: new SimpleJwksCache({
+                fetcher: new SimpleJsonFetcher({
+                    defaultRequestOptions: {
+                        maxTimeout: maxTimeout,
+                    }
+                })
+            })
+        });
+        await tokenVerifier.verify(idToken, {
             tokenUse: "id",
-            clientId: clientId,
         });
-        await idTokenVerifier.verify(idToken);
-        const accessTokenVerifier = CognitoJwtVerifier.create({
-            userPoolId: userPoolId,
+        await tokenVerifier.verify(accessToken, {
             tokenUse: "access",
-            clientId: clientId,
         });
-        await accessTokenVerifier.verify(accessToken);
+
         return true;
     } catch (error) {
-        console.error('Error validating JWT:', error);
+        // console.error('Error validating JWT:', error);
         return false;
     }
 };

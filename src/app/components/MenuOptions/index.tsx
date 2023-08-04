@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 import { CredigobLogo } from "../CredigobLogo";
 
+
 interface MenuOtionsProps {
     onMenuClick?: () => void;
 }
@@ -21,7 +22,7 @@ const modules = [
     }
 ];
 
-export const MenuOptions = ({ onMenuClick = undefined }: MenuOtionsProps) => {
+export const MenuOptions = ({ onMenuClick = undefined }: MenuOtionsProps): JSX.Element => {
     const { menuOptions, setMenuOptions } = useGlobalContext();
     const path = usePathname();
     useEffect(() => {
@@ -32,6 +33,7 @@ export const MenuOptions = ({ onMenuClick = undefined }: MenuOtionsProps) => {
             setMenuOptions(menuOption.options);
         }
     }, [setMenuOptions, path]);
+
     return (
         <Paper
             elevation={3}
@@ -62,7 +64,7 @@ export const MenuOptions = ({ onMenuClick = undefined }: MenuOtionsProps) => {
                         color="primary"
                         fullWidth
                         className="mb-4 flex justify-start items-center"
-                        onClick={() => {
+                        onClick={(): void => {
                             if (onMenuClick) {
                                 onMenuClick();
                             }

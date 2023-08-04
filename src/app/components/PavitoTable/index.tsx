@@ -12,6 +12,7 @@ import {
     Paper
 } from "@mui/material";
 
+
 interface Column<Data> {
     width?: number | string;
     align?: "right" | "left" | "center";
@@ -29,7 +30,7 @@ export function PavitoTable<Data>({
     columns = [],
     rows = [],
     height = "100%"
-}: PavitoTableProps<Data>) {
+}: PavitoTableProps<Data>): JSX.Element {
     return (
         <Box sx={{ width: "100%" }}>
             <TableContainer

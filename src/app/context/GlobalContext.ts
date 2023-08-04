@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react";
 import { User } from "@/domain/models";
-import { Theme, createTheme } from "@mui/material";
+import { Theme } from "@mui/material";
 import { MenuOption } from "@/domain/interface/MenuOption";
 import { AlertMessage } from "@/domain/interface/AlertMessage";
 import { Region } from "@/domain/models/Region";

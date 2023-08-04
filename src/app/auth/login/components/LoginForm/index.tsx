@@ -7,16 +7,17 @@ import { TError } from "@/domain/errors/ErrorFactory";
 import { login } from "@/services/pavito_back/auth/login";
 import { userMe } from "@/services/pavito_back/user/get";
 import { useGlobalContext } from "@/app/context";
-import Password from "@/app/components/Password/password";
+import { InputPasswordReveal } from "@/app/components/Password";
 
-export function LoginForm() {
+
+export function LoginForm(): JSX.Element {
     const router = useRouter();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
     const { openAlertMessage, setUser, setOpenLoading } = useGlobalContext();
 
-    const submitForm = async () => {
+    const submitForm = async (): Promise<void> => {
         try {
             setOpenLoading(true);
             const response = await login({
@@ -52,7 +53,7 @@ export function LoginForm() {
         <div>
             <Box
                 component="form"
-                onSubmit={(e) => {
+                onSubmit={(e: React.FormEvent<Element>): void => {
                     e.preventDefault();
                     submitForm();
                 }}
@@ -68,40 +69,38 @@ export function LoginForm() {
                     name="email"
                     type="email"
                     required={true}
-                    onChange={(e) => {
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
                         setEmail(e.target.value);
                     }}
                 />
-                <>
-                    <Password 
-                        placeholder="Contraseña"
-                        modifyPassword={(e) => {
-                                setPassword(e.target.value);
-                            }
+                <InputPasswordReveal 
+                    placeholder="Contraseña"
+                    modifyPassword={(e: React.ChangeEvent<HTMLInputElement>): void => {
+                            setPassword(e.target.value);
                         }
-                    />
+                    }
+                />
 
-                    <Button
-                        fullWidth
-                        type="submit"
-                        variant="contained"
-                        className="my-3"
+                <Button
+                    fullWidth
+                    type="submit"
+                    variant="contained"
+                    className="my-3"
+                >
+                    Iniciar sesión
+                </Button>
+                <Typography variant="body2" align="right">
+                    Te haz olvidado de tu contraseña?{" "}
+                    <Link
+                        underline="hover"
+                        component={"button"}
+                        onClick={(): void => {
+                            router.push("/auth/forgot-password");
+                        }}
                     >
-                        Iniciar sesión
-                    </Button>
-                    <Typography variant="body2" align="right">
-                        Te haz olvidado de tu contraseña?{" "}
-                        <Link
-                            underline="hover"
-                            component={"button"}
-                            onClick={() => {
-                                router.push("/auth/forgot-password");
-                            }}
-                        >
-                            Recuperarala
-                        </Link>
-                    </Typography>
-                </>
+                        Recuperarala
+                    </Link>
+                </Typography>
             </Box>
         </div>
     );

@@ -12,7 +12,8 @@ import {
     Menu,
     MenuItem,
     IconButton,
-    FormControlLabel
+    FormControlLabel,
+    SelectChangeEvent
 } from "@mui/material";
 import { User } from "@/domain/models";
 import { MoreVert, Add } from "@mui/icons-material";
@@ -24,17 +25,17 @@ import { useRouter } from "next/navigation";
 import { inactiveUser } from "@/services/pavito_back/user/inactive";
 import { activeUser } from "@/services/pavito_back/user/active";
 import { CreateUser } from "./components/CreateUser";
+import JSX from "next"
 
-export default function Admin() {
+export default function Admin(): JSX.Element {
     const [rows, setRows] = useState<User[]>([]);
     const [page, setPage] = useState<number>(1);
     const [rowsPerPage, setRowsPerPage] = useState<number>(10);
     const [totalPages, setTotalPages] = useState<number>(0);
     const [onlyActive, setOnlyActive] = useState<boolean>(false);
     const [openCreateUser, setOpenCreateUser] = useState<boolean>(false);
-    const userLogged = useGlobalContext().user;
 
-    const { openAlertMessage, setOpenLoading, setSectionTitle } =
+    const { user: userLogged, openAlertMessage, setOpenLoading, setSectionTitle } =
         useGlobalContext();
 
     const [anchorActions, setAnchorActions] = useState<null | HTMLElement>(
@@ -45,7 +46,7 @@ export default function Admin() {
 
     const router = useRouter();
 
-    const getAllUsers = async () => {
+    const getAllUsers = async (): Promise<void> => {
         try {
             setOpenLoading(true);
             const response = await getUsers({
@@ -83,7 +84,7 @@ export default function Admin() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [page, rowsPerPage, onlyActive]);
 
-    const inactive = async (id: string) => {
+    const inactive = async (id: string): Promise<void> => {
         try {
             setOpenLoading(true);
             const response = await inactiveUser(id);
@@ -121,7 +122,7 @@ export default function Admin() {
         }
     };
 
-    const active = async (id: string) => {
+    const active = async (id: string): Promise<void> => {
         try {
             setOpenLoading(true);
             const response = await activeUser(id);
@@ -187,7 +188,7 @@ export default function Admin() {
                                 className="mx-3 font-medium"
                                 size="small"
                                 value={rowsPerPage}
-                                onChange={(e) => {
+                                onChange={(e: SelectChangeEvent<number>): void => {
                                     setRowsPerPage(e.target.value as number);
                                 }}
                             >
@@ -239,7 +240,7 @@ export default function Admin() {
                             justifyContent: "center"
                         }}
                         size="small"
-                        onClick={() => {
+                        onClick={(): void => {
                             setOpenCreateUser(true);
                         }}
                     >
@@ -260,7 +261,7 @@ export default function Admin() {
                         <Switch
                             size="small"
                             checked={onlyActive}
-                            onChange={() => {
+                            onChange={(): void => {
                                 setOnlyActive(!onlyActive);
                             }}
                         />
@@ -273,19 +274,19 @@ export default function Admin() {
                 columns={[
                     {
                         label: "Usuario",
-                        value: (user) => `${user.name} ${user.last_name}`
+                        value: (user: User): React.ReactNode => `${user.name} ${user.last_name}`
                     },
                     {
                         label: "Correo",
-                        value: (user) => user.email
+                        value: (user: User): React.ReactNode => user.email
                     },
                     {
                         label: "Celular",
-                        value: (user) => user.phone_number
+                        value: (user: User): React.ReactNode => user.phone_number
                     },
                     {
                         label: "Estado",
-                        value: (user) => (
+                        value: (user: User): React.ReactNode => (
                             <Chip
                                 color={user.is_active ? "success" : "error"}
                                 label={user.is_active ? "Activo" : "Inactivo"}
@@ -302,7 +303,7 @@ export default function Admin() {
                             >
                                 {user.id !== userLogged?.id && (
                                     <IconButton
-                                        onClick={(e) => {
+                                        onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
                                             setSelectedUser(user);
                                             setAnchorActions(e.currentTarget);
                                         }}
@@ -328,7 +329,7 @@ export default function Admin() {
                     count={totalPages}
                     page={page}
                     shape="rounded"
-                    onChange={(_e, page) => {
+                    onChange={(_e: React.ChangeEvent<unknown>, page: number): void => {
                         setPage(page);
                     }}
                 />
@@ -336,12 +337,12 @@ export default function Admin() {
             <Menu
                 anchorEl={anchorActions}
                 open={openActions}
-                onClose={() => {
+                onClose={(): void => {
                     setAnchorActions(null);
                 }}
             >
                 <MenuItem
-                    onClick={() => {
+                    onClick={(): void => {
                         if (selectedUser) {
                             if (selectedUser.is_active) {
                                 inactive(selectedUser.id);
@@ -358,7 +359,7 @@ export default function Admin() {
             </Menu>
             <CreateUser
                 open={openCreateUser}
-                close={(reload: boolean) => {
+                close={(reload: boolean): void => {
                     setOpenCreateUser(false);
                     if (reload) {
                         getAllUsers();

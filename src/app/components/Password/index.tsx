@@ -1,26 +1,24 @@
-import React from "react";
-import IconButton from "@mui/material/IconButton";
-import InputAdornment from "@mui/material/InputAdornment";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import JSX from "next";
-import { FormControlLabel, TextField, Typography } from "@mui/material";
+import { InputAdornment, IconButton } from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { FormControlLabel, TextField } from "@mui/material";
+import { useRef, useState } from "react";
 
-type State = {
+
+interface State {
     showPassword: boolean;
-};
+}
 
-type PasswordProps = {
+interface PasswordProps {
     label?: string;
     placeholder: string;
     modifyPassword: (e: React.ChangeEvent<HTMLInputElement>) => void;
-};
+}
 
-export default function Password(props: PasswordProps): JSX.Element {
-    const [values, setValues] = React.useState<State>({
+export const InputPasswordReveal = ({label=undefined, placeholder, modifyPassword}: PasswordProps): JSX.Element => {
+    const [values, setValues] = useState<State>({
         showPassword: false,
     });
-    const inputRef = React.useRef<HTMLInputElement>(null);
+    const inputRef = useRef<HTMLInputElement>(null);
 
     const handleClickShowPassword = (): void => {
         setValues({
@@ -43,15 +41,15 @@ export default function Password(props: PasswordProps): JSX.Element {
         <FormControlLabel
             control={
                 <TextField
-                    label={props.label ? "" :  props.placeholder}
-                    placeholder={props.label ? props.placeholder : ""}
+                    label={label ? "" : placeholder}
+                    placeholder={label ? placeholder : ""}
                     variant="outlined"
                     fullWidth
                     margin="normal"
                     name="password"
                     type={values.showPassword ? 'text' : 'password'}
                     required={true}
-                    onChange={props.modifyPassword}
+                    onChange={modifyPassword}
                     inputRef={inputRef}
                     InputProps={{
                         endAdornment: (
@@ -68,7 +66,7 @@ export default function Password(props: PasswordProps): JSX.Element {
                     }}
                 />
             }
-            label={props.label}
+            label={label}
             labelPlacement="top"
             sx={{
                 ".MuiFormControlLabel-label": {

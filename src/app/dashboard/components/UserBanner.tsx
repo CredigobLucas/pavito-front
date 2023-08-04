@@ -1,10 +1,11 @@
 import { Paper, Typography } from "@mui/material";
 
+
 interface UserBannerProps {
     name: string;
 }
 
-export const UserBanner = ({ name }: UserBannerProps) => {
+export const UserBanner = ({ name }: UserBannerProps): JSX.Element => {
     return (
         <Paper elevation={3} className="p-6">
             <Typography

@@ -26,6 +26,7 @@ import { useState } from "react";
 import { removeCookie } from "@/app/actions";
 import { CredigobLogo } from "../CredigobLogo";
 
+
 interface NavbarProps {
     hasMenu?: boolean;
     onMenuClick?: () => void;
@@ -34,7 +35,7 @@ interface NavbarProps {
 export const Navbar = ({
     hasMenu = false,
     onMenuClick = undefined
-}: NavbarProps) => {
+}: NavbarProps): JSX.Element => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const { user, toggleTheme, theme, sectionTitle } = useGlobalContext();
 
@@ -42,7 +43,7 @@ export const Navbar = ({
         setAnchorEl(event.currentTarget);
     };
 
-    const logout = async (event: React.MouseEvent<HTMLElement>): Promise<void> => {
+    const logout = async (): Promise<void> => {
         await removeCookie("token");
         window.location.href = "/auth/login";
     };
@@ -68,7 +69,7 @@ export const Navbar = ({
                         color="inherit"
                         aria-label="menu"
                         sx={{ mr: 1 }}
-                        onClick={() => {
+                        onClick={(): void => {
                             onMenuClick();
                         }}
                     >

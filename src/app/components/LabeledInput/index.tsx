@@ -1,5 +1,6 @@
 import { FormControlLabel, TextField } from "@mui/material";
 
+
 interface LabeledInputProps {
     label: string;
     placeholder: string;
@@ -8,7 +9,7 @@ interface LabeledInputProps {
     width?: string;
     required?: boolean;
     readonly?: boolean;
-    onChange: (e: any) => void;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export const LabeledInput = ({
@@ -20,7 +21,7 @@ export const LabeledInput = ({
     readonly = false,
     initialValue = undefined,
     onChange
-}: LabeledInputProps) => {
+}: LabeledInputProps): JSX.Element => {
     return (
         <FormControlLabel
             control={
@@ -32,6 +33,7 @@ export const LabeledInput = ({
                     placeholder={placeholder}
                     fullWidth
                     value={initialValue}
+                    disabled={readonly}
                     InputProps={{
                         readOnly: readonly
                     }}

@@ -15,7 +15,7 @@ export const AccordionForm = ({
     children,
     label,
     theme
-}: AccordionFormProps) => {
+}: AccordionFormProps): JSX.Element => {
     return (
         <Accordion
             elevation={3}
