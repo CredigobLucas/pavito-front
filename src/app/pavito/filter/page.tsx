@@ -1,0 +1,149 @@
+"use client";
+import { useGlobalContext } from "@/app/context";
+import { useEffect, useState } from "react";
+import {
+    Box,
+    Typography,
+    ToggleButton,
+    ToggleButtonGroup
+} from "@mui/material";
+import { FilterForm } from "./component/FilterForm";
+import { IconButton } from "@mui/material";
+import {
+    ShareOutlined,
+    FileDownloadOutlined,
+    SortByAlphaOutlined,
+    GridViewOutlined,
+    TableViewOutlined
+} from "@mui/icons-material";
+
+export default function Pavito() {
+    const { setSectionTitle, theme, openAlertMessage } = useGlobalContext();
+    const [displayData, setDisplayData] = useState<"grid-view" | "table-view">(
+        "grid-view"
+    );
+    useEffect(() => {
+        setSectionTitle("logo");
+    }, []);
+    return (
+        <Box
+            component={"div"}
+            className="flex mt-5"
+            sx={{
+                gap: "60px"
+            }}
+        >
+            <Box
+                sx={{
+                    minWidth: "300px"
+                }}
+                component={"form"}
+            >
+                <FilterForm />
+            </Box>
+            <Box component="section" className="w-full">
+                <Box
+                    component={"div"}
+                    className="w-full flex items-center justify-between"
+                >
+                    <Typography
+                        className="font-bold"
+                        variant="h4"
+                        component="h1"
+                        color={
+                            theme.palette.mode === "dark"
+                                ? "default"
+                                : "primary"
+                        }
+                    >
+                        Prospectos
+                    </Typography>
+                    <Box>
+                        <IconButton
+                            color={
+                                theme.palette.mode === "dark"
+                                    ? "default"
+                                    : "primary"
+                            }
+                            onClick={() => {
+                                navigator.clipboard.writeText(
+                                    `${window.location}`
+                                );
+                                openAlertMessage({
+                                    horizontal: "center",
+                                    vertical: "top",
+                                    severity: "success",
+                                    message: "Copiado al portapapeles"
+                                });
+                            }}
+                        >
+                            <ShareOutlined />
+                        </IconButton>
+                        <IconButton
+                            color={
+                                theme.palette.mode === "dark"
+                                    ? "default"
+                                    : "primary"
+                            }
+                            className="mx-2"
+                        >
+                            <FileDownloadOutlined />
+                        </IconButton>
+                        <IconButton
+                            color={
+                                theme.palette.mode === "dark"
+                                    ? "default"
+                                    : "primary"
+                            }
+                        >
+                            <SortByAlphaOutlined />
+                        </IconButton>
+                    </Box>
+                </Box>
+                <Box
+                    component={"div"}
+                    className="w-full flex items-center justify-end mt-6"
+                >
+                    <ToggleButtonGroup
+                        value={displayData}
+                        exclusive
+                        onChange={(_event, value) => {
+                            if (value) {
+                                setDisplayData(value);
+                            }
+                        }}
+                        size="small"
+                        color={
+                            theme.palette.mode === "dark"
+                                ? "standard"
+                                : "primary"
+                        }
+                        aria-label="text alignment"
+                    >
+                        <ToggleButton value="grid-view" aria-label="grid view">
+                            <GridViewOutlined
+                                color={
+                                    theme.palette.mode === "dark"
+                                        ? "inherit"
+                                        : "primary"
+                                }
+                            />
+                        </ToggleButton>
+                        <ToggleButton
+                            value="table-view"
+                            aria-label="table view"
+                        >
+                            <TableViewOutlined
+                                color={
+                                    theme.palette.mode === "dark"
+                                        ? "inherit"
+                                        : "primary"
+                                }
+                            />
+                        </ToggleButton>
+                    </ToggleButtonGroup>
+                </Box>
+            </Box>
+        </Box>
+    );
+}

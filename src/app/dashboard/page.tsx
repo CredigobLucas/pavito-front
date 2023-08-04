@@ -32,7 +32,7 @@ export default function Dashboard() {
             description: "Busqueda de prospectos de calidad",
             icon: <DataObject htmlColor="#62569A" />,
             backgroundColor: "#DDD6FE",
-            link: "/pavito"
+            link: "/pavito/filter"
         }
     ];
     useEffect(() => {
