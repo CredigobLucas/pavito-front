@@ -1,6 +1,7 @@
 "use client";
 import { Navbar } from "../components";
 import { Container } from "@mui/material";
+import { PavitoDataContextProvider } from "./context";
 export default function PavitoLayout({
     children
 }: {
@@ -9,16 +10,9 @@ export default function PavitoLayout({
     return (
         <>
             <Navbar />
-            <Container
-                component="main"
-                sx={{
-                    maxWidth: {
-                        lg: "100%"
-                    }
-                }}
-            >
-                {children}
-            </Container>
+            <PavitoDataContextProvider>
+                <Container component="main">{children}</Container>
+            </PavitoDataContextProvider>
         </>
     );
 }

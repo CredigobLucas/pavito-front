@@ -72,34 +72,36 @@ export function LoginForm() {
                         setEmail(e.target.value);
                     }}
                 />
-                <Password 
-                    placeholder="Contraseña"
-                    modifyPassword={(e) => {
-                            setPassword(e.target.value);
+                <>
+                    <Password 
+                        placeholder="Contraseña"
+                        modifyPassword={(e) => {
+                                setPassword(e.target.value);
+                            }
                         }
-                    }
-                />
+                    />
 
-                <Button
-                    fullWidth
-                    type="submit"
-                    variant="contained"
-                    className="my-3"
-                >
-                    Iniciar sesión
-                </Button>
-                <Typography variant="body2" align="right">
-                    Te haz olvidado de tu contraseña?{" "}
-                    <Link
-                        underline="hover"
-                        component={"button"}
-                        onClick={() => {
-                            router.push("/auth/forgot-password");
-                        }}
+                    <Button
+                        fullWidth
+                        type="submit"
+                        variant="contained"
+                        className="my-3"
                     >
-                        Recuperarala
-                    </Link>
-                </Typography>
+                        Iniciar sesión
+                    </Button>
+                    <Typography variant="body2" align="right">
+                        Te haz olvidado de tu contraseña?{" "}
+                        <Link
+                            underline="hover"
+                            component={"button"}
+                            onClick={() => {
+                                router.push("/auth/forgot-password");
+                            }}
+                        >
+                            Recuperarala
+                        </Link>
+                    </Typography>
+                </>
             </Box>
         </div>
     );

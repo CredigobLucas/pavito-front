@@ -1,10 +1,11 @@
 "use client";
 import { useGlobalContext } from "@/app/context/GlobalContext";
-import { Paper, Typography, Button } from "@mui/material";
+import { Paper, Typography, Button, Box } from "@mui/material";
 import { adminOptions, accountOptions } from "@/app/dashboard/options";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
+import { CredigobLogo } from "../CredigobLogo";
 
 interface MenuOtionsProps {
     onMenuClick?: () => void;
@@ -41,23 +42,12 @@ export const MenuOptions = ({ onMenuClick = undefined }: MenuOtionsProps) => {
                 boxShadow: "none"
             }}
         >
-            <Link
-                href="/dashboard"
-                style={{
-                    textDecoration: "none",
-                    color: "inherit"
-                }}
+            <Box
+                component="div"
+                className="mb-6 flex items-center justify-center"
             >
-                <Typography
-                    variant="h4"
-                    className="font-bold text-center"
-                    sx={{
-                        marginBottom: "32px"
-                    }}
-                >
-                    Credigob
-                </Typography>
-            </Link>
+                <CredigobLogo />
+            </Box>
 
             {menuOptions.map((option, index) => (
                 <Link
