@@ -68,7 +68,7 @@ export const Navbar = ({
                         edge="start"
                         color="inherit"
                         aria-label="menu"
-                        sx={{ mr: 1 }}
+                        sx={{ mr: 1, display: { xs: "block", sm: "none" } }}
                         onClick={(): void => {
                             onMenuClick();
                         }}
