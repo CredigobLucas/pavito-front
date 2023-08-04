@@ -49,7 +49,6 @@ export default function ManagmentLayout({
                 <Navbar
                     hasMenu={true}
                     onMenuClick={() => {
-                        console.log("click");
                         setOpenSubmenu(true);
                     }}
                 />

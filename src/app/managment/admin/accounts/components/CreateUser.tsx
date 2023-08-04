@@ -81,7 +81,7 @@ export const CreateUser = ({ open, close }: CreateUserProps) => {
                     vertical: "top"
                 });
                 if (e.type === "Unauthorized") {
-                    router.push("/login");
+                    router.push("/auth/login");
                 }
             }
         }

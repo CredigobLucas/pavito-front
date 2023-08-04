@@ -43,6 +43,7 @@ export const Navbar = ({
 
     const logout = async (event: React.MouseEvent<HTMLElement>): Promise<void> => {
         await removeCookie("token");
+        window.location.href = "/auth/login";
     };
 
     const handleClose = (): void => {

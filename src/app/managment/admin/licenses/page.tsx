@@ -1,17 +1,14 @@
 "use client";
 import { useGlobalContext } from "@/app/context";
-import { Box, Paper, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { useEffect, useState } from "react";
 import { getEnterprise } from "@/services/pavito_back/enterprise/get";
-import { TError } from "@/domain/errors/ErrorFactory";
 import { LicenseCard } from "./components";
-import { useRouter } from "next/navigation";
 import { License } from "@/domain/models/License";
 
 export default function Licenses() {
     const { setSectionTitle, setOpenLoading } = useGlobalContext();
     const [licenses, setLicenses] = useState<License[]>([]);
-    const router = useRouter();
     const getEnterpriseData = async () => {
         try {
             setOpenLoading(true);

@@ -15,7 +15,7 @@ import {
     FormControlLabel
 } from "@mui/material";
 import { User } from "@/domain/models";
-import { MoreVert, Add, FilterList } from "@mui/icons-material";
+import { MoreVert, Add } from "@mui/icons-material";
 import { useState, useEffect, useMemo } from "react";
 import { getUsers } from "@/services/pavito_back/enterprise/users";
 import { useGlobalContext } from "@/app/context";

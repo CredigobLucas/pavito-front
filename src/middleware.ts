@@ -1,17 +1,26 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { userMe } from "./services/pavito_back/user/get";
+import { validateJWT } from "./app/actions";
 
-export function middleware(request: NextRequest) {
+const deleteCookie = async (request: NextRequest) => {
+    await request.cookies.delete("token");
+}
+
+export async function middleware(request: NextRequest) {
     const token = request.cookies.get("token");
-    if (!token) {
+    if (!token)
+        return NextResponse.redirect(new URL("/auth/login", request.nextUrl));
+    
+    const validated = await validateJWT(token.value);
+
+    if (!validated) {
+        await deleteCookie(request);
         return NextResponse.redirect(new URL("/auth/login", request.nextUrl));
     }
 
-    if (request.nextUrl.pathname === "/") {
+    if (request.nextUrl.pathname === "/")
         return NextResponse.redirect(new URL("/dashboard", request.nextUrl));
-    }
-
+    
     return NextResponse.next();
 }
 
