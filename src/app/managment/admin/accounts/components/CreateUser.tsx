@@ -16,6 +16,7 @@ import {
     MenuItem,
     Button
 } from "@mui/material";
+import Password from "@/app/components/Password/password";
 
 const style = {
     position: "absolute" as "absolute",
@@ -217,23 +218,17 @@ export const CreateUser = ({ open, close }: CreateUserProps) => {
                                 width: "100%"
                             }}
                         />
-                        <LabeledInput
+                        <Password 
                             label="Contraseña*"
                             placeholder="Ingrese la contraseña"
-                            required
-                            width="100%"
-                            type="password"
-                            onChange={(e) => {
+                            modifyPassword={(e) => {
                                 setPassword(e.target.value);
                             }}
                         />
-                        <LabeledInput
+                        <Password 
                             label="Repetir Contraseña*"
                             placeholder="Repita la contraseña"
-                            type="password"
-                            required
-                            width="100%"
-                            onChange={(e) => {
+                            modifyPassword={(e) => {
                                 setRepeatPassword(e.target.value);
                             }}
                         />

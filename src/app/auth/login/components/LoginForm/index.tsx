@@ -7,6 +7,7 @@ import { TError } from "@/domain/errors/ErrorFactory";
 import { login } from "@/services/pavito_back/auth/login";
 import { userMe } from "@/services/pavito_back/user/get";
 import { useGlobalContext } from "@/app/context";
+import Password from "@/app/components/Password/password";
 
 export function LoginForm() {
     const router = useRouter();
@@ -71,18 +72,14 @@ export function LoginForm() {
                         setEmail(e.target.value);
                     }}
                 />
-                <TextField
-                    label="Contraseña"
-                    variant="outlined"
-                    fullWidth
-                    margin="normal"
-                    name="password"
-                    type="password"
-                    required={true}
-                    onChange={(e) => {
-                        setPassword(e.target.value);
-                    }}
+                <Password 
+                    placeholder="Contraseña"
+                    modifyPassword={(e) => {
+                            setPassword(e.target.value);
+                        }
+                    }
                 />
+
                 <Button
                     fullWidth
                     type="submit"

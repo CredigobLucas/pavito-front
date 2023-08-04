@@ -4,6 +4,7 @@ import { userMe } from "@/services/pavito_back/user/get";
 import { Loader } from "../Loader";
 
 import { useGlobalContext } from "@/app/context";
+
 export const PavitoTheme = ({ children }: { children: React.ReactNode }) => {
     const {
         theme,

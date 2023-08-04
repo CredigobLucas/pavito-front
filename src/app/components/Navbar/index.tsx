@@ -23,6 +23,7 @@ import {
 
 import { useGlobalContext } from "@/app/context";
 import { useState } from "react";
+import { removeCookie } from "@/app/actions";
 
 interface NavbarProps {
     hasMenu?: boolean;
@@ -36,11 +37,15 @@ export const Navbar = ({
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const { user, toggleTheme, theme, sectionTitle } = useGlobalContext();
 
-    const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
+    const handleMenu = (event: React.MouseEvent<HTMLElement>): void => {
         setAnchorEl(event.currentTarget);
     };
 
-    const handleClose = () => {
+    const logout = async (event: React.MouseEvent<HTMLElement>): Promise<void> => {
+        await removeCookie("token");
+    };
+
+    const handleClose = (): void => {
         setAnchorEl(null);
     };
     return (
@@ -126,7 +131,7 @@ export const Navbar = ({
                             <ListItemText primary="Mi Perfil" />
                         </MenuItem>
                         <MenuItem
-                            onClick={() => {
+                            onClick={(): void => {
                                 toggleTheme();
                             }}
                         >
@@ -146,7 +151,7 @@ export const Navbar = ({
                                 }`}
                             />
                         </MenuItem>
-                        <MenuItem onClick={() => {}}>
+                        <MenuItem onClick={logout}>
                             <ListItemIcon>
                                 <Logout fontSize="small" />
                             </ListItemIcon>

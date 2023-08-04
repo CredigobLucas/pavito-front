@@ -32,6 +32,7 @@ export default function Admin() {
     const [totalPages, setTotalPages] = useState<number>(0);
     const [onlyActive, setOnlyActive] = useState<boolean>(false);
     const [openCreateUser, setOpenCreateUser] = useState<boolean>(false);
+    const userLogged = useGlobalContext().user;
 
     const { openAlertMessage, setOpenLoading, setSectionTitle } =
         useGlobalContext();
@@ -299,14 +300,16 @@ export default function Admin() {
                                 component="div"
                                 className="flex justify-center"
                             >
-                                <IconButton
-                                    onClick={(e) => {
-                                        setSelectedUser(user);
-                                        setAnchorActions(e.currentTarget);
-                                    }}
-                                >
-                                    <MoreVert color="primary" />
-                                </IconButton>
+                                {user.id !== userLogged?.id && (
+                                    <IconButton
+                                        onClick={(e) => {
+                                            setSelectedUser(user);
+                                            setAnchorActions(e.currentTarget);
+                                        }}
+                                    >
+                                        <MoreVert color="primary" />
+                                    </IconButton>
+                                )}
                             </Box>
                         )
                     }

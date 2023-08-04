@@ -2,7 +2,6 @@
 import { Theme } from "@emotion/react";
 import { Box, Paper, SxProps, Typography } from "@mui/material";
 import React from "react";
-import AddIcon from "@mui/icons-material/Add";
 import { useGlobalContext } from "@/app/context";
 
 interface ItemIconCardProps {
