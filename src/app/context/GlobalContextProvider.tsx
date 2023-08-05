@@ -2,16 +2,18 @@
 import { useState } from "react";
 import { User } from "@/domain/models";
 import { MenuOption } from "@/domain/interface/MenuOption";
-import { Theme, Snackbar, Alert } from "@mui/material";
+import { Theme } from "@mui/material";
 import { GlobalContext, IGlobalContext } from "./GlobalContext";
 import { AlertMessage } from "@/domain/interface/AlertMessage";
 import { darkTheme, ligthTheme } from "@/theme";
 import { Region } from "@/domain/models/Region";
+
+
 export const GlobalContextProvider = ({
     children
 }: {
     children: React.ReactNode;
-}) => {
+}): JSX.Element => {
     const [sectionTitle, setSectionTitle] = useState<string>("Panel");
     const [menuOptions, setMenuOptions] = useState<MenuOption[]>([]);
     const [user, setUser] = useState<User | undefined>({
@@ -38,16 +40,16 @@ export const GlobalContextProvider = ({
         message: ""
     } as AlertMessage);
 
-    const openAlertMessage = (alert: AlertMessage) => {
+    const openAlertMessage = (alert: AlertMessage): void => {
         setAlertMessage(alert);
         setOpenAlert(true);
     };
 
-    const setUsr = (user?: User) => {
+    const setUsr = (user?: User): void => {
         setUser(user);
     };
 
-    const toggleTheme = () => {
+    const toggleTheme = (): void => {
         if (theme === darkTheme) {
             setTheme(ligthTheme);
         } else {

@@ -10,7 +10,8 @@ import {
     RadioGroup,
     Radio,
     FormControlLabel,
-    Autocomplete
+    Autocomplete,
+    AutocompleteRenderInputParams
 } from "@mui/material";
 import { useState } from "react";
 import { AccordionForm } from "@/app/components";
@@ -18,7 +19,8 @@ import { useGlobalContext } from "@/app/context";
 import { usePavitoDataContext } from "@/app/pavito/context/PavitoDataContext";
 import { Region } from "@/domain/models/Region";
 
-export const FilterForm = () => {
+
+export const FilterForm = (): JSX.Element => {
     const { theme, getAvaibleRegions } = useGlobalContext();
     const { sectors } = usePavitoDataContext();
     const regions = getAvaibleRegions();
@@ -54,7 +56,7 @@ export const FilterForm = () => {
                         fontFamily: `'Nunito Sans', sans-serif !important`
                     }}
                     color={"primary"}
-                    onClick={() => {
+                    onClick={(): void => {
                         //set default values
                         setAmountFrom(null);
                         setAmountTo(null);
@@ -82,7 +84,7 @@ export const FilterForm = () => {
                                 size="small"
                                 type="number"
                                 value={amountFrom}
-                                onChange={(e) =>
+                                onChange={(e): void =>
                                     setAmountFrom(parseInt(e.target.value))
                                 }
                             />
@@ -95,7 +97,7 @@ export const FilterForm = () => {
                                 size="small"
                                 type="number"
                                 value={amountTo}
-                                onChange={(e) =>
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>): void =>
                                     setAmountTo(parseInt(e.target.value))
                                 }
                             />
@@ -111,7 +113,7 @@ export const FilterForm = () => {
                 >
                     <RadioGroup
                         value={govLevel}
-                        onChange={(_e, value) => {
+                        onChange={(_e: React.ChangeEvent<HTMLInputElement>, value: string): void => {
                             setGovLevel(value);
                         }}
                     >
@@ -141,14 +143,14 @@ export const FilterForm = () => {
                         options={sectors}
                         size="small"
                         value={sector}
-                        onChange={(_e, value) => {
+                        onChange={(_e: React.SyntheticEvent<Element, Event>, value: string | null): void => {
                             setSector(value);
                         }}
-                        getOptionLabel={(option) => {
+                        getOptionLabel={(option: string): string => {
                             const a = option.toLowerCase();
                             return a.charAt(0).toUpperCase() + a.slice(1);
                         }}
-                        renderInput={(params) => (
+                        renderInput={(params: AutocompleteRenderInputParams): React.ReactNode => (
                             <TextField {...params} label="Sectores" />
                         )}
                     />
@@ -160,16 +162,16 @@ export const FilterForm = () => {
                     <Autocomplete
                         disablePortal
                         options={regions}
-                        isOptionEqualToValue={(option, value) =>
+                        isOptionEqualToValue={(option: Region, value: Region): boolean =>
                             option.value === value.value
                         }
                         value={region}
-                        onChange={(_e, value) => {
+                        onChange={(_e: React.SyntheticEvent<Element, Event>, value: Region | null): void => {
                             setRegion(value);
                         }}
-                        getOptionLabel={(option) => option.value}
+                        getOptionLabel={(option: Region): string => option.value}
                         size="small"
-                        renderInput={(params) => (
+                        renderInput={(params): React.ReactNode => (
                             <TextField {...params} label="Regiones" />
                         )}
                     />
@@ -183,7 +185,7 @@ export const FilterForm = () => {
                 >
                     <RadioGroup
                         value={objLicitation}
-                        onChange={(e, value) => {
+                        onChange={(_e: React.ChangeEvent<HTMLInputElement>, value: string): void => {
                             setObjLicitation(value);
                         }}
                     >
@@ -205,7 +207,7 @@ export const FilterForm = () => {
                 <AccordionForm theme={theme.palette.mode} label="Fechas">
                     <RadioGroup
                         value={daysAgo}
-                        onChange={(e, value) => {
+                        onChange={(_e: React.ChangeEvent<HTMLInputElement>, value: string): void => {
                             setDaysAgo(value);
                             setDateFrom("");
                             setDateTo("");
@@ -241,7 +243,7 @@ export const FilterForm = () => {
                                 type="date"
                                 className="w-1/2 mr-3"
                                 value={dateFrom}
-                                onChange={(e) => setDateFrom(e.target.value)}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>): void => setDateFrom(e.target.value)}
                                 InputLabelProps={{
                                     shrink: true
                                 }}
@@ -278,7 +280,7 @@ export const FilterForm = () => {
                                         }
                                 }}
                                 value={dateTo}
-                                onChange={(e) => setDateTo(e.target.value)}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>): void => setDateTo(e.target.value)}
                             />
                         </Box>
                     )}

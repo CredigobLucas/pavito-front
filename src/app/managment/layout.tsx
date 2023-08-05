@@ -1,13 +1,15 @@
 "use client";
 import "./layout.css";
 import { MenuOptions, Navbar } from "../components";
-import { Box, Container, Paper, Drawer } from "@mui/material";
+import { Box, Container, Drawer } from "@mui/material";
 import { useState } from "react";
+
+
 export default function ManagmentLayout({
     children
 }: {
     children: React.ReactNode;
-}) {
+}): JSX.Element {
     const [openSubmenu, setOpenSubmenu] = useState<boolean>(false);
     return (
         <Box className="flex">
@@ -24,7 +26,7 @@ export default function ManagmentLayout({
             <Drawer
                 anchor="left"
                 open={openSubmenu}
-                onClose={() => setOpenSubmenu(false)}
+                onClose={(): void => setOpenSubmenu(false)}
             >
                 <Box
                     component="aside"
@@ -34,7 +36,7 @@ export default function ManagmentLayout({
                     }}
                 >
                     <MenuOptions
-                        onMenuClick={() => {
+                        onMenuClick={(): void => {
                             setOpenSubmenu(false);
                         }}
                     />
@@ -48,8 +50,7 @@ export default function ManagmentLayout({
             >
                 <Navbar
                     hasMenu={true}
-                    onMenuClick={() => {
-                        console.log("click");
+                    onMenuClick={(): void => {
                         setOpenSubmenu(true);
                     }}
                 />

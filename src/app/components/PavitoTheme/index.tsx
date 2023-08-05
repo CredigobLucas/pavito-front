@@ -4,7 +4,9 @@ import { userMe } from "@/services/pavito_back/user/get";
 import { Loader } from "../Loader";
 
 import { useGlobalContext } from "@/app/context";
-export const PavitoTheme = ({ children }: { children: React.ReactNode }) => {
+
+
+export const PavitoTheme = ({ children }: { children: React.ReactNode }): JSX.Element => {
     const {
         theme,
         openAlert,
@@ -18,13 +20,14 @@ export const PavitoTheme = ({ children }: { children: React.ReactNode }) => {
             setUser(res.body);
         });
     }, []);
+
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
             <Snackbar
                 open={openAlert}
                 autoHideDuration={6000}
-                onClose={() => {
+                onClose={(): void => {
                     setOpenAlert(false);
                 }}
                 anchorOrigin={{
@@ -33,7 +36,7 @@ export const PavitoTheme = ({ children }: { children: React.ReactNode }) => {
                 }}
             >
                 <Alert
-                    onClose={() => {
+                    onClose={(): void => {
                         setOpenAlert(false);
                     }}
                     severity={alertMessage.severity}

@@ -14,11 +14,14 @@ import {
     Select,
     TextField,
     MenuItem,
-    Button
+    Button,
+    SelectChangeEvent
 } from "@mui/material";
+import { InputPasswordReveal } from "@/app/components/Password";
+
 
 const style = {
-    position: "absolute" as "absolute",
+    position: "absolute",
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
@@ -30,8 +33,13 @@ interface CreateUserProps {
     close: (reload: boolean) => void;
 }
 
-export const CreateUser = ({ open, close }: CreateUserProps) => {
-    const { openAlertMessage, setOpenLoading } = useGlobalContext();
+enum CloseReason {
+    BackdropClick = "backdropClick",
+    EscapeKeyDown = "escapeKeyDown",
+}
+
+export const CreateUser = ({ open, close }: CreateUserProps): JSX.Element => {
+    const { openAlertMessage } = useGlobalContext();
     const router = useRouter();
 
     const [firstName, setFirstName] = useState("");
@@ -43,7 +51,7 @@ export const CreateUser = ({ open, close }: CreateUserProps) => {
     const [password, setPassword] = useState("");
     const [repeatPassword, setRepeatPassword] = useState("");
 
-    const create = async (e: React.FormEvent<HTMLFormElement>) => {
+    const create = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
         try {
             const response = await createUser({
@@ -80,7 +88,7 @@ export const CreateUser = ({ open, close }: CreateUserProps) => {
                     vertical: "top"
                 });
                 if (e.type === "Unauthorized") {
-                    router.push("/login");
+                    router.push("/auth/login");
                 }
             }
         }
@@ -89,8 +97,8 @@ export const CreateUser = ({ open, close }: CreateUserProps) => {
         <Modal
             disableEscapeKeyDown
             open={open}
-            onClose={(event, reason) => {
-                if (reason === "backdropClick") {
+            onClose={(_event, reason: CloseReason): void => {
+                if (reason === CloseReason.BackdropClick) {
                     return;
                 }
                 close(false);
@@ -125,7 +133,7 @@ export const CreateUser = ({ open, close }: CreateUserProps) => {
                             placeholder="Ingrese el nombre"
                             required
                             width="calc(50% - 5px)"
-                            onChange={(e) => {
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
                                 setFirstName(e.target.value);
                             }}
                         />
@@ -134,7 +142,7 @@ export const CreateUser = ({ open, close }: CreateUserProps) => {
                             placeholder="Ingrese el apellido"
                             required
                             width="calc(50% - 5px)"
-                            onChange={(e) => {
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
                                 setLastName(e.target.value);
                             }}
                         />
@@ -143,7 +151,7 @@ export const CreateUser = ({ open, close }: CreateUserProps) => {
                             placeholder="Ingrese el correo"
                             required
                             width="calc(50% - 5px)"
-                            onChange={(e) => {
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
                                 setEmail(e.target.value);
                             }}
                             type="email"
@@ -153,7 +161,7 @@ export const CreateUser = ({ open, close }: CreateUserProps) => {
                             placeholder="Ingrese el celular"
                             required
                             width="calc(50% - 5px)"
-                            onChange={(e) => {
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
                                 setPhone(e.target.value);
                             }}
                         />
@@ -169,9 +177,9 @@ export const CreateUser = ({ open, close }: CreateUserProps) => {
                                         }}
                                         required
                                         value={documentType}
-                                        onChange={(e) => {
+                                        onChange={(e: SelectChangeEvent<string>): void => {
                                             setDocumentType(
-                                                e.target.value as string
+                                                e.target.value
                                             );
                                         }}
                                     >
@@ -197,7 +205,7 @@ export const CreateUser = ({ open, close }: CreateUserProps) => {
                                                 borderLeft: "0"
                                             }
                                         }}
-                                        onChange={(e) => {
+                                        onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
                                             setDocument(e.target.value);
                                         }}
                                     />
@@ -217,23 +225,17 @@ export const CreateUser = ({ open, close }: CreateUserProps) => {
                                 width: "100%"
                             }}
                         />
-                        <LabeledInput
+                        <InputPasswordReveal 
                             label="Contraseña*"
                             placeholder="Ingrese la contraseña"
-                            required
-                            width="100%"
-                            type="password"
-                            onChange={(e) => {
+                            modifyPassword={(e: React.ChangeEvent<HTMLInputElement>): void => {
                                 setPassword(e.target.value);
                             }}
                         />
-                        <LabeledInput
+                        <InputPasswordReveal 
                             label="Repetir Contraseña*"
                             placeholder="Repita la contraseña"
-                            type="password"
-                            required
-                            width="100%"
-                            onChange={(e) => {
+                            modifyPassword={(e: React.ChangeEvent<HTMLInputElement>): void => {
                                 setRepeatPassword(e.target.value);
                             }}
                         />
@@ -247,7 +249,7 @@ export const CreateUser = ({ open, close }: CreateUserProps) => {
                                 size="small"
                                 className="capitalize font-bold mr-3"
                                 type="button"
-                                onClick={() => {
+                                onClick={(): void => {
                                     close(false);
                                 }}
                             >

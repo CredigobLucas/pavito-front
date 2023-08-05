@@ -1,4 +1,5 @@
 import { Group } from "./Group";
+
 export interface User {
     last_name: string;
     name: string;

@@ -1,12 +1,11 @@
 import { Module } from "@/domain/interface/Module";
 import { Box, Paper, Typography } from "@mui/material";
-import { useGlobalContext } from "@/app/context";
 import { ArrowForward } from "@mui/icons-material";
 import { ModuleIcon } from "./ModuleIcon";
 import Link from "next/link";
 
-export const ModuleCard = ({ module }: { module: Module }) => {
-    const { setMenuOptions } = useGlobalContext();
+
+export const ModuleCard = ({ module }: { module: Module }): JSX.Element => {
     return (
         <Link
             href={module.link}

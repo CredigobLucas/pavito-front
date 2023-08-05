@@ -17,14 +17,19 @@ import {
     TableViewOutlined
 } from "@mui/icons-material";
 
-export default function Pavito() {
+enum DisplayMode {
+    GridView = "grid-view",
+    TableView = "table-view",
+  }
+
+export default function Pavito(): JSX.Element {
     const { setSectionTitle, theme, openAlertMessage } = useGlobalContext();
-    const [displayData, setDisplayData] = useState<"grid-view" | "table-view">(
-        "grid-view"
-    );
+    const [displayData, setDisplayData] = useState<DisplayMode>(DisplayMode.GridView);
+    
     useEffect(() => {
         setSectionTitle("logo");
     }, []);
+
     return (
         <Box
             component={"div"}
@@ -65,7 +70,7 @@ export default function Pavito() {
                                     ? "default"
                                     : "primary"
                             }
-                            onClick={() => {
+                            onClick={(): void => {
                                 navigator.clipboard.writeText(
                                     `${window.location}`
                                 );
@@ -107,7 +112,7 @@ export default function Pavito() {
                     <ToggleButtonGroup
                         value={displayData}
                         exclusive
-                        onChange={(_event, value) => {
+                        onChange={(_event: React.MouseEvent<Element, MouseEvent>, value: React.SetStateAction<DisplayMode>): void => {
                             if (value) {
                                 setDisplayData(value);
                             }
@@ -149,7 +154,7 @@ export default function Pavito() {
                     count={100}
                     page={1}
                     rowsPerPage={10}
-                    onPageChange={() => {}}
+                    onPageChange={(): void => {}}
                     color="primary"
                     sx={{
                         border: "none",

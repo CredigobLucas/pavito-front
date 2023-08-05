@@ -3,18 +3,19 @@
 
 import { Modal, Box, Paper } from "@mui/material";
 
+
 interface LoaderProps {
     open: boolean;
 }
 
-export const Loader = ({ open }: LoaderProps) => {
+export const Loader = ({ open }: LoaderProps): JSX.Element => {
     return (
         <Modal open={open}>
             <Box
                 sx={{
                     width: "200px",
                     height: "200px",
-                    position: "absolute" as "absolute",
+                    position: "absolute",
                     top: "calc(50% - 100px)",
                     left: "calc(50% - 100px)"
                 }}

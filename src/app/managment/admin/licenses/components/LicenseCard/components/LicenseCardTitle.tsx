@@ -1,12 +1,13 @@
 "use client";
-import { Typography } from "@mui/material";
+import { Typography, SxProps } from "@mui/material";
+
 
 interface LicenseCardTitleProps {
     title: string;
-    sx?: any;
+    sx?: SxProps;
 }
 
-export const LicenseCardTitle = ({ title, sx = {} }: LicenseCardTitleProps) => {
+export const LicenseCardTitle = ({ title, sx = {} }: LicenseCardTitleProps): JSX.Element => {
     return (
         <Typography className="font-bold" sx={sx} variant="h4">
             {title}

@@ -1,6 +1,8 @@
 import { Module } from "@/domain/interface/Module";
 import { Box } from "@mui/material";
-export const ModuleIcon = ({ module }: { module: Module }) => {
+
+
+export const ModuleIcon = ({ module }: { module: Module }): JSX.Element => {
     return (
         <Box
             component="div"

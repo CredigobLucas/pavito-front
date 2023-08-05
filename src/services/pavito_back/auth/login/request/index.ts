@@ -3,6 +3,7 @@ import { LoginPayload } from "../payload";
 import { LoginResponse } from "../response";
 import { isAxiosError } from "axios";
 import { ErrorFactory } from "@/domain/errors/ErrorFactory";
+
 export const login = async (payload: LoginPayload): Promise<LoginResponse> => {
     const api = new PavitoBackApi();
     try {

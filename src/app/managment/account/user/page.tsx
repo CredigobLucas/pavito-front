@@ -4,11 +4,13 @@ import { useEffect } from "react";
 import { LabeledInput } from "@/app/components/LabeledInput";
 import { Box, Grid } from "@mui/material";
 
-export default function Account() {
+
+export default function Account(): JSX.Element {
     const { setSectionTitle, user } = useGlobalContext();
     useEffect(() => {
         setSectionTitle("Perfil");
     }, []);
+
     return (
         <Box className="mt-4 flex items-center justify-center w-full">
             <Grid
@@ -23,7 +25,7 @@ export default function Account() {
                         label="Nombre"
                         placeholder="Nombre"
                         initialValue={user?.name}
-                        onChange={(e: any) => {}}
+                        onChange={(): void => {}}
                         readonly
                     />
                 </Grid>
@@ -32,7 +34,7 @@ export default function Account() {
                         label="Apellido"
                         placeholder="Apellido"
                         initialValue={user?.last_name}
-                        onChange={(e: any) => {}}
+                        onChange={(): void => {}}
                         readonly
                     />
                 </Grid>
@@ -41,7 +43,7 @@ export default function Account() {
                         label="Correo"
                         placeholder="Correo"
                         initialValue={user?.email}
-                        onChange={(e: any) => {}}
+                        onChange={(): void => {}}
                         readonly
                     />
                 </Grid>

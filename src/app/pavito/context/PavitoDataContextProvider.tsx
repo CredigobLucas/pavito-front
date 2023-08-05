@@ -1,10 +1,12 @@
 "use client";
 import { PavitoDataContext, IPavitoDataContext } from "./PavitoDataContext";
+
+
 export const PavitoDataContextProvider = ({
     children
 }: {
     children: React.ReactNode;
-}) => {
+}): JSX.Element => {
     const sectors: string[] = [
         "TODOS",
         "SALUD",

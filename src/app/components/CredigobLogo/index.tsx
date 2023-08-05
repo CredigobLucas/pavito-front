@@ -2,7 +2,9 @@
 import { useGlobalContext } from "@/app/context";
 import Image from "next/image";
 import Link from "next/link";
-export const CredigobLogo = () => {
+
+
+export const CredigobLogo = (): JSX.Element => {
     const { theme } = useGlobalContext();
 
     return (

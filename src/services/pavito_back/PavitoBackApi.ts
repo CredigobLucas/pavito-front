@@ -17,7 +17,7 @@ export class PavitoBackApi extends Api {
     }
 }
 
-export const setToken = (token: string) => {
+export const setToken = (token: string): void => {
     const api = new PavitoBackApi();
     api.setHeader("Authorization", `Bearer ${token}`);
 };
