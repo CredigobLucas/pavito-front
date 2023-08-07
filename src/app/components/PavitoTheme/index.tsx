@@ -22,7 +22,7 @@ export const PavitoTheme = ({
     const path = usePathname();
     const [loading, setLoading] = useState<boolean>(false);
     useEffect(() => {
-        if (path === "/auth/login") return;
+        if (path.includes("/auth/")) return;
         setLoading(true);
         userMe()
             .then((res) => {
