@@ -7,7 +7,7 @@ import {
     ToggleButton,
     ToggleButtonGroup
 } from "@mui/material";
-import { FilterForm } from "./component/FilterForm";
+import { FilterForm, DataGrid, DataTable } from "./component";
 import { IconButton, TablePagination } from "@mui/material";
 import {
     ShareOutlined,
@@ -17,6 +17,8 @@ import {
     TableViewOutlined
 } from "@mui/icons-material";
 
+import { usePavitoDataContext } from "../context";
+
 enum DisplayMode {
     GridView = "grid-view",
     TableView = "table-view"
@@ -24,6 +26,7 @@ enum DisplayMode {
 
 export default function PavitoFilter(): JSX.Element {
     const { setSectionTitle, theme, openAlertMessage } = useGlobalContext();
+    const { bids } = usePavitoDataContext();
     const [displayData, setDisplayData] = useState<DisplayMode>(
         DisplayMode.GridView
     );
@@ -152,7 +155,14 @@ export default function PavitoFilter(): JSX.Element {
                         </ToggleButton>
                     </ToggleButtonGroup>
                 </Box>
-                <Box className="mt-6">gaa</Box>
+                <Box className="mt-6">
+                    {displayData === DisplayMode.GridView && (
+                        <DataGrid bids={bids} />
+                    )}
+                    {displayData === DisplayMode.TableView && (
+                        <DataTable bids={bids} />
+                    )}
+                </Box>
                 <TablePagination
                     className="mt-6"
                     count={100}

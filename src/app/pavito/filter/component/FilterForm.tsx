@@ -31,12 +31,14 @@ export const FilterForm = (): JSX.Element => {
     const [amountTo, setAmountTo] = useState<number | null>(null);
     const [govLevel, setGovLevel] = useState<string>("GL");
     const [sector, setSector] = useState<string | null>(null);
-    const [region, setRegion] = useState<string>("");
+    const [region, setRegion] = useState<string>(avaibleRegions[0]);
     const [objLicitation, setObjLicitation] = useState<string>("Bien");
     const [daysAgo, setDaysAgo] = useState<string>("30");
     const [dateFrom, setDateFrom] = useState<string>("");
     const [dateTo, setDateTo] = useState<string>("");
     const [regions, setRegions] = useState<string[]>([]);
+
+    const [firstLoad, setFirstLoad] = useState<boolean>(true);
 
     const adaptFilter = (): IObject => {
         const obj: IObject = CLEAN_NULL_VALUES({
@@ -107,14 +109,11 @@ export const FilterForm = (): JSX.Element => {
         if (avaibleRegions.length > 0) {
             setRegions(avaibleRegions);
             setRegion(avaibleRegions[0]);
-
-            const queryService = convertFilterToQuery();
-            setQueryFilter(queryService);
+            setFirstLoad(false);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [avaibleRegions]);
     useEffect(() => {
-        if (region) {
+        if (avaibleRegions.length > 0) {
             const queryParams: string = params.toString();
             if (queryParams) {
                 // TODO: set values to filter states
@@ -123,7 +122,7 @@ export const FilterForm = (): JSX.Element => {
             setQueryFilter(queryService);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [params]);
+    }, [params, firstLoad]);
 
     return (
         <Paper
