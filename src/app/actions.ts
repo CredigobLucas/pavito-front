@@ -10,13 +10,12 @@ interface CookieOptions {
     expiration: number;
 }
 
-
 export const validateJWT = async (token: string): Promise<boolean> => {
     try {
         const maxTimeout = 1e6;
-        const [idToken, accessToken] = token.split(' ');
-        const userPoolId: string = process.env.USER_POOL_ID || "";
-        const clientId: string = process.env.CLIENT_ID || "";
+        const [idToken, accessToken] = token.split(" ");
+        const userPoolId: string = process.env.NEXT_PUBLIC_USER_POOL_ID || "";
+        const clientId: string = process.env.NEXT_PUBLIC_CLIENT_ID || "";
 
         const tokenVerifier = CognitoJwtVerifier.create({
             userPoolId: userPoolId,
@@ -25,16 +24,16 @@ export const validateJWT = async (token: string): Promise<boolean> => {
             jwksCache: new SimpleJwksCache({
                 fetcher: new SimpleJsonFetcher({
                     defaultRequestOptions: {
-                        maxTimeout: maxTimeout,
+                        maxTimeout: maxTimeout
                     }
                 })
             })
         });
         await tokenVerifier.verify(idToken, {
-            tokenUse: "id",
+            tokenUse: "id"
         });
         await tokenVerifier.verify(accessToken, {
-            tokenUse: "access",
+            tokenUse: "access"
         });
 
         return true;
@@ -44,8 +43,11 @@ export const validateJWT = async (token: string): Promise<boolean> => {
     }
 };
 
-
-export const setCookie = async ({ name, value, expiration }: CookieOptions): Promise<void> => {
+export const setCookie = async ({
+    name,
+    value,
+    expiration
+}: CookieOptions): Promise<void> => {
     await cookies().set(name, value, {
         maxAge: expiration
     });
@@ -53,11 +55,9 @@ export const setCookie = async ({ name, value, expiration }: CookieOptions): Pro
 
 export const getCookie = async (name: string): Promise<string | undefined> => {
     const cookie = await cookies().get(name);
-    if (!cookie) 
-        return undefined;
+    if (!cookie) return undefined;
     const validated = await validateJWT(cookie.value);
-    if (validated)
-        return cookie.value;
+    if (validated) return cookie.value;
     removeCookie(name);
     return undefined;
 };
@@ -66,4 +66,4 @@ export const removeCookie = async (name: string): Promise<void> => {
     await cookies().set(name, "", {
         maxAge: 0
     });
-}
+};
