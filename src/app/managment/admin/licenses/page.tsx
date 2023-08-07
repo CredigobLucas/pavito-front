@@ -6,7 +6,6 @@ import { getEnterprise } from "@/services/pavito_back/enterprise/get";
 import { LicenseCard } from "./components";
 import { License } from "@/domain/models/License";
 
-
 export default function Licenses(): JSX.Element {
     const { setSectionTitle, setOpenLoading } = useGlobalContext();
     const [licenses, setLicenses] = useState<License[]>([]);
@@ -15,8 +14,6 @@ export default function Licenses(): JSX.Element {
             setOpenLoading(true);
             const response = await getEnterprise();
             setLicenses(response.body.licenses);
-        } catch (error) {
-            // console.log(error);
         } finally {
             setOpenLoading(false);
         }

@@ -25,8 +25,6 @@ export class Api {
     }
 
     public async get<T>(url: string, payload?: Payload): Promise<T> {
-        // eslint-disable-next-line no-console
-        console.log("url", url);
         const response = await this.instance.get<T>(url, { params: payload });
         return response.data;
     }

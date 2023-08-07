@@ -107,21 +107,23 @@ export const FilterForm = (): JSX.Element => {
         if (avaibleRegions.length > 0) {
             setRegions(avaibleRegions);
             setRegion(avaibleRegions[0]);
+
+            const queryService = convertFilterToQuery();
+            setQueryFilter(queryService);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [avaibleRegions]);
     useEffect(() => {
         if (region) {
             const queryParams: string = params.toString();
             if (queryParams) {
                 // TODO: set values to filter states
-                // eslint-disable-next-line no-console
-                console.log("set values to filter states", params.toString());
             }
             const queryService = convertFilterToQuery();
             setQueryFilter(queryService);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [params, region]);
+    }, [params]);
 
     return (
         <Paper
@@ -256,6 +258,9 @@ export const FilterForm = (): JSX.Element => {
                     <AccordionForm theme={theme.palette.mode} label="Region">
                         <Autocomplete
                             disablePortal
+                            onChange={(_e, value): void => {
+                                setRegion(value || "");
+                            }}
                             options={avaibleRegions}
                             value={region}
                             size="small"
