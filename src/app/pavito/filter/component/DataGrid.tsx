@@ -30,10 +30,28 @@ export const DataGrid = ({ bids }: DataGridProps): JSX.Element => {
                                 borderTopRightRadius: "15px"
                             }}
                         >
-                            <Typography>Razón Social</Typography>
-                            <Typography>{bid.razonSocial}</Typography>
-                            <Typography>Valor de Licitación</Typography>
-                            <Typography>S/. {bid.montoAdjudicado}</Typography>
+                            <Typography color={"#777"} fontSize={"13px"}>
+                                Razón Social
+                            </Typography>
+                            <Typography
+                                color={"primary"}
+                                fontWeight={500}
+                                fontSize={"20px"}
+                                className="mb-2"
+                            >
+                                {bid.razonSocial}
+                            </Typography>
+                            <Typography color={"#777"} fontSize={"13px"}>
+                                Valor de Licitación
+                            </Typography>
+                            <Typography
+                                color={"primary"}
+                                fontWeight={500}
+                                fontSize={"20px"}
+                                className="mb-2"
+                            >
+                                S/. {bid.montoAdjudicado}
+                            </Typography>
                         </Box>
                         <Box className="px-4 py-3">
                             <Typography className="mb-2">
