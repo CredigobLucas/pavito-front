@@ -7,21 +7,13 @@ import { ItemIconCard } from "@/app/components";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import GroupIcon from "@mui/icons-material/Group";
 import { useGlobalContext } from "@/app/context";
-import { Region } from "@/domain/models/Region";
-import { useEffect, useState } from "react";
-
 
 interface LicenseProps {
     license: License;
 }
 
 export const LicenseCard = ({ license }: LicenseProps): JSX.Element => {
-    const { getAvaibleRegions } = useGlobalContext();
-    const [regions, setRegions] = useState<Region[]>([]);
-    
-    useEffect(() => {
-        setRegions(getAvaibleRegions());
-    }, [getAvaibleRegions]);
+    const { avaibleRegions } = useGlobalContext();
 
     return (
         <Box component="div" className="p-4" sx={{ width: "100%" }}>
@@ -94,7 +86,7 @@ export const LicenseCard = ({ license }: LicenseProps): JSX.Element => {
                         sx={{ height: "260px" }}
                     >
                         <Grid container component="div" className="mt-2">
-                            {regions.map((region, index) => (
+                            {avaibleRegions.map((region, index) => (
                                 <Grid
                                     key={index}
                                     item
@@ -110,7 +102,7 @@ export const LicenseCard = ({ license }: LicenseProps): JSX.Element => {
                                             textTransform: "none"
                                         }}
                                     >
-                                        - {region.value}
+                                        - {region}
                                     </Box>
                                 </Grid>
                             ))}
