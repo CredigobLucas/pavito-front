@@ -12,7 +12,6 @@ import {
     Paper
 } from "@mui/material";
 
-
 interface Column<Data> {
     width?: number | string;
     align?: "right" | "left" | "center";
