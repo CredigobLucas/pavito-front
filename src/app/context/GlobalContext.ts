@@ -3,7 +3,6 @@ import { User } from "@/domain/models";
 import { Theme } from "@mui/material";
 import { MenuOption } from "@/domain/interface/MenuOption";
 import { AlertMessage } from "@/domain/interface/AlertMessage";
-import { Region } from "@/domain/models/Region";
 
 export interface IGlobalContext {
     user?: User;

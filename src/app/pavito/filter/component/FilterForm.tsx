@@ -13,16 +13,20 @@ import {
     Autocomplete,
     AutocompleteRenderInputParams
 } from "@mui/material";
-import { useState, useEffect } from "react";
+import { useState, useLayoutEffect, useEffect } from "react";
 import { AccordionForm } from "@/app/components";
 import { useGlobalContext } from "@/app/context";
 import { usePavitoDataContext } from "@/app/pavito/context/PavitoDataContext";
-import { CLEAN_NULL_VALUES } from "@/app/utils";
+import { CLEAN_NULL_VALUES, IObject, CALC_DAYS_AGO } from "@/app/utils";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 
 export const FilterForm = (): JSX.Element => {
-    const { theme, avaibleRegions } = useGlobalContext();
-    const { sectors } = usePavitoDataContext();
+    const router = useRouter();
+    const params = useSearchParams();
+    const pathname = usePathname();
 
+    const { theme, avaibleRegions } = useGlobalContext();
+    const { sectors, setQueryFilter } = usePavitoDataContext();
     const [amountFrom, setAmountFrom] = useState<number | null>(null);
     const [amountTo, setAmountTo] = useState<number | null>(null);
     const [govLevel, setGovLevel] = useState<string>("GL");
@@ -34,18 +38,57 @@ export const FilterForm = (): JSX.Element => {
     const [dateTo, setDateTo] = useState<string>("");
     const [regions, setRegions] = useState<string[]>([]);
 
-    const toObject = (): void => {
-        const obj: any = CLEAN_NULL_VALUES({
+    const adaptFilter = (): IObject => {
+        const obj: IObject = CLEAN_NULL_VALUES({
             amountFrom,
             amountTo,
             govLevel,
-            sector,
+            sector: sector === "TODOS" ? null : sector,
             region,
             objLicitation,
-            daysAgo,
+            daysAgo: daysAgo === "-1" ? null : daysAgo,
             dateFrom,
             dateTo
         });
+        const keysToAdapt: IObject = {
+            amountFrom: "bid_min_amount",
+            amountTo: "bid_max_amount",
+            govLevel: "gov_level",
+            sector: "sector",
+            region: "department",
+            objLicitation: "bid_obj",
+            daysAgo: "days_ago",
+            dateFrom: "initial_date",
+            dateTo: "final_date"
+        };
+
+        const adaptedObj: IObject = {};
+        Object.keys(obj).forEach((key: string) => {
+            if (obj[key]) {
+                adaptedObj[keysToAdapt[key]] = obj[key];
+            }
+        });
+        return adaptedObj;
+    };
+
+    const convertFilterToQuery = (): string => {
+        const adaptedObj: IObject = adaptFilter();
+        if (adaptedObj["days_ago"]) {
+            const [start, end] = CALC_DAYS_AGO(adaptedObj["days_ago"]);
+            adaptedObj["initial_date"] = start;
+            adaptedObj["final_date"] = end;
+            delete adaptedObj["days_ago"];
+        }
+        const params = new URLSearchParams();
+        Object.keys(adaptedObj).forEach((key: string) => {
+            params.set(key, adaptedObj[key]);
+        });
+        return params.toString();
+    };
+
+    const updateUrlParams = (): void => {
+        const params = convertFilterToQuery();
+        router.push(pathname + "?" + params);
     };
 
     const toDefault = (): void => {
@@ -60,20 +103,32 @@ export const FilterForm = (): JSX.Element => {
         setDateTo("");
     };
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (avaibleRegions.length > 0) {
             setRegions(avaibleRegions);
             setRegion(avaibleRegions[0]);
         }
     }, [avaibleRegions]);
+    useEffect(() => {
+        if (region) {
+            const queryParams: string = params.toString();
+            if (queryParams) {
+                // TODO: set values to filter states
+                console.log("set values to filter states", params.toString());
+            }
+            const queryService = convertFilterToQuery();
+            setQueryFilter(queryService);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [params, region]);
 
     return (
         <Paper
             component={"form"}
             elevation={3}
-            onSubmit={(e) => {
+            onSubmit={(e): void => {
                 e.preventDefault();
-                toObject();
+                updateUrlParams();
             }}
         >
             <Box className="w-full flex items-center justify-between p-4">

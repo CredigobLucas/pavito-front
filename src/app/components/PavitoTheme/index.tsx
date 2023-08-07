@@ -1,5 +1,5 @@
 import { ThemeProvider, CssBaseline, Snackbar, Alert } from "@mui/material";
-import { useEffect } from "react";
+import { useLayoutEffect } from "react";
 import { userMe } from "@/services/pavito_back/user/get";
 import { Loader } from "../Loader";
 import { useState } from "react";
@@ -20,7 +20,7 @@ export const PavitoTheme = ({
         openLoading
     } = useGlobalContext();
     const [loading, setLoading] = useState<boolean>(false);
-    useEffect(() => {
+    useLayoutEffect(() => {
         setLoading(true);
         userMe()
             .then((res) => {
