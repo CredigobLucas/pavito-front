@@ -114,6 +114,7 @@ export const FilterForm = (): JSX.Element => {
             const queryParams: string = params.toString();
             if (queryParams) {
                 // TODO: set values to filter states
+                // eslint-disable-next-line no-console
                 console.log("set values to filter states", params.toString());
             }
             const queryService = convertFilterToQuery();

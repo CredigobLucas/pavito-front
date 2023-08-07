@@ -13,8 +13,10 @@ export const getUsers = async (
 
     try {
         const tokenAPi = api.getHeader("Authorization");
+        // eslint-disable-next-line no-console
         console.log("tokenAPi", tokenAPi);
         const tokenCokie = `Bearer ${await getCookie("token")}`;
+        // eslint-disable-next-line no-console
         console.log("tokenCokie", tokenCokie);
 
         const response: EnterpriseUsersResponse =
