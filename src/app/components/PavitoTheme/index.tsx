@@ -1,9 +1,9 @@
 import { ThemeProvider, CssBaseline, Snackbar, Alert } from "@mui/material";
-import { useLayoutEffect } from "react";
+import { useEffect } from "react";
 import { userMe } from "@/services/pavito_back/user/get";
 import { Loader } from "../Loader";
 import { useState } from "react";
-
+import { usePathname } from "next/navigation";
 import { useGlobalContext } from "@/app/context";
 
 export const PavitoTheme = ({
@@ -19,8 +19,10 @@ export const PavitoTheme = ({
         setUser,
         openLoading
     } = useGlobalContext();
+    const path = usePathname();
     const [loading, setLoading] = useState<boolean>(false);
-    useLayoutEffect(() => {
+    useEffect(() => {
+        if (path === "/auth/login") return;
         setLoading(true);
         userMe()
             .then((res) => {
@@ -29,6 +31,7 @@ export const PavitoTheme = ({
             .finally(() => {
                 setLoading(false);
             });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
