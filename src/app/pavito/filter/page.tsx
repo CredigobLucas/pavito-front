@@ -19,13 +19,15 @@ import {
 
 enum DisplayMode {
     GridView = "grid-view",
-    TableView = "table-view",
-  }
+    TableView = "table-view"
+}
 
-export default function Pavito(): JSX.Element {
+export default function PavitoFilter(): JSX.Element {
     const { setSectionTitle, theme, openAlertMessage } = useGlobalContext();
-    const [displayData, setDisplayData] = useState<DisplayMode>(DisplayMode.GridView);
-    
+    const [displayData, setDisplayData] = useState<DisplayMode>(
+        DisplayMode.GridView
+    );
+
     useEffect(() => {
         setSectionTitle("logo");
     }, []);
@@ -42,7 +44,6 @@ export default function Pavito(): JSX.Element {
                 sx={{
                     minWidth: "300px"
                 }}
-                component={"form"}
             >
                 <FilterForm />
             </Box>
@@ -112,7 +113,10 @@ export default function Pavito(): JSX.Element {
                     <ToggleButtonGroup
                         value={displayData}
                         exclusive
-                        onChange={(_event: React.MouseEvent<Element, MouseEvent>, value: React.SetStateAction<DisplayMode>): void => {
+                        onChange={(
+                            _event: React.MouseEvent<Element, MouseEvent>,
+                            value: React.SetStateAction<DisplayMode>
+                        ): void => {
                             if (value) {
                                 setDisplayData(value);
                             }

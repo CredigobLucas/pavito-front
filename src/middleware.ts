@@ -4,13 +4,13 @@ import { validateJWT } from "./app/actions";
 
 const deleteCookie = async (request: NextRequest): Promise<void> => {
     await request.cookies.delete("token");
-}
+};
 
 export async function middleware(request: NextRequest): Promise<NextResponse> {
     const token = request.cookies.get("token");
     if (!token)
         return NextResponse.redirect(new URL("/auth/login", request.nextUrl));
-    
+
     const validated = await validateJWT(token.value);
 
     if (!validated) {
@@ -20,7 +20,7 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
 
     if (request.nextUrl.pathname === "/")
         return NextResponse.redirect(new URL("/dashboard", request.nextUrl));
-    
+
     return NextResponse.next();
 }
 

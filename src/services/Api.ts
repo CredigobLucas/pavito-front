@@ -16,7 +16,16 @@ export class Api {
         this.instance.defaults.headers.common[name] = value;
     }
 
+    public getHeader(name: string): string {
+        return this.instance.defaults.headers.common[name]?.toString() || "";
+    }
+
+    public hasHeader(name: string): boolean {
+        return this.instance.defaults.headers.common[name] !== undefined;
+    }
+
     public async get<T>(url: string, payload?: Payload): Promise<T> {
+        console.log("url", url);
         const response = await this.instance.get<T>(url, { params: payload });
         return response.data;
     }

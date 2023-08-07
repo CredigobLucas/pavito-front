@@ -25,7 +25,7 @@ import { useRouter } from "next/navigation";
 import { inactiveUser } from "@/services/pavito_back/user/inactive";
 import { activeUser } from "@/services/pavito_back/user/active";
 import { CreateUser } from "./components/CreateUser";
-import JSX from "next"
+import JSX from "next";
 
 export default function Admin(): JSX.Element {
     const [rows, setRows] = useState<User[]>([]);
@@ -35,8 +35,12 @@ export default function Admin(): JSX.Element {
     const [onlyActive, setOnlyActive] = useState<boolean>(false);
     const [openCreateUser, setOpenCreateUser] = useState<boolean>(false);
 
-    const { user: userLogged, openAlertMessage, setOpenLoading, setSectionTitle } =
-        useGlobalContext();
+    const {
+        user: userLogged,
+        openAlertMessage,
+        setOpenLoading,
+        setSectionTitle
+    } = useGlobalContext();
 
     const [anchorActions, setAnchorActions] = useState<null | HTMLElement>(
         null
@@ -76,7 +80,6 @@ export default function Admin(): JSX.Element {
     };
     useEffect(() => {
         setSectionTitle("Usuarios");
-        getAllUsers();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     useMemo(() => {
@@ -188,7 +191,9 @@ export default function Admin(): JSX.Element {
                                 className="mx-3 font-medium"
                                 size="small"
                                 value={rowsPerPage}
-                                onChange={(e: SelectChangeEvent<number>): void => {
+                                onChange={(
+                                    e: SelectChangeEvent<number>
+                                ): void => {
                                     setRowsPerPage(e.target.value as number);
                                 }}
                             >
@@ -274,7 +279,8 @@ export default function Admin(): JSX.Element {
                 columns={[
                     {
                         label: "Usuario",
-                        value: (user: User): React.ReactNode => `${user.name} ${user.last_name}`
+                        value: (user: User): React.ReactNode =>
+                            `${user.name} ${user.last_name}`
                     },
                     {
                         label: "Correo",
@@ -282,7 +288,8 @@ export default function Admin(): JSX.Element {
                     },
                     {
                         label: "Celular",
-                        value: (user: User): React.ReactNode => user.phone_number
+                        value: (user: User): React.ReactNode =>
+                            user.phone_number
                     },
                     {
                         label: "Estado",
@@ -303,7 +310,12 @@ export default function Admin(): JSX.Element {
                             >
                                 {user.id !== userLogged?.id && (
                                     <IconButton
-                                        onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
+                                        onClick={(
+                                            e: React.MouseEvent<
+                                                HTMLButtonElement,
+                                                MouseEvent
+                                            >
+                                        ): void => {
                                             setSelectedUser(user);
                                             setAnchorActions(e.currentTarget);
                                         }}
@@ -329,7 +341,10 @@ export default function Admin(): JSX.Element {
                     count={totalPages}
                     page={page}
                     shape="rounded"
-                    onChange={(_e: React.ChangeEvent<unknown>, page: number): void => {
+                    onChange={(
+                        _e: React.ChangeEvent<unknown>,
+                        page: number
+                    ): void => {
                         setPage(page);
                     }}
                 />

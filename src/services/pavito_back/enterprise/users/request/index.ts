@@ -3,11 +3,20 @@ import { EnterpriseUsersPayload } from "../payload";
 import { EnterpriseUsersResponse } from "../response";
 import { isAxiosError } from "axios";
 import { ErrorFactory } from "@/domain/errors/ErrorFactory";
+
+import { getCookie } from "@/app/actions";
+
 export const getUsers = async (
     payload: EnterpriseUsersPayload
 ): Promise<EnterpriseUsersResponse> => {
     const api = new PavitoBackApi();
+
     try {
+        const tokenAPi = api.getHeader("Authorization");
+        console.log("tokenAPi", tokenAPi);
+        const tokenCokie = `Bearer ${await getCookie("token")}`;
+        console.log("tokenCokie", tokenCokie);
+
         const response: EnterpriseUsersResponse =
             await api.get<EnterpriseUsersResponse>("/enterprise/user", payload);
         return response;

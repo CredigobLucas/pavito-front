@@ -8,11 +8,6 @@ export class PavitoBackApi extends Api {
             super(process.env.NEXT_PUBLIC_PAVITO_API_URL || "");
             singleton = this;
         }
-        //get culqiToken from localStorage
-        const token = localStorage.getItem("token");
-        if (token) {
-            singleton.setHeader("Authorization", `Bearer ${token}`);
-        }
         return singleton;
     }
 }

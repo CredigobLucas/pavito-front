@@ -2,11 +2,15 @@ import { ThemeProvider, CssBaseline, Snackbar, Alert } from "@mui/material";
 import { useEffect } from "react";
 import { userMe } from "@/services/pavito_back/user/get";
 import { Loader } from "../Loader";
+import { useState } from "react";
 
 import { useGlobalContext } from "@/app/context";
 
-
-export const PavitoTheme = ({ children }: { children: React.ReactNode }): JSX.Element => {
+export const PavitoTheme = ({
+    children
+}: {
+    children: React.ReactNode;
+}): JSX.Element => {
     const {
         theme,
         openAlert,
@@ -15,10 +19,16 @@ export const PavitoTheme = ({ children }: { children: React.ReactNode }): JSX.El
         setUser,
         openLoading
     } = useGlobalContext();
+    const [loading, setLoading] = useState<boolean>(false);
     useEffect(() => {
-        userMe().then((res) => {
-            setUser(res.body);
-        });
+        setLoading(true);
+        userMe()
+            .then((res) => {
+                setUser(res.body);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
     }, []);
 
     return (
@@ -45,7 +55,7 @@ export const PavitoTheme = ({ children }: { children: React.ReactNode }): JSX.El
                     {alertMessage.message}
                 </Alert>
             </Snackbar>
-            <Loader open={openLoading} />
+            <Loader open={openLoading || loading} />
             <body>{children}</body>
         </ThemeProvider>
     );
