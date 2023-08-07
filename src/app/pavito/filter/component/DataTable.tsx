@@ -39,7 +39,7 @@ export const DataTable = ({ bids }: DataTableProps): JSX.Element => {
                         value: (row) => row.departamento
                     },
                     {
-                        label: "Goberno",
+                        label: "Gobierno",
                         value: (row) => gobierno[row.nivelGobierno]
                     }
                 ]}
