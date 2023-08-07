@@ -16,6 +16,7 @@ export const DataTable = ({ bids }: DataTableProps): JSX.Element => {
     return (
         <Paper elevation={3}>
             <PavitoTable
+                convertCard={false}
                 columns={[
                     {
                         label: "Razon Social",

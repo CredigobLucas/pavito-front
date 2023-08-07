@@ -23,12 +23,14 @@ interface PavitoTableProps<Data> {
     columns: Column<Data>[];
     rows: Data[];
     height?: number | string;
+    convertCard?: boolean;
 }
 
 export function PavitoTable<Data>({
     columns = [],
     rows = [],
-    height = "100%"
+    height = "100%",
+    convertCard = true
 }: PavitoTableProps<Data>): JSX.Element {
     return (
         <Box sx={{ width: "100%" }}>
@@ -36,7 +38,10 @@ export function PavitoTable<Data>({
                 sx={{
                     height: `${height} !important`,
                     overflow: "auto",
-                    display: { xs: "none", md: "block" }
+                    display: {
+                        xs: `${convertCard ? "none" : "block"}`,
+                        md: "block"
+                    }
                 }}
             >
                 <Table stickyHeader aria-label="sticky table">
@@ -75,43 +80,47 @@ export function PavitoTable<Data>({
                     </TableBody>
                 </Table>
             </TableContainer>
-            <Grid
-                container
-                sx={{
-                    display: {
-                        md: "none"
-                    }
-                }}
-            >
-                {rows.map((row, index) => {
-                    return (
-                        <Grid
-                            key={`${index}-grid`}
-                            xs={12}
-                            sm={6}
-                            className="p-2"
-                        >
-                            <Paper
-                                className="p-4 overflow-x-hidden"
-                                elevation={4}
+            {convertCard && (
+                <Grid
+                    container
+                    sx={{
+                        display: {
+                            md: "none"
+                        }
+                    }}
+                >
+                    {rows.map((row, index) => {
+                        return (
+                            <Grid
+                                key={`${index}-grid`}
+                                xs={12}
+                                sm={6}
+                                className="p-2"
                             >
-                                {columns.map((column, index) => {
-                                    const value = column.value(row);
-                                    return (
-                                        <Box
-                                            key={`${column.label}-${index}-grid`}
-                                            className="flex p-2 items-center"
-                                        >
-                                            <Box>{column.label}</Box>
-                                            <Box className="ml-5">{value}</Box>
-                                        </Box>
-                                    );
-                                })}
-                            </Paper>
-                        </Grid>
-                    );
-                })}
-            </Grid>
+                                <Paper
+                                    className="p-4 overflow-x-hidden"
+                                    elevation={4}
+                                >
+                                    {columns.map((column, index) => {
+                                        const value = column.value(row);
+                                        return (
+                                            <Box
+                                                key={`${column.label}-${index}-grid`}
+                                                className="flex p-2 items-center"
+                                            >
+                                                <Box>{column.label}</Box>
+                                                <Box className="ml-5">
+                                                    {value}
+                                                </Box>
+                                            </Box>
+                                        );
+                                    })}
+                                </Paper>
+                            </Grid>
+                        );
+                    })}
+                </Grid>
+            )}
         </Box>
     );
 }
