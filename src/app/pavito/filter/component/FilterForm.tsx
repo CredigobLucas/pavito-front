@@ -79,7 +79,6 @@ export const FilterForm = (): JSX.Element => {
             const [start, end] = CALC_DAYS_AGO(adaptedObj["days_ago"]);
             adaptedObj["initial_date"] = start;
             adaptedObj["final_date"] = end;
-            delete adaptedObj["days_ago"];
         }
         const params = new URLSearchParams();
         Object.keys(adaptedObj).forEach((key: string) => {
@@ -112,14 +111,52 @@ export const FilterForm = (): JSX.Element => {
             setFirstLoad(false);
         }
     }, [avaibleRegions]);
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (avaibleRegions.length > 0) {
             const queryParams: string = params.toString();
             if (queryParams) {
-                // TODO: set values to filter states
+                const queryObj: IObject = Object.fromEntries(
+                    new URLSearchParams(queryParams)
+                );
+                Object.keys(queryObj).forEach((key: string) => {
+                    switch (key) {
+                        case "bid_min_amount":
+                            setAmountFrom(parseInt(queryObj[key]));
+                            break;
+                        case "bid_max_amount":
+                            setAmountTo(parseInt(queryObj[key]));
+                            break;
+                        case "gov_level":
+                            setGovLevel(queryObj[key]);
+                            break;
+                        case "sector":
+                            setSector(queryObj[key]);
+                            break;
+                        case "department":
+                            setRegion(queryObj[key]);
+                            break;
+                        case "bid_obj":
+                            setObjLicitation(queryObj[key]);
+                            break;
+                        case "days_ago":
+                            setDaysAgo(queryObj[key]);
+                            break;
+                        case "initial_date":
+                            setDateFrom(queryObj[key]);
+                            break;
+                        case "final_date":
+                            setDateTo(queryObj[key]);
+                            break;
+                    }
+                });
+                if (!queryObj["days_ago"]) {
+                    setDaysAgo("-1");
+                } else {
+                    setDateFrom("");
+                    setDateTo("");
+                }
             }
-            const queryService = convertFilterToQuery();
-            setQueryFilter(queryService);
+            setQueryFilter(queryParams);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [params, firstLoad]);
@@ -233,7 +270,7 @@ export const FilterForm = (): JSX.Element => {
                             disablePortal
                             options={sectors}
                             size="small"
-                            value={sector}
+                            value={sector || ""}
                             onChange={(
                                 _e: React.SyntheticEvent<Element, Event>,
                                 value: string | null
@@ -261,7 +298,7 @@ export const FilterForm = (): JSX.Element => {
                                 setRegion(value || "");
                             }}
                             options={avaibleRegions}
-                            value={region}
+                            value={region || ""}
                             size="small"
                             renderInput={(params): React.ReactNode => (
                                 <TextField {...params} label="Regiones" />
