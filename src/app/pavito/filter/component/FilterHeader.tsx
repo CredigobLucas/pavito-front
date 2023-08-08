@@ -1,11 +1,7 @@
 "use client";
 
 import { useGlobalContext } from "@/app/context";
-import {
-    ShareOutlined,
-    FileDownloadOutlined,
-    SortByAlphaOutlined
-} from "@mui/icons-material";
+import { ShareOutlined, SortByAlphaOutlined } from "@mui/icons-material";
 import { Box, Typography, IconButton } from "@mui/material";
 
 export const FilterHeader = (): JSX.Element => {
@@ -47,17 +43,7 @@ export const FilterHeader = (): JSX.Element => {
                 >
                     <ShareOutlined />
                 </IconButton>
-                <IconButton
-                    sx={{
-                        color: (theme): string =>
-                            theme.palette.mode === "dark"
-                                ? "default"
-                                : "primary"
-                    }}
-                    className="mx-2"
-                >
-                    <FileDownloadOutlined />
-                </IconButton>
+
                 <IconButton
                     sx={{
                         color: (theme): string =>
