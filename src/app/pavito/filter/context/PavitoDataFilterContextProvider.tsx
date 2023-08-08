@@ -7,14 +7,29 @@ import { useEffect, useState } from "react";
 import { getBids } from "@/services/pavito_back/bids/get";
 import { Bid } from "@/domain/models";
 import { useGlobalContext } from "@/app/context";
+
+import { PavitoDataFilters } from "@/domain/interface/PavitoDataFilters";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { CALC_DAYS_AGO, CLEAN_NULL_VALUES, IObject } from "@/app/utils";
+
+const keysToAdapt: IObject = {
+    amountFrom: "bid_min_amount",
+    amountTo: "bid_max_amount",
+    govLevel: "gov_level",
+    sector: "sector",
+    region: "department",
+    objLicitation: "bid_obj",
+    daysAgo: "days_ago",
+    dateFrom: "initial_date",
+    dateTo: "final_date"
+};
 
 export const PavitoDataContextProvider = ({
     children
 }: {
     children: React.ReactNode;
 }): JSX.Element => {
-    const { setOpenLoading, user } = useGlobalContext();
+    const { setOpenLoading, openAlertMessage, avaibleRegions } = useGlobalContext();
     const router = useRouter();
     const pathname = usePathname();
     const params = useSearchParams();
@@ -27,42 +42,55 @@ export const PavitoDataContextProvider = ({
         "SEDE ADMINISTRATIVA",
         "VIVIENDA CONSTRUCCION Y SANEAMIENTO"
     ];
-    const [queryFilter, setQueryFilter] = useState<string>("");
-    const [queryPagination, setQueryPagination] = useState<string>(
-        "page_number=1&items_per_page=10"
-    );
     const [bids, setBids] = useState<Bid[]>([]);
     const [page, setPage] = useState<number>(0);
     const [pageSize, setPageSize] = useState<number>(10);
     const [total, setTotal] = useState<number>(100);
 
+    const [filters, setFilters] = useState<PavitoDataFilters>({
+        amountFrom: null,
+        amountTo: null,
+        govLevel: "GL",
+        sector: null,
+        region: "",
+        objLicitation: "Bien",
+        daysAgo: "30",
+        dateFrom: "",
+        dateTo: ""
+    });
+
     const getBidsP = async (query: string): Promise<void> => {
         try {
             setOpenLoading(true);
             const response = await getBids(query);
-
-            const paramsObj = Object.fromEntries(params);
-            setPage(parseInt(paramsObj.page_number) - 1);
-            setPageSize(parseInt(paramsObj.items_per_page));
-
+            
+            const paramsObj: IObject = {};
+            const paramsArray = query.split("&");
+            paramsArray.forEach((param: string) => {
+                const [key, value] = param.split("=");
+                paramsObj[key] = value;
+            });
+            setPage(response.body.paginaVigente - 1);
+            setPageSize(parseInt(paramsObj["items_per_page"]));
             setTotal(
-                response.body.numeroPaginas * parseInt(paramsObj.items_per_page)
+                response.body.numeroPaginas * parseInt(paramsObj["items_per_page"])
             );
             setBids(response.body.licitaciones);
-        } finally {
+        } catch(e) {
+            openAlertMessage({
+                horizontal: "center",
+                vertical: "top",
+                severity: "error",
+                message: "Error al obtener las licitaciones"
+            });
+        }finally {
             setOpenLoading(false);
         }
     };
 
-    const resetPagination = (): void => {
-        setPage(1);
-        setPageSize(10);
-    };
-
-    const setQueryFilterAndUpdate = (query: string): void => {
-        setQueryFilter(query);
+    const setQueryFilterAndUpdate = (): void => {
         updateUrlParams({
-            filter: query,
+            filter: convertFilterToQuery(),
             pagination: "page_number=1&items_per_page=10"
         });
     };
@@ -81,13 +109,8 @@ export const PavitoDataContextProvider = ({
             setPageSize(pageSizeP);
             setPage(0);
         }
-        setQueryPagination(
-            `page_number=${
-                pageP !== undefined ? pageP : page + 1
-            }&items_per_page=${pageSizeP ? pageSizeP : pageSize}`
-        );
         updateUrlParams({
-            filter: queryFilter,
+            filter: convertFilterToQuery(),
             pagination: `page_number=${
                 pageSizeP ? 1 : pageP !== undefined ? pageP + 1 : page + 1
             }&items_per_page=${pageSizeP ? pageSizeP : pageSize}`
@@ -106,27 +129,61 @@ export const PavitoDataContextProvider = ({
     };
 
     useEffect(() => {
-        if (user?.id) {
-            getBidsP(params.toString());
+        if (avaibleRegions.length > 0) {
+            const queryParams = params.toString()
+            if(queryParams !== "") getBidsP(params.toString());
+            else {
+                const filter = convertFilterToQuery();
+                const pagination = `page_number=1&items_per_page=10`;
+                getBidsP(`${filter}&${pagination}`);
+            }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [params, user]);
+    }, [params, avaibleRegions]);
+
+    const adaptFilter = (): IObject => {
+        const obj: IObject = CLEAN_NULL_VALUES({
+            ...filters,
+            sector: filters.sector === "TODOS" ? null : filters.sector,
+            daysAgo: filters.daysAgo === "-1" ? null : filters.daysAgo,
+            region: filters.region ? filters.region : avaibleRegions[0]
+            
+        });
+
+        const adaptedObj: IObject = {};
+        Object.keys(obj).forEach((key: string) => {
+            if (obj[key]) {
+                adaptedObj[keysToAdapt[key]] = obj[key];
+            }
+        });
+        return adaptedObj;
+    };
+
+    const convertFilterToQuery = (): string => {
+        const adaptedObj: IObject = adaptFilter();
+        if (adaptedObj["days_ago"]) {
+            const [start, end] = CALC_DAYS_AGO(adaptedObj["days_ago"]);
+            adaptedObj["initial_date"] = start;
+            adaptedObj["final_date"] = end;
+        }
+        const params = new URLSearchParams();
+        Object.keys(adaptedObj).forEach((key: string) => {
+            params.set(key, adaptedObj[key]);
+        });
+        return params.toString();
+    };
 
     const value: IPavitoDataFilterContext = {
-        sectors: sectors,
-        queryFilter: queryFilter,
-        setQueryFilter: setQueryFilterAndUpdate,
-        queryPagination: queryPagination,
-        setQueryPagination: setQueryPaginationAndUpdate,
         bids: bids,
+        sectors: sectors,
+        setQueryFilter: setQueryFilterAndUpdate,
         page: page,
-        setPage: setPage,
         pageSize: pageSize,
-        setPageSize: setPageSize,
         total: total,
-        setTotal: setTotal,
-        resetPagination: resetPagination,
-        simpleSetQueryFilter: setQueryFilter
+        setQueryPagination: setQueryPaginationAndUpdate,
+        filters: filters,
+        setFilters: setFilters,
+        convertFilterToQuery: convertFilterToQuery
     };
 
     return (

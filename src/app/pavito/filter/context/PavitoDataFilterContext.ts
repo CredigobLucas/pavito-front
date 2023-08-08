@@ -1,21 +1,17 @@
 import { Bid } from "@/domain/models";
 import { createContext, useContext } from "react";
-
+import { PavitoDataFilters } from "@/domain/interface/PavitoDataFilters";
 export interface IPavitoDataFilterContext {
-    sectors: string[];
-    queryFilter: string;
-    setQueryFilter: (queryFilter: string) => void;
-    queryPagination: string;
-    setQueryPagination: (data: { pageP?: number; pageSizeP?: number }) => void;
-    resetPagination: () => void;
-    page: number;
-    setPage: (page: number) => void;
-    pageSize: number;
-    setPageSize: (pageSize: number) => void;
-    total: number;
-    setTotal: (total: number) => void;
     bids: Bid[];
-    simpleSetQueryFilter: (queryFilter: string) => void;
+    sectors: string[];
+    setQueryFilter: () => void;
+    page: number;
+    pageSize: number;
+    total: number;
+    setQueryPagination: (data: { pageP?: number; pageSizeP?: number }) => void;
+    filters: PavitoDataFilters;
+    setFilters: (filters: PavitoDataFilters) => void;
+    convertFilterToQuery: () => string;
 }
 
 export const PavitoDataFilterContext = createContext<
