@@ -7,7 +7,7 @@ import { LicenseCard } from "./components";
 import { License } from "@/domain/models/License";
 
 export default function Licenses(): JSX.Element {
-    const { setSectionTitle, setOpenLoading } = useGlobalContext();
+    const { setSectionTitle, setOpenLoading, user } = useGlobalContext();
     const [licenses, setLicenses] = useState<License[]>([]);
     const getEnterpriseData = async (): Promise<void> => {
         try {
@@ -20,9 +20,14 @@ export default function Licenses(): JSX.Element {
     };
     useEffect(() => {
         setSectionTitle("Licencias");
-        getEnterpriseData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+    useEffect(() => {
+        if(user?.id){
+            getEnterpriseData();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [user]);
     return (
         <Box component="div" className="flex flex-wrap gap-3 overflow-y-auto">
             {licenses.map((license, index) => {

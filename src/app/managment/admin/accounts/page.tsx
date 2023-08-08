@@ -39,7 +39,7 @@ export default function Admin(): JSX.Element {
         user: userLogged,
         openAlertMessage,
         setOpenLoading,
-        setSectionTitle
+        setSectionTitle,
     } = useGlobalContext();
 
     const [anchorActions, setAnchorActions] = useState<null | HTMLElement>(
@@ -83,9 +83,11 @@ export default function Admin(): JSX.Element {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     useMemo(() => {
-        getAllUsers();
+        if(userLogged?.id) {
+            getAllUsers();
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [page, rowsPerPage, onlyActive]);
+    }, [page, rowsPerPage, onlyActive, userLogged]);
 
     const inactive = async (id: string): Promise<void> => {
         try {
