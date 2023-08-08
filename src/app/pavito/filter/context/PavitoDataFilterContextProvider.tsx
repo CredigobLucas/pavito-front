@@ -74,7 +74,7 @@ export const PavitoDataContextProvider = ({
         pageP?: number;
         pageSizeP?: number;
     }): void => {
-        if (pageP) {
+        if (pageP !== undefined) {
             setPage(pageP);
         }
         if (pageSizeP) {
@@ -82,14 +82,14 @@ export const PavitoDataContextProvider = ({
             setPage(0);
         }
         setQueryPagination(
-            `page_number=${pageP ? pageP : page + 1}&items_per_page=${
-                pageSizeP ? pageSizeP : pageSize
-            }`
+            `page_number=${
+                pageP !== undefined ? pageP : page + 1
+            }&items_per_page=${pageSizeP ? pageSizeP : pageSize}`
         );
         updateUrlParams({
             filter: queryFilter,
             pagination: `page_number=${
-                pageSizeP ? 1 : pageP ? pageP + 1 : page + 1
+                pageSizeP ? 1 : pageP !== undefined ? pageP + 1 : page + 1
             }&items_per_page=${pageSizeP ? pageSizeP : pageSize}`
         });
     };
