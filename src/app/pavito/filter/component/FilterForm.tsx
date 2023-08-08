@@ -53,16 +53,6 @@ export const FilterForm = (): JSX.Element => {
 
     useLayoutEffect(() => {
         if (avaibleRegions.length > 0) {
-            setFilters({
-                ...filters,
-                region: avaibleRegions[0]
-            })
-        }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [avaibleRegions]);
-
-    useLayoutEffect(() => {
-        if (avaibleRegions.length > 0) {
             const queryParams: string = params.toString();
             if (queryParams) {
                 const queryObj: IObject = Object.fromEntries(
