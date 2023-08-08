@@ -3,6 +3,7 @@ import { CreateUserPayload } from "../payload";
 import { CreateUserResponse } from "../response";
 import { isAxiosError } from "axios";
 import { ErrorFactory } from "@/domain/errors/ErrorFactory";
+
 export const createUser = async (
     payload: CreateUserPayload
 ): Promise<CreateUserResponse> => {
