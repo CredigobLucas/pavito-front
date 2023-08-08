@@ -23,7 +23,8 @@ import { useSearchParams } from "next/navigation";
 export const FilterForm = (): JSX.Element => {
     const params = useSearchParams();
     const { theme, avaibleRegions } = useGlobalContext();
-    const { sectors, setQueryFilter } = usePavitoDataFilterContext();
+    const { sectors, setQueryFilter, simpleSetQueryFilter } =
+        usePavitoDataFilterContext();
     const [amountFrom, setAmountFrom] = useState<number | null>(null);
     const [amountTo, setAmountTo] = useState<number | null>(null);
     const [govLevel, setGovLevel] = useState<string>("GL");
@@ -146,8 +147,16 @@ export const FilterForm = (): JSX.Element => {
                 if (!queryObj["department"]) {
                     setRegion(regions[0]);
                 }
+
+                delete queryObj["page_number"];
+                delete queryObj["items_per_page"];
+                const queryObjToString: string = new URLSearchParams(
+                    queryObj
+                ).toString();
+                simpleSetQueryFilter(queryObjToString);
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [params, regions]);
 
     return (

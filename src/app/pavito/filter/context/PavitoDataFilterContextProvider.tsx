@@ -40,6 +40,14 @@ export const PavitoDataContextProvider = ({
         try {
             setOpenLoading(true);
             const response = await getBids(query);
+
+            const paramsObj = Object.fromEntries(params);
+            setPage(parseInt(paramsObj.page_number) - 1);
+            setPageSize(parseInt(paramsObj.items_per_page));
+
+            setTotal(
+                response.body.numeroPaginas * parseInt(paramsObj.items_per_page)
+            );
             setBids(response.body.licitaciones);
         } finally {
             setOpenLoading(false);
@@ -53,11 +61,47 @@ export const PavitoDataContextProvider = ({
 
     const setQueryFilterAndUpdate = (query: string): void => {
         setQueryFilter(query);
-        updateUrlParams();
+        updateUrlParams({
+            filter: query,
+            pagination: "page_number=1&items_per_page=10"
+        });
     };
 
-    const updateUrlParams = (): void => {
-        const params = `${queryFilter}&${queryPagination}`;
+    const setQueryPaginationAndUpdate = ({
+        pageP,
+        pageSizeP
+    }: {
+        pageP?: number;
+        pageSizeP?: number;
+    }): void => {
+        if (pageP) {
+            setPage(pageP);
+        }
+        if (pageSizeP) {
+            setPageSize(pageSizeP);
+            setPage(0);
+        }
+        setQueryPagination(
+            `page_number=${pageP ? pageP : page + 1}&items_per_page=${
+                pageSizeP ? pageSizeP : pageSize
+            }`
+        );
+        updateUrlParams({
+            filter: queryFilter,
+            pagination: `page_number=${
+                pageSizeP ? 1 : pageP ? pageP + 1 : page + 1
+            }&items_per_page=${pageSizeP ? pageSizeP : pageSize}`
+        });
+    };
+
+    const updateUrlParams = ({
+        filter,
+        pagination
+    }: {
+        filter: string;
+        pagination: string;
+    }): void => {
+        const params = `${filter}&${pagination}`;
         router.push(pathname + "?" + params);
     };
 
@@ -73,7 +117,7 @@ export const PavitoDataContextProvider = ({
         queryFilter: queryFilter,
         setQueryFilter: setQueryFilterAndUpdate,
         queryPagination: queryPagination,
-        setQueryPagination: setQueryPagination,
+        setQueryPagination: setQueryPaginationAndUpdate,
         bids: bids,
         page: page,
         setPage: setPage,
@@ -82,7 +126,7 @@ export const PavitoDataContextProvider = ({
         total: total,
         setTotal: setTotal,
         resetPagination: resetPagination,
-        updateUrlParams: updateUrlParams
+        simpleSetQueryFilter: setQueryFilter
     };
 
     return (

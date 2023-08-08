@@ -6,7 +6,7 @@ export interface IPavitoDataFilterContext {
     queryFilter: string;
     setQueryFilter: (queryFilter: string) => void;
     queryPagination: string;
-    setQueryPagination: (queryPagination: string) => void;
+    setQueryPagination: (data: { pageP?: number; pageSizeP?: number }) => void;
     resetPagination: () => void;
     page: number;
     setPage: (page: number) => void;
@@ -15,7 +15,7 @@ export interface IPavitoDataFilterContext {
     total: number;
     setTotal: (total: number) => void;
     bids: Bid[];
-    updateUrlParams: () => void;
+    simpleSetQueryFilter: (queryFilter: string) => void;
 }
 
 export const PavitoDataFilterContext = createContext<

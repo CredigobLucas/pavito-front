@@ -3,7 +3,8 @@
 import { TablePagination } from "@mui/material";
 import { usePavitoDataFilterContext } from "../context";
 export const FilterPagination = (): JSX.Element => {
-    const { page, setPage, pageSize, total } = usePavitoDataFilterContext();
+    const { page, pageSize, total, setQueryPagination } =
+        usePavitoDataFilterContext();
     return (
         <TablePagination
             className="mt-6"
@@ -11,7 +12,14 @@ export const FilterPagination = (): JSX.Element => {
             page={page}
             rowsPerPage={pageSize}
             onPageChange={(_, page: number): void => {
-                setPage(page);
+                setQueryPagination({
+                    pageP: page
+                });
+            }}
+            onRowsPerPageChange={(event): void => {
+                setQueryPagination({
+                    pageSizeP: parseInt(event.target.value, 10)
+                });
             }}
             color="primary"
             sx={{
