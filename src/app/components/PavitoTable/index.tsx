@@ -53,6 +53,20 @@ export function PavitoTable<Data>({
                                     align={column.align}
                                     style={{ minWidth: column.width }}
                                     className="font-bold"
+                                    sx={{
+                                        backgroundColor: (theme): string => {
+                                            if (theme.palette.mode === "dark") {
+                                                return "#050506 !important";
+                                            }
+                                            return "inherit !important  ";
+                                        },
+                                        borderTopLeftRadius:
+                                            index === 0 ? "15px" : "0px",
+                                        borderTopRightRadius:
+                                            index === columns.length - 1
+                                                ? "15px"
+                                                : "0px"
+                                    }}
                                 >
                                     {column.label}
                                 </TableCell>
