@@ -2,31 +2,22 @@
 import { useGlobalContext } from "@/app/context";
 import { useEffect, useState } from "react";
 import {
-    Box,
-    Typography,
-    ToggleButton,
-    ToggleButtonGroup
-} from "@mui/material";
-import { FilterForm, DataGrid, DataTable } from "./component";
-import { IconButton, TablePagination } from "@mui/material";
-import {
-    ShareOutlined,
-    FileDownloadOutlined,
-    SortByAlphaOutlined,
-    GridViewOutlined,
-    TableViewOutlined
-} from "@mui/icons-material";
+    FilterForm,
+    DataGrid,
+    DataTable,
+    FilterHeader,
+    ToggleViewFilter,
+    DisplayMode,
+    FilterPagination
+} from "./component";
+import { Box } from "@mui/material";
 
-import { usePavitoDataContext } from "../context";
-
-enum DisplayMode {
-    GridView = "grid-view",
-    TableView = "table-view"
-}
+import { usePavitoDataFilterContext } from "./context";
 
 export default function PavitoFilter(): JSX.Element {
-    const { setSectionTitle, theme, openAlertMessage } = useGlobalContext();
-    const { bids } = usePavitoDataContext();
+    const { setSectionTitle } = useGlobalContext();
+    const { bids } = usePavitoDataFilterContext();
+
     const [displayData, setDisplayData] = useState<DisplayMode>(
         DisplayMode.GridView
     );
@@ -53,107 +44,10 @@ export default function PavitoFilter(): JSX.Element {
             <Box component="section" className="w-full">
                 <Box
                     component={"div"}
-                    className="w-full flex items-center justify-between"
+                    className="w-full flex items-end justify-center mt-6 flex-col"
                 >
-                    <Typography
-                        className="font-bold"
-                        variant="h4"
-                        component="h1"
-                        color={
-                            theme.palette.mode === "dark"
-                                ? "default"
-                                : "primary"
-                        }
-                    >
-                        Prospectos
-                    </Typography>
-                    <Box>
-                        <IconButton
-                            color={
-                                theme.palette.mode === "dark"
-                                    ? "default"
-                                    : "primary"
-                            }
-                            onClick={(): void => {
-                                navigator.clipboard.writeText(
-                                    `${window.location}`
-                                );
-                                openAlertMessage({
-                                    horizontal: "center",
-                                    vertical: "top",
-                                    severity: "success",
-                                    message: "Copiado al portapapeles"
-                                });
-                            }}
-                        >
-                            <ShareOutlined />
-                        </IconButton>
-                        <IconButton
-                            color={
-                                theme.palette.mode === "dark"
-                                    ? "default"
-                                    : "primary"
-                            }
-                            className="mx-2"
-                        >
-                            <FileDownloadOutlined />
-                        </IconButton>
-                        <IconButton
-                            color={
-                                theme.palette.mode === "dark"
-                                    ? "default"
-                                    : "primary"
-                            }
-                        >
-                            <SortByAlphaOutlined />
-                        </IconButton>
-                    </Box>
-                </Box>
-                <Box
-                    component={"div"}
-                    className="w-full flex items-center justify-end mt-6"
-                >
-                    <ToggleButtonGroup
-                        value={displayData}
-                        exclusive
-                        onChange={(
-                            _event: React.MouseEvent<Element, MouseEvent>,
-                            value: React.SetStateAction<DisplayMode>
-                        ): void => {
-                            if (value) {
-                                setDisplayData(value);
-                            }
-                        }}
-                        size="small"
-                        color={
-                            theme.palette.mode === "dark"
-                                ? "standard"
-                                : "primary"
-                        }
-                        aria-label="text alignment"
-                    >
-                        <ToggleButton value="grid-view" aria-label="grid view">
-                            <GridViewOutlined
-                                color={
-                                    theme.palette.mode === "dark"
-                                        ? "inherit"
-                                        : "primary"
-                                }
-                            />
-                        </ToggleButton>
-                        <ToggleButton
-                            value="table-view"
-                            aria-label="table view"
-                        >
-                            <TableViewOutlined
-                                color={
-                                    theme.palette.mode === "dark"
-                                        ? "inherit"
-                                        : "primary"
-                                }
-                            />
-                        </ToggleButton>
-                    </ToggleButtonGroup>
+                    <FilterHeader />
+                    <ToggleViewFilter changeDisplayMode={setDisplayData} />
                 </Box>
                 <Box className="mt-6">
                     {displayData === DisplayMode.GridView && (
@@ -163,21 +57,7 @@ export default function PavitoFilter(): JSX.Element {
                         <DataTable bids={bids} />
                     )}
                 </Box>
-                <TablePagination
-                    className="mt-6"
-                    count={100}
-                    page={1}
-                    rowsPerPage={10}
-                    onPageChange={(): void => {}}
-                    color="primary"
-                    sx={{
-                        border: "none",
-                        "& .MuiToolbar-root": {
-                            padding: 0
-                        }
-                    }}
-                    component={"div"}
-                />
+                <FilterPagination />
             </Box>
         </Box>
     );

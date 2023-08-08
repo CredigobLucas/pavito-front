@@ -16,17 +16,14 @@ import {
 import { useState, useLayoutEffect } from "react";
 import { AccordionForm } from "@/app/components";
 import { useGlobalContext } from "@/app/context";
-import { usePavitoDataContext } from "@/app/pavito/context/PavitoDataContext";
+import { usePavitoDataFilterContext } from "@/app/pavito/filter/context";
 import { CLEAN_NULL_VALUES, IObject, CALC_DAYS_AGO } from "@/app/utils";
-import { useRouter, useSearchParams, usePathname } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 export const FilterForm = (): JSX.Element => {
-    const router = useRouter();
     const params = useSearchParams();
-    const pathname = usePathname();
-
     const { theme, avaibleRegions } = useGlobalContext();
-    const { sectors, setQueryFilter } = usePavitoDataContext();
+    const { sectors, setQueryFilter } = usePavitoDataFilterContext();
     const [amountFrom, setAmountFrom] = useState<number | null>(null);
     const [amountTo, setAmountTo] = useState<number | null>(null);
     const [govLevel, setGovLevel] = useState<string>("GL");
@@ -37,8 +34,6 @@ export const FilterForm = (): JSX.Element => {
     const [dateFrom, setDateFrom] = useState<string>("");
     const [dateTo, setDateTo] = useState<string>("");
     const [regions, setRegions] = useState<string[]>([]);
-
-    const [firstLoad, setFirstLoad] = useState<boolean>(true);
 
     const adaptFilter = (): IObject => {
         const obj: IObject = CLEAN_NULL_VALUES({
@@ -87,11 +82,6 @@ export const FilterForm = (): JSX.Element => {
         return params.toString();
     };
 
-    const updateUrlParams = (): void => {
-        const params = convertFilterToQuery();
-        router.push(pathname + "?" + params);
-    };
-
     const toDefault = (): void => {
         setAmountFrom(null);
         setAmountTo(null);
@@ -107,12 +97,10 @@ export const FilterForm = (): JSX.Element => {
     useLayoutEffect(() => {
         if (avaibleRegions.length > 0) {
             setRegions(avaibleRegions);
-            setRegion(avaibleRegions[0]);
-            setFirstLoad(false);
         }
     }, [avaibleRegions]);
     useLayoutEffect(() => {
-        if (avaibleRegions.length > 0) {
+        if (regions.length > 0) {
             const queryParams: string = params.toString();
             if (queryParams) {
                 const queryObj: IObject = Object.fromEntries(
@@ -155,11 +143,12 @@ export const FilterForm = (): JSX.Element => {
                     setDateFrom("");
                     setDateTo("");
                 }
+                if (!queryObj["department"]) {
+                    setRegion(regions[0]);
+                }
             }
-            setQueryFilter(queryParams);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [params, firstLoad]);
+    }, [params, regions]);
 
     return (
         <Paper
@@ -167,7 +156,7 @@ export const FilterForm = (): JSX.Element => {
             elevation={3}
             onSubmit={(e): void => {
                 e.preventDefault();
-                updateUrlParams();
+                setQueryFilter(convertFilterToQuery());
             }}
         >
             <Box className="w-full flex items-center justify-between p-4">

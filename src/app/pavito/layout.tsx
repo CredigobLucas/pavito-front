@@ -1,8 +1,7 @@
 "use client";
 import { Navbar } from "../components";
 import { Container } from "@mui/material";
-import { PavitoDataContextProvider } from "./context";
-
+import { PavitoDataContextProvider } from "./filter/context";
 export default function PavitoLayout({
     children
 }: {
