@@ -13,7 +13,12 @@ export const BidCard = ({ bid }: BidCardProps): JSX.Element => {
         GN: "Nacional"
     };
     return (
-        <Paper elevation={3}>
+        <Paper
+            sx={{
+                height: "100%"
+            }}
+            elevation={3}
+        >
             <Box
                 className="px-4 py-3"
                 sx={{
