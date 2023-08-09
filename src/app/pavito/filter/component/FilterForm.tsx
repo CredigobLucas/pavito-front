@@ -13,151 +13,72 @@ import {
     Autocomplete,
     AutocompleteRenderInputParams
 } from "@mui/material";
-import { useState, useLayoutEffect } from "react";
+import { useLayoutEffect } from "react";
 import { AccordionForm } from "@/app/components";
 import { useGlobalContext } from "@/app/context";
 import { usePavitoDataFilterContext } from "@/app/pavito/filter/context";
-import { CLEAN_NULL_VALUES, IObject, CALC_DAYS_AGO } from "@/app/utils";
+import { IObject } from "@/app/utils";
 import { useSearchParams } from "next/navigation";
+
+const adaptToKeys: IObject = {
+    bid_min_amount: "amountFrom",
+    bid_max_amount: "amountTo",
+    gov_level: "govLevel",
+    sector: "sector",
+    department: "region",
+    bid_obj: "objLicitation",
+    days_ago: "daysAgo",
+    initial_date: "dateFrom",
+    final_date: "dateTo"
+};
 
 export const FilterForm = (): JSX.Element => {
     const params = useSearchParams();
     const { theme, avaibleRegions } = useGlobalContext();
-    const { sectors, setQueryFilter, simpleSetQueryFilter } =
-        usePavitoDataFilterContext();
-    const [amountFrom, setAmountFrom] = useState<number | null>(null);
-    const [amountTo, setAmountTo] = useState<number | null>(null);
-    const [govLevel, setGovLevel] = useState<string>("GL");
-    const [sector, setSector] = useState<string | null>(null);
-    const [region, setRegion] = useState<string>(avaibleRegions[0]);
-    const [objLicitation, setObjLicitation] = useState<string>("Bien");
-    const [daysAgo, setDaysAgo] = useState<string>("30");
-    const [dateFrom, setDateFrom] = useState<string>("");
-    const [dateTo, setDateTo] = useState<string>("");
-    const [regions, setRegions] = useState<string[]>([]);
-
-    const adaptFilter = (): IObject => {
-        const obj: IObject = CLEAN_NULL_VALUES({
-            amountFrom,
-            amountTo,
-            govLevel,
-            sector: sector === "TODOS" ? null : sector,
-            region,
-            objLicitation,
-            daysAgo: daysAgo === "-1" ? null : daysAgo,
-            dateFrom,
-            dateTo
-        });
-        const keysToAdapt: IObject = {
-            amountFrom: "bid_min_amount",
-            amountTo: "bid_max_amount",
-            govLevel: "gov_level",
-            sector: "sector",
-            region: "department",
-            objLicitation: "bid_obj",
-            daysAgo: "days_ago",
-            dateFrom: "initial_date",
-            dateTo: "final_date"
-        };
-
-        const adaptedObj: IObject = {};
-        Object.keys(obj).forEach((key: string) => {
-            if (obj[key]) {
-                adaptedObj[keysToAdapt[key]] = obj[key];
-            }
-        });
-        return adaptedObj;
-    };
-
-    const convertFilterToQuery = (): string => {
-        const adaptedObj: IObject = adaptFilter();
-        if (adaptedObj["days_ago"]) {
-            const [start, end] = CALC_DAYS_AGO(adaptedObj["days_ago"]);
-            adaptedObj["initial_date"] = start;
-            adaptedObj["final_date"] = end;
-        }
-        const params = new URLSearchParams();
-        Object.keys(adaptedObj).forEach((key: string) => {
-            params.set(key, adaptedObj[key]);
-        });
-        return params.toString();
-    };
+    const { sectors, setQueryFilter, filters, setFilters } = usePavitoDataFilterContext();
 
     const toDefault = (): void => {
-        setAmountFrom(null);
-        setAmountTo(null);
-        setGovLevel("GL");
-        setSector(null);
-        setRegion(regions[0]);
-        setObjLicitation("Bien");
-        setDaysAgo("30");
-        setDateFrom("");
-        setDateTo("");
+        setFilters({
+            amountFrom: null,
+            amountTo: null,
+            govLevel: "GL",
+            sector: null,
+            region: avaibleRegions[0],
+            objLicitation: "Bien",
+            daysAgo: "30",
+            dateFrom: "",
+            dateTo: ""
+        });
     };
 
     useLayoutEffect(() => {
         if (avaibleRegions.length > 0) {
-            setRegions(avaibleRegions);
-        }
-    }, [avaibleRegions]);
-    useLayoutEffect(() => {
-        if (regions.length > 0) {
             const queryParams: string = params.toString();
             if (queryParams) {
                 const queryObj: IObject = Object.fromEntries(
                     new URLSearchParams(queryParams)
                 );
+                const copyFilters = { ...filters };
+
                 Object.keys(queryObj).forEach((key: string) => {
-                    switch (key) {
-                        case "bid_min_amount":
-                            setAmountFrom(parseInt(queryObj[key]));
-                            break;
-                        case "bid_max_amount":
-                            setAmountTo(parseInt(queryObj[key]));
-                            break;
-                        case "gov_level":
-                            setGovLevel(queryObj[key]);
-                            break;
-                        case "sector":
-                            setSector(queryObj[key]);
-                            break;
-                        case "department":
-                            setRegion(queryObj[key]);
-                            break;
-                        case "bid_obj":
-                            setObjLicitation(queryObj[key]);
-                            break;
-                        case "days_ago":
-                            setDaysAgo(queryObj[key]);
-                            break;
-                        case "initial_date":
-                            setDateFrom(queryObj[key]);
-                            break;
-                        case "final_date":
-                            setDateTo(queryObj[key]);
-                            break;
+                    if (adaptToKeys[key]) {
+                        copyFilters[adaptToKeys[key]] = queryObj[key];
                     }
                 });
                 if (!queryObj["days_ago"]) {
-                    setDaysAgo("-1");
+                    copyFilters["daysAgo"] = "-1";
                 } else {
-                    setDateFrom("");
-                    setDateTo("");
+                    copyFilters["dateFrom"] = ""
+                    copyFilters["dateTo"] = ""
                 }
                 if (!queryObj["department"]) {
-                    setRegion(regions[0]);
+                    copyFilters["region"] = avaibleRegions[0];
                 }
-
-                delete queryObj["page_number"];
-                delete queryObj["items_per_page"];
-                const queryObjToString: string = new URLSearchParams(
-                    queryObj
-                ).toString();
-                simpleSetQueryFilter(queryObjToString);
+                setFilters(copyFilters);
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [params, regions]);
+    }, [params, avaibleRegions]);
 
     return (
         <Paper
@@ -165,7 +86,7 @@ export const FilterForm = (): JSX.Element => {
             elevation={3}
             onSubmit={(e): void => {
                 e.preventDefault();
-                setQueryFilter(convertFilterToQuery());
+                setQueryFilter();
             }}
         >
             <Box className="w-full flex items-center justify-between p-4">
@@ -204,9 +125,14 @@ export const FilterForm = (): JSX.Element => {
                                     variant="outlined"
                                     size="small"
                                     type="number"
-                                    value={amountFrom}
+                                    value={filters.amountFrom || ""}
                                     onChange={(e): void =>
-                                        setAmountFrom(parseInt(e.target.value))
+                                        setFilters({
+                                            ...filters,
+                                            amountFrom: parseInt(
+                                                e.target.value
+                                            )
+                                        })
                                     }
                                 />
                             </Grid>
@@ -217,12 +143,15 @@ export const FilterForm = (): JSX.Element => {
                                     variant="outlined"
                                     size="small"
                                     type="number"
-                                    value={amountTo}
+                                    value={filters.amountTo}
                                     onChange={(
                                         e: React.ChangeEvent<HTMLInputElement>
-                                    ): void =>
-                                        setAmountTo(parseInt(e.target.value))
-                                    }
+                                    ): void =>{
+                                        setFilters({...filters,
+                                            amountTo: parseInt(
+                                                e.target.value
+                                            )})
+                                    }}
                                 />
                             </Grid>
                         </Grid>
@@ -235,12 +164,15 @@ export const FilterForm = (): JSX.Element => {
                         label="Nivel de gobierno"
                     >
                         <RadioGroup
-                            value={govLevel}
+                            value={filters.govLevel}
                             onChange={(
                                 _e: React.ChangeEvent<HTMLInputElement>,
                                 value: string
                             ): void => {
-                                setGovLevel(value);
+                                setFilters({
+                                    ...filters,
+                                    govLevel: value
+                                });
                             }}
                         >
                             <FormControlLabel
@@ -268,12 +200,15 @@ export const FilterForm = (): JSX.Element => {
                             disablePortal
                             options={sectors}
                             size="small"
-                            value={sector || ""}
+                            value={filters.sector || ""}
                             onChange={(
                                 _e: React.SyntheticEvent<Element, Event>,
                                 value: string | null
                             ): void => {
-                                setSector(value);
+                                setFilters({
+                                    ...filters,
+                                    sector: value
+                                });
                             }}
                             getOptionLabel={(option: string): string => {
                                 const a = option.toLowerCase();
@@ -293,10 +228,13 @@ export const FilterForm = (): JSX.Element => {
                         <Autocomplete
                             disablePortal
                             onChange={(_e, value): void => {
-                                setRegion(value || "");
+                                setFilters({
+                                    ...filters,
+                                    region: value || ""
+                                });
                             }}
                             options={avaibleRegions}
-                            value={region || ""}
+                            value={filters.region || ""}
                             size="small"
                             renderInput={(params): React.ReactNode => (
                                 <TextField {...params} label="Regiones" />
@@ -311,12 +249,15 @@ export const FilterForm = (): JSX.Element => {
                         label="Objeto de Licitación"
                     >
                         <RadioGroup
-                            value={objLicitation}
+                            value={filters.objLicitation}
                             onChange={(
                                 _e: React.ChangeEvent<HTMLInputElement>,
                                 value: string
                             ): void => {
-                                setObjLicitation(value);
+                                setFilters({
+                                    ...filters,
+                                    objLicitation: value
+                                });
                             }}
                         >
                             <FormControlLabel
@@ -336,14 +277,17 @@ export const FilterForm = (): JSX.Element => {
                 <Box>
                     <AccordionForm theme={theme.palette.mode} label="Fechas">
                         <RadioGroup
-                            value={daysAgo}
+                            value={filters.daysAgo}
                             onChange={(
                                 _e: React.ChangeEvent<HTMLInputElement>,
                                 value: string
                             ): void => {
-                                setDaysAgo(value);
-                                setDateFrom("");
-                                setDateTo("");
+                                setFilters({
+                                    ...filters,
+                                    daysAgo: value,
+                                    dateFrom: "",
+                                    dateTo: ""
+                                });
                             }}
                         >
                             <FormControlLabel
@@ -367,7 +311,7 @@ export const FilterForm = (): JSX.Element => {
                                 label="Personalizado"
                             />
                         </RadioGroup>
-                        {daysAgo === "-1" && (
+                        {filters.daysAgo === "-1" && (
                             <Box className="mt-2 flex">
                                 <TextField
                                     id="outlined-basic"
@@ -375,10 +319,15 @@ export const FilterForm = (): JSX.Element => {
                                     size="small"
                                     type="date"
                                     className="w-1/2 mr-3"
-                                    value={dateFrom}
+                                    value={filters.dateFrom}
                                     onChange={(
                                         e: React.ChangeEvent<HTMLInputElement>
-                                    ): void => setDateFrom(e.target.value)}
+                                    ): void => {
+                                        setFilters({
+                                            ...filters,
+                                            dateFrom: e.target.value
+                                        })
+                                    }}
                                     InputLabelProps={{
                                         shrink: true
                                     }}
@@ -416,10 +365,15 @@ export const FilterForm = (): JSX.Element => {
                                                 })`
                                             }
                                     }}
-                                    value={dateTo}
+                                    value={filters.dateTo}
                                     onChange={(
                                         e: React.ChangeEvent<HTMLInputElement>
-                                    ): void => setDateTo(e.target.value)}
+                                    ): void => {
+                                        setFilters({
+                                            ...filters,
+                                            dateTo: e.target.value
+                                        })
+                                    }}
                                 />
                             </Box>
                         )}
