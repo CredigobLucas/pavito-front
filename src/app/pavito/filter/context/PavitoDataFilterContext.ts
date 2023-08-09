@@ -1,6 +1,7 @@
 import { Bid } from "@/domain/models";
 import { createContext, useContext } from "react";
 import { PavitoDataFilters } from "@/domain/interface/PavitoDataFilters";
+
 export interface IPavitoDataFilterContext {
     bids: Bid[];
     sectors: string[];

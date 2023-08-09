@@ -24,7 +24,7 @@ export const DataTable = ({ bids }: DataTableProps): JSX.Element => {
                     },
                     {
                         label: "Monto",
-                        value: (row) => `S/. ${row.montoAdjudicado}`
+                        value: (row) => `S/. ${row.montoAdjudicado.toLocaleString('en-US', { style: 'decimal', maximumFractionDigits : 2, minimumFractionDigits : 2 })}`
                     },
                     {
                         label: "Mype",

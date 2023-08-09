@@ -25,7 +25,6 @@ import { useRouter } from "next/navigation";
 import { inactiveUser } from "@/services/pavito_back/user/inactive";
 import { activeUser } from "@/services/pavito_back/user/active";
 import { CreateUser } from "./components/CreateUser";
-import JSX from "next";
 
 export default function Admin(): JSX.Element {
     const [rows, setRows] = useState<User[]>([]);
@@ -287,11 +286,6 @@ export default function Admin(): JSX.Element {
                     {
                         label: "Correo",
                         value: (user: User): React.ReactNode => user.email
-                    },
-                    {
-                        label: "Celular",
-                        value: (user: User): React.ReactNode =>
-                            user.phone_number
                     },
                     {
                         label: "Estado",
