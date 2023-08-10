@@ -17,14 +17,14 @@ interface BidDetailProps {
     params: BidDetailParams | null;
 }
 
-export const BidDetail = ({
-    params
-}: BidDetailProps) : JSX.Element => {
-    const {user} = useGlobalContext();
-    const [bidDetail, setBidDetail] = useState<PavitoBid | undefined>(undefined);
+export const BidDetail = ({ params }: BidDetailProps): JSX.Element => {
+    const { user } = useGlobalContext();
+    const [bidDetail, setBidDetail] = useState<PavitoBid | undefined>(
+        undefined
+    );
 
     useEffect(() => {
-        if(params && user && user.id) {
+        if (params && user && user.id) {
             getBidDetail({
                 item: params.item,
                 licitacion: params.licitacion,
@@ -34,7 +34,6 @@ export const BidDetail = ({
                 setBidDetail(res.body);
             });
         }
-        
     }, [params, user]);
     return (
         <>
@@ -43,10 +42,10 @@ export const BidDetail = ({
             ) : (
                 <pre>
                     <code lang="JSON">
-                        {JSON.stringify(params, null, 2)}
+                        {JSON.stringify(bidDetail, null, 2)}
                     </code>
                 </pre>
             )}
         </>
-    )
-}
+    );
+};
