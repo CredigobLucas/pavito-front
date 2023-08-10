@@ -52,7 +52,7 @@ export const BidCard = ({ bid }: BidCardProps): JSX.Element => {
                     fontSize={"20px"}
                     className="mb-2"
                 >
-                    S/. {bid.montoAdjudicado}
+                    S/. {bid.montoAdjudicado.toLocaleString('en-US', { style: 'decimal', maximumFractionDigits : 2, minimumFractionDigits : 2 })}
                 </Typography>
             </Box>
             <Box

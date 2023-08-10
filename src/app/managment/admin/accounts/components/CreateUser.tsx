@@ -10,12 +10,7 @@ import {
     Typography,
     Box,
     Paper,
-    FormControlLabel,
-    Select,
-    TextField,
-    MenuItem,
     Button,
-    SelectChangeEvent
 } from "@mui/material";
 import { InputPasswordReveal } from "@/app/components/Password";
 
@@ -45,9 +40,6 @@ export const CreateUser = ({ open, close }: CreateUserProps): JSX.Element => {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
-    const [phone, setPhone] = useState("");
-    const [documentType, setDocumentType] = useState("DNI");
-    const [document, setDocument] = useState("");
     const [password, setPassword] = useState("");
     const [repeatPassword, setRepeatPassword] = useState("");
 
@@ -58,9 +50,6 @@ export const CreateUser = ({ open, close }: CreateUserProps): JSX.Element => {
                 last_name: lastName,
                 name: firstName,
                 email,
-                phone_number: phone,
-                document_type: documentType,
-                document_number: document,
                 password
             });
             if (response.status === 201) {
@@ -150,80 +139,11 @@ export const CreateUser = ({ open, close }: CreateUserProps): JSX.Element => {
                             label="Correo*"
                             placeholder="Ingrese el correo"
                             required
-                            width="calc(50% - 5px)"
+                            width="100%"
                             onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
                                 setEmail(e.target.value);
                             }}
                             type="email"
-                        />
-                        <LabeledInput
-                            label="Celular*"
-                            placeholder="Ingrese el celular"
-                            required
-                            width="calc(50% - 5px)"
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
-                                setPhone(e.target.value);
-                            }}
-                        />
-                        <FormControlLabel
-                            control={
-                                <div className="flex w-full mt-2">
-                                    <Select
-                                        size="small"
-                                        sx={{
-                                            width: "30%",
-                                            borderTopRightRadius: "0",
-                                            borderBottomRightRadius: "0"
-                                        }}
-                                        required
-                                        value={documentType}
-                                        onChange={(e: SelectChangeEvent<string>): void => {
-                                            setDocumentType(
-                                                e.target.value
-                                            );
-                                        }}
-                                    >
-                                        <MenuItem value="DNI">DNI</MenuItem>
-                                        <MenuItem value="RESIDENT_ID">
-                                            CE
-                                        </MenuItem>
-                                        <MenuItem value="PASSPORT">
-                                            PASAPORTE
-                                        </MenuItem>
-                                    </Select>
-                                    <TextField
-                                        type="text"
-                                        variant="outlined"
-                                        size="small"
-                                        placeholder="Ingrese el documento"
-                                        required
-                                        sx={{
-                                            width: "70%",
-                                            "& .MuiOutlinedInput-root": {
-                                                borderTopLeftRadius: "0",
-                                                borderBottomLeftRadius: "0",
-                                                borderLeft: "0"
-                                            }
-                                        }}
-                                        onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
-                                            setDocument(e.target.value);
-                                        }}
-                                    />
-                                </div>
-                            }
-                            label={"Documento*"}
-                            labelPlacement="top"
-                            sx={{
-                                ".MuiFormControlLabel-label": {
-                                    textAlign: "left",
-                                    width: "100%"
-                                },
-                                ".MuiFormControlLabel-asterisk": {
-                                    display: "none"
-                                },
-                                margin: "0 !important",
-                                width: "100%"
-                            }}
                         />
                         <InputPasswordReveal 
                             label="Contraseña*"
