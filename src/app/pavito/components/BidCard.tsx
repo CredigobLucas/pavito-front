@@ -1,12 +1,16 @@
-import { Paper, Box, Typography } from "@mui/material";
+import { Paper, Box, Typography, Button } from "@mui/material";
 import { Bid } from "@/domain/models";
 import { IObject } from "@/app/utils";
+import Link from "next/link";
 
 interface BidCardProps {
     bid: Bid;
+    isLink?: boolean;
+    href?: string;
+    onclick?: (bid: Bid) => void;
 }
 
-export const BidCard = ({ bid }: BidCardProps): JSX.Element => {
+export const BidCard = ({ bid, isLink=false, href="", onclick }: BidCardProps): JSX.Element => {
     const gobierno: IObject = {
         GR: "Regional",
         GL: "Local",
@@ -15,7 +19,10 @@ export const BidCard = ({ bid }: BidCardProps): JSX.Element => {
     return (
         <Paper
             sx={{
-                height: "100%"
+                height: "100%",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
             }}
             elevation={3}
         >
@@ -72,9 +79,31 @@ export const BidCard = ({ bid }: BidCardProps): JSX.Element => {
                 <Typography className="mb-2" component={"p"}>
                     Región: {bid.provincia}, {bid.departamento}
                 </Typography>
-                <Typography className="mb-5" component={"p"}>
+                <Typography component={"p"}>
                     Nivel de gobierno: {gobierno[bid.nivelGobierno]}
                 </Typography>
+            </Box>
+            <Box className="px-4 pb-3">
+                {isLink ? (
+                    <Link href={href}>
+                        <Button variant="contained" className="p-2" fullWidth color="primary">
+                            Más información
+                        </Button>
+                    </Link>
+                ) : (
+                    <Button 
+                        onClick={() : void => {
+                            if(onclick) onclick(bid);
+                        }} 
+                        variant="contained" 
+                        className="p-2" 
+                        fullWidth 
+                        color="primary"
+                    >
+                        Más información
+                    </Button>
+                )}
+                
             </Box>
         </Paper>
     );

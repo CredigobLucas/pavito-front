@@ -44,10 +44,13 @@ export const LabeledInput = ({
             label={label}
             labelPlacement="top"
             sx={{
-                ".MuiFormControlLabel-label": {
-                    textAlign: "left",
+                "& .MuiStack-root" : {
                     width: "100%",
-                    fontWeight: "600"
+                    "& .MuiFormControlLabel-label": {
+                        textAlign: "left !important",
+                        width: "100% !important",
+                        fontWeight: "600"
+                    },
                 },
                 ".MuiFormControlLabel-asterisk": {
                     display: "none"

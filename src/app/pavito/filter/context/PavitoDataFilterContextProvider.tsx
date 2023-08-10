@@ -74,7 +74,7 @@ export const PavitoDataContextProvider = ({
             setPageSize(parseInt(paramsObj["items_per_page"]));
             // numeroPaginas es numeroRows
             setTotal(
-                Math.ceil(response.body.numeroPaginas / parseInt(paramsObj["items_per_page"]))
+                response.body.numeroPaginas
             );
             setBids(response.body.licitaciones);
         } catch(e) {
