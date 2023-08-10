@@ -30,6 +30,7 @@ export const Loader = ({ open }: LoaderProps): JSX.Element => {
                         src="https://i.gifer.com/6oa.gif"
                         alt="loader"
                     />
+                    
                 </Paper>
             </Box>
         </Modal>
