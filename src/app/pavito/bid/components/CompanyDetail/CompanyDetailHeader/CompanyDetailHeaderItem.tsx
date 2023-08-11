@@ -11,7 +11,7 @@ export const CompanyDetailHeaderItem = ({
     content
 }: CompanyDetailHeaderItemProps): JSX.Element => {
     return (
-        <Box component={"div"} className="flex">
+        <Box component={"div"} className="flex my-2">
             <SubtitleBidDetail subtitle={title} />
             <Typography variant={"body1"} color={"primary"} className="ml-2">
                 {content}

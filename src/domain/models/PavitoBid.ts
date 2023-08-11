@@ -1,4 +1,5 @@
-export interface PavitoBid {
+import { IObject } from "@/app/utils";
+export interface PavitoBid extends IObject {
     ruc: string;
     razonSocial: string;
     departamento: string;
@@ -21,5 +22,5 @@ export interface PavitoBid {
     descripcionLicitacion: string;
     nomenclatura: string;
     fechaInicioBuenapro: string;
-    fechaFinBuenapro: string; 
+    fechaFinBuenapro: string;
 }
