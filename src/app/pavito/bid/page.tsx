@@ -9,12 +9,14 @@ export default function PavitoBid(): JSX.Element {
     const { setSectionTitle } = useGlobalContext();
     const params = useSearchParams();
     const [ruc, setRuc] = useState<string>("");
-    const [bidDetailParams, setBidDetailParams] = useState<BidDetailParams | null>(null);
-
+    const [mype, setMype] = useState<boolean>(false);
+    const [bidDetailParams, setBidDetailParams] =
+        useState<BidDetailParams | null>(null);
 
     useLayoutEffect(() => {
         setSectionTitle("logo");
         setRuc(params.get("ruc") || "");
+        setMype(params.get("mype") === "true");
 
         const item = params.get("item") || "";
         const licitacion = params.get("licitacion") || "";
@@ -27,15 +29,12 @@ export default function PavitoBid(): JSX.Element {
             milestone,
             participante
         });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
-        <Box
-            component={"div"}
-            className="flex flex-col"
-        >
-            <CompanyDetails ruc={ruc} />
+        <Box component={"div"} className="flex flex-col">
+            <CompanyDetails ruc={ruc} mype={mype} />
             <BidDetail params={bidDetailParams} />
         </Box>
     );

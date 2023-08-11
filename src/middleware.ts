@@ -21,13 +21,24 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
     if (request.nextUrl.pathname === "/")
         return NextResponse.redirect(new URL("/dashboard", request.nextUrl));
 
-    if(request.nextUrl.pathname === "/pavito/bid") {
+    if (request.nextUrl.pathname === "/pavito/bid") {
         // get params
         const params = request.nextUrl.searchParams;
-        const requiredParams = ["item", "licitacion", "milestone", "participante", "ruc"];
-        const missingParams = requiredParams.filter((param) => !params.has(param));
-        if(missingParams.length > 0) {
-            return NextResponse.redirect(new URL("/dashboard", request.nextUrl));
+        const requiredParams = [
+            "item",
+            "licitacion",
+            "milestone",
+            "participante",
+            "ruc",
+            "mype"
+        ];
+        const missingParams = requiredParams.filter(
+            (param) => !params.has(param)
+        );
+        if (missingParams.length > 0) {
+            return NextResponse.redirect(
+                new URL("/dashboard", request.nextUrl)
+            );
         }
     }
 

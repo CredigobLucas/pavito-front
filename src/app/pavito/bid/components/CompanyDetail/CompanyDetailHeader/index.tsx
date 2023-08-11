@@ -4,10 +4,12 @@ import { CompanyDetailHeaderItem } from "./CompanyDetailHeaderItem";
 
 interface CompanyDetailHeaderProps {
     enterpriseDetails: PavitoEnterprise;
+    mype: boolean;
 }
 
 export const CompanyDetailHeader = ({
-    enterpriseDetails
+    enterpriseDetails,
+    mype
 }: CompanyDetailHeaderProps): JSX.Element => {
     const firstLetterToUpperCase = (word: string): string => {
         return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
@@ -58,7 +60,7 @@ export const CompanyDetailHeader = ({
                 <Box>
                     <CompanyDetailHeaderItem
                         title={"Mype:"}
-                        content={enterpriseDetails.mype ? "Sí" : "No"}
+                        content={mype ? "Sí" : "No"}
                     />
                     <CompanyDetailHeaderItem
                         title={"Estado:"}

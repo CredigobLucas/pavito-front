@@ -19,9 +19,13 @@ import { CardsContainer } from "./CardsContainer";
 
 interface CompanyDetailsProps {
     ruc: string;
+    mype: boolean;
 }
 
-export const CompanyDetails = ({ ruc }: CompanyDetailsProps): JSX.Element => {
+export const CompanyDetails = ({
+    ruc,
+    mype
+}: CompanyDetailsProps): JSX.Element => {
     const { user } = useGlobalContext();
     const [enterpriseDetails, setEnterpriseDetails] = useState<
         PavitoEnterprise | undefined
@@ -52,6 +56,7 @@ export const CompanyDetails = ({ ruc }: CompanyDetailsProps): JSX.Element => {
                 <Box component={"section"}>
                     <CompanyDetailHeader
                         enterpriseDetails={enterpriseDetails}
+                        mype={mype}
                     />
                     <CardsContainer className="my-6">
                         <>
