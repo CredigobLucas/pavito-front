@@ -19,11 +19,12 @@ export interface PavitoEnterprise {
     montoLicitacionesUsd: number;
     penalidadesPen: number;
     sumaPenalidadesPen: number;
-    penalidadesUsd: number; 
+    penalidadesUsd: number;
     sumaPenalidadesUsd: number;
     sancionesDefinitivas: number;
     sancionesTemporales: number;
     licitacionesVigentes: number;
     primeraLicitacion: string;
     ultimaActualizacion: string;
-  }
+    mype?: boolean;
+}

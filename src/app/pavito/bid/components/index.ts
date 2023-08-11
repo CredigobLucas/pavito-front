@@ -1,2 +1,2 @@
-export * from './BidDetail';
-export * from './CompanyDetail';
+export * from "./BidDetail";
+export * from "./CompanyDetail";

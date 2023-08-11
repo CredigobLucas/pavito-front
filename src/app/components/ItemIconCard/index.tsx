@@ -3,10 +3,9 @@ import { Theme } from "@emotion/react";
 import { Box, Paper, SxProps, Typography } from "@mui/material";
 import { useGlobalContext } from "@/app/context";
 
-
 interface ItemIconCardProps {
     title: string;
-    content: string;
+    content: string | number;
     color?: string;
     backgroundIcon?: string;
     sx?: SxProps<Theme>;
@@ -23,7 +22,12 @@ export const ItemIconCard = ({
     const { theme } = useGlobalContext();
     return (
         <Box sx={sx}>
-            <Paper className="p-4 flex w-full flex-row items-center">
+            <Paper
+                sx={{
+                    height: "100% !important"
+                }}
+                className="p-4 flex w-full flex-row items-center"
+            >
                 <Box
                     className="rounded-full p-4 z-0 flex items-center justify-center"
                     sx={{
@@ -46,7 +50,9 @@ export const ItemIconCard = ({
                     >
                         {title}
                     </Typography>
-                    <Typography variant="h6">{content}</Typography>
+                    <Typography variant="h6" color={"#60656b"}>
+                        {content}
+                    </Typography>
                 </Box>
             </Paper>
         </Box>
