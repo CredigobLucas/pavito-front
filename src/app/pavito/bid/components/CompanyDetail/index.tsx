@@ -16,6 +16,7 @@ import {
     ReportProblemOutlined
 } from "@mui/icons-material";
 import { CardsContainer } from "./CardsContainer";
+import { IObject } from "@/app/utils";
 
 interface CompanyDetailsProps {
     ruc: string;
@@ -30,6 +31,12 @@ export const CompanyDetails = ({
     const [enterpriseDetails, setEnterpriseDetails] = useState<
         PavitoEnterprise | undefined
     >(undefined);
+    const semaphoreColor: IObject = {
+        Verde: "#4caf50",
+        Amarillo: "#ffeb3b",
+        Rojo: "#f44336",
+        Naranja: "#ff9800"
+    };
     useEffect(() => {
         if (ruc && user && user.id) {
             getEnterpriseDetails(ruc).then((res) => {
@@ -163,6 +170,32 @@ export const CompanyDetails = ({
                                 icon={<ReportProblemOutlined />}
                             />
                             {/*TODO: SEMAFOROOO */}
+                            <ItemIconCard
+                                title="Riesgo de ser sancionado"
+                                color={
+                                    semaphoreColor[
+                                        enterpriseDetails.colorSancion
+                                    ]
+                                }
+                                content={`${enterpriseDetails.probabilidadSancion.toFixed(
+                                    2
+                                )}%`}
+                                onlyIcon
+                                icon={
+                                    <Box
+                                        sx={{
+                                            width: "2.9rem",
+                                            height: "2.8rem",
+                                            borderRadius: "50%",
+                                            backgroundColor:
+                                                semaphoreColor[
+                                                    enterpriseDetails
+                                                        .colorSancion
+                                                ]
+                                        }}
+                                    ></Box>
+                                }
+                            />
                         </>
                     </CardsContainer>
                 </Box>
