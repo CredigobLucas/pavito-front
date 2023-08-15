@@ -16,7 +16,7 @@ import {
     ReportProblemOutlined
 } from "@mui/icons-material";
 import { CardsContainer } from "./CardsContainer";
-import { IObject } from "@/app/utils";
+import { CustomNumber, IObject } from "@/app/utils";
 
 interface CompanyDetailsProps {
     ruc: string;
@@ -70,7 +70,7 @@ export const CompanyDetails = ({
                             {enterpriseDetails.montoLicitacionesPen > 0 && (
                                 <ItemIconCard
                                     title="Monto de Licitaciones (S/.)"
-                                    content={`S/. ${enterpriseDetails.montoLicitacionesPen}`}
+                                    content={`S/. ${new CustomNumber(enterpriseDetails.montoLicitacionesPen).format()}`}
                                     icon={<PaidOutlined />}
                                     color={"#2d9cdb"}
                                 />
@@ -169,7 +169,6 @@ export const CompanyDetails = ({
                                 color="#ed726b"
                                 icon={<ReportProblemOutlined />}
                             />
-                            {/*TODO: SEMAFOROOO */}
                             <ItemIconCard
                                 title="Riesgo de ser sancionado"
                                 color={
@@ -177,9 +176,6 @@ export const CompanyDetails = ({
                                         enterpriseDetails.colorSancion
                                     ]
                                 }
-                                content={`${enterpriseDetails.probabilidadSancion.toFixed(
-                                    2
-                                )}%`}
                                 onlyIcon
                                 icon={
                                     <Box

@@ -1,8 +1,10 @@
 "use client";
 import { Bid } from "@/domain/models";
 import { PavitoTable } from "@/app/components/PavitoTable";
-import { IObject } from "@/app/utils";
-import { Paper } from "@mui/material";
+import { CustomNumber, IObject } from "@/app/utils";
+import { IconButton, Paper, Tooltip } from "@mui/material";
+import LinkIcon from '@mui/icons-material/Link';
+
 interface DataTableProps {
     bids: Bid[];
 }
@@ -24,7 +26,7 @@ export const DataTable = ({ bids }: DataTableProps): JSX.Element => {
                     },
                     {
                         label: "Monto",
-                        value: (row) => `S/. ${row.montoAdjudicado.toLocaleString('en-US', { style: 'decimal', maximumFractionDigits : 2, minimumFractionDigits : 2 })}`
+                        value: (row) => `S/. ${new CustomNumber(row.montoAdjudicado).format()}`
                     },
                     {
                         label: "Mype",
@@ -41,7 +43,22 @@ export const DataTable = ({ bids }: DataTableProps): JSX.Element => {
                     {
                         label: "Gobierno",
                         value: (row) => gobierno[row.nivelGobierno]
-                    }
+                    },
+                    {
+                        label: "",
+                        value: (row) => <Tooltip title="Ver detalle">
+                        <IconButton
+                            style={
+                                {
+                                    color: '#544892',
+                                }
+                            } 
+                            href={`/pavito/bid?item=${row.id_item}&licitacion=${row.id_licitacion}&milestone=${row.id_milestone}&participante=${row.id_participante}&ruc=${row.ruc}&mype=${row.mype}`}
+                        >
+                            <LinkIcon/>
+                        </IconButton>
+                    </Tooltip>
+                    },
                 ]}
                 rows={bids}
             />

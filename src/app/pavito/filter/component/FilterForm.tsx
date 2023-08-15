@@ -74,6 +74,9 @@ export const FilterForm = (): JSX.Element => {
                 if (!queryObj["department"]) {
                     copyFilters["region"] = avaibleRegions[0];
                 }
+                if (!queryObj["sector"]) {
+                    copyFilters["sector"] = "TODOS";
+                }
                 setFilters(copyFilters);
             }
         }

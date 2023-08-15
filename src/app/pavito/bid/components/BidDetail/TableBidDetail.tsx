@@ -1,7 +1,7 @@
 import { PavitoBid } from "@/domain/models";
 import { Box, Paper } from "@mui/material";
 import { SubtitleBidDetail } from "../SubtitleBidDetail";
-import { IObject } from "@/app/utils";
+import { CustomNumber, IObject } from "@/app/utils";
 
 interface TableBidRow {
     title: string;
@@ -42,7 +42,10 @@ export const TableBidDetail = ({
                         >
                             {row.key === "nivelGobierno"
                                 ? nivelesGobierno[data[row.key]]
-                                : data[row.key]}
+                                : row.key === "montoAdjudicado" 
+                                ? new CustomNumber(data[row.key]).format() 
+                                : data[row.key]
+                            }
                         </Box>
                     </Box>
                 ))}

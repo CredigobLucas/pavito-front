@@ -4,6 +4,8 @@ import { useLayoutEffect, useState } from "react";
 import { Box } from "@mui/material";
 import { CompanyDetails, BidDetail, BidDetailParams } from "./components";
 import { useSearchParams } from "next/navigation";
+import { IconButton } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 export default function PavitoBid(): JSX.Element {
     const { setSectionTitle } = useGlobalContext();
@@ -34,6 +36,14 @@ export default function PavitoBid(): JSX.Element {
 
     return (
         <Box component={"div"} className="flex flex-col">
+            <IconButton
+                style={{ position: "absolute", left: "0px"}}
+                onClick={(): void => {
+                    window.history.back();
+                }}
+            >
+                <ArrowBackIcon />
+            </IconButton>
             <CompanyDetails ruc={ruc} mype={mype} />
             <BidDetail params={bidDetailParams} />
         </Box>

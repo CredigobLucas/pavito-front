@@ -1,6 +1,6 @@
 import { Paper, Box, Typography, Button } from "@mui/material";
 import { Bid } from "@/domain/models";
-import { IObject } from "@/app/utils";
+import { CustomNumber, IObject } from "@/app/utils";
 import Link from "next/link";
 
 interface BidCardProps {
@@ -59,7 +59,7 @@ export const BidCard = ({ bid, isLink=false, href="", onclick }: BidCardProps): 
                     fontSize={"20px"}
                     className="mb-2"
                 >
-                    S/. {bid.montoAdjudicado.toLocaleString('en-US', { style: 'decimal', maximumFractionDigits : 2, minimumFractionDigits : 2 })}
+                    S/. {new CustomNumber(bid.montoAdjudicado).format()}
                 </Typography>
             </Box>
             <Box
@@ -93,7 +93,7 @@ export const BidCard = ({ bid, isLink=false, href="", onclick }: BidCardProps): 
                 ) : (
                     <Button 
                         onClick={() : void => {
-                            if(onclick) onclick(bid);
+                            if (onclick) onclick(bid);
                         }} 
                         variant="contained" 
                         className="p-2" 
