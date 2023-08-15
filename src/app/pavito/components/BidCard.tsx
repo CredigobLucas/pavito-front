@@ -1,6 +1,6 @@
 import { Paper, Box, Typography } from "@mui/material";
 import { Bid } from "@/domain/models";
-import { IObject } from "@/app/utils";
+import { CustomNumber, IObject } from "@/app/utils";
 
 interface BidCardProps {
     bid: Bid;
@@ -52,7 +52,7 @@ export const BidCard = ({ bid }: BidCardProps): JSX.Element => {
                     fontSize={"20px"}
                     className="mb-2"
                 >
-                    S/. {bid.montoAdjudicado.toLocaleString('en-US', { style: 'decimal', maximumFractionDigits : 2, minimumFractionDigits : 2 })}
+                    S/. {new CustomNumber(bid.montoAdjudicado).format()}
                 </Typography>
             </Box>
             <Box

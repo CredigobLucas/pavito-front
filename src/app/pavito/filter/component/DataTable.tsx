@@ -1,7 +1,7 @@
 "use client";
 import { Bid } from "@/domain/models";
 import { PavitoTable } from "@/app/components/PavitoTable";
-import { IObject } from "@/app/utils";
+import { CustomNumber, IObject } from "@/app/utils";
 import { Paper } from "@mui/material";
 interface DataTableProps {
     bids: Bid[];
@@ -24,7 +24,7 @@ export const DataTable = ({ bids }: DataTableProps): JSX.Element => {
                     },
                     {
                         label: "Monto",
-                        value: (row) => `S/. ${row.montoAdjudicado.toLocaleString('en-US', { style: 'decimal', maximumFractionDigits : 2, minimumFractionDigits : 2 })}`
+                        value: (row) => `S/. ${new CustomNumber(row.montoAdjudicado).format()}`
                     },
                     {
                         label: "Mype",
