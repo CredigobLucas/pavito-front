@@ -31,6 +31,10 @@ export const FilterPagination = (): JSX.Element => {
                 }
             }}
             component={"div"}
+            labelDisplayedRows={({ from, to, count }): string =>
+                `${from}-${to} de ${count}`
+            }
+            labelRowsPerPage={"Licitaciones por página"}
         />
     );
 };

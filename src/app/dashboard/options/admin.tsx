@@ -5,11 +5,11 @@ export const adminOptions: MenuOption[] = [
     {
         title: "Cuentas",
         icon: <Groups />,
-        path: "/managment/admin/accounts"
+        path: "/management/admin/accounts"
     },
     {
         title: "Licencias",
         icon: <Check />,
-        path: "/managment/admin/licenses"
+        path: "/management/admin/licenses"
     }
 ];

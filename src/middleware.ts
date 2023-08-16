@@ -8,6 +8,7 @@ const deleteCookie = async (request: NextRequest): Promise<void> => {
 
 export async function middleware(request: NextRequest): Promise<NextResponse> {
     const token = request.cookies.get("token");
+
     if (!token)
         return NextResponse.redirect(new URL("/auth/login", request.nextUrl));
 

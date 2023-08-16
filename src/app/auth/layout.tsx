@@ -1,5 +1,5 @@
 "use client";
-import { Container } from "@mui/material";
+import { Box, Container, Paper } from "@mui/material";
 
 export default function AuthLayout({
     children
@@ -16,7 +16,17 @@ export default function AuthLayout({
                 height: "100vh"
             }}
         >
-            {children}
+            <Box
+                sx={{
+                    width: "70%",
+                    minWidth: "320px",
+                    maxWidth: "500px"
+                }}
+            >
+                <Paper elevation={3}>
+                    {children}
+                </Paper>
+            </Box>
         </Container>
     );
 }

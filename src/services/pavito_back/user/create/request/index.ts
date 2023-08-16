@@ -1,15 +1,15 @@
 import { PavitoBackApi } from "../../../PavitoBackApi";
 import { CreateUserPayload } from "../payload";
-import { CreateUserResponse } from "../response";
 import { isAxiosError } from "axios";
 import { ErrorFactory } from "@/domain/errors/ErrorFactory";
+import { GenericResponse } from "@/services/pavito_back/generic/response";
 
 export const createUser = async (
     payload: CreateUserPayload
-): Promise<CreateUserResponse> => {
+): Promise<GenericResponse> => {
     const api = new PavitoBackApi();
     try {
-        const response: CreateUserResponse = await api.post<CreateUserResponse>(
+        const response: GenericResponse = await api.post<GenericResponse>(
             "/user",
             payload
         );

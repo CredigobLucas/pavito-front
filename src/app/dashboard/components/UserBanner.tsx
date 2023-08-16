@@ -14,7 +14,7 @@ export const UserBanner = ({ name }: UserBannerProps): JSX.Element => {
                 className="font-bold"
                 color="primary"
             >
-                ¡Bienvenido/a otra vez {name}!
+                ¡Bienvenido/a a Pavito otra vez {name}!
             </Typography>
             <Typography variant="body1" component="p">
                 Por favor, selecciona con que modulo vamos a empezar a trabajar.

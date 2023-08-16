@@ -41,7 +41,7 @@ export function LoginForm(): JSX.Element {
                     message: error.message
                 });
                 if (error.type === "NewPasswordRequired") {
-                    router.push("/auth/new-password");
+                    router.push("/auth/change-password");
                 }
             }
         } finally {

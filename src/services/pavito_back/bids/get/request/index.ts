@@ -2,6 +2,7 @@ import { PavitoBackApi } from "../../../PavitoBackApi";
 import { GetBidResponse } from "../response";
 import { isAxiosError } from "axios";
 import { ErrorFactory } from "@/domain/errors/ErrorFactory";
+
 export const getBids = async (query: string): Promise<GetBidResponse> => {
     const api = new PavitoBackApi();
     try {

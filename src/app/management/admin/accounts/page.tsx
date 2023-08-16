@@ -195,6 +195,7 @@ export default function Admin(): JSX.Element {
                                 onChange={(
                                     e: SelectChangeEvent<number>
                                 ): void => {
+                                    setPage(1);
                                     setRowsPerPage(e.target.value as number);
                                 }}
                             >
@@ -211,32 +212,6 @@ export default function Admin(): JSX.Element {
                     component={"div"}
                     className="flex items-center justify-end md:justify-end"
                 >
-                    {/*<Typography
-                        sx={{
-                            marginRight: "30px"
-                        }}
-                        component="span"
-                        fontSize={"12px"}
-                        color={"#9E9E9E"}
-                    >
-                        <Typography
-                            component="span"
-                            fontWeight="bold"
-                            color={"#544892"}
-                        >
-                            {20}
-                        </Typography>{" "}
-                        de{" "}
-                        <Typography
-                            component="span"
-                            fontWeight="bold"
-                            // set primary color
-                            color={"#544892"}
-                        >
-                            {totalRows}
-                        </Typography>{" "}
-                        usuarios disponibles
-                    </Typography>*/}
                     <Button
                         className="capitalize font-bold text-sm"
                         variant="contained"
@@ -337,6 +312,7 @@ export default function Admin(): JSX.Element {
                     count={totalPages}
                     page={page}
                     shape="rounded"
+                    
                     onChange={(
                         _e: React.ChangeEvent<unknown>,
                         page: number
