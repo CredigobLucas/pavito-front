@@ -1,7 +1,8 @@
 import { Pagination } from "@/domain/interface/Pagination";
 import { User } from "@/domain/models";
-export interface EnterpriseUsersResponse {
-    status: number;
+import { GenericStatusResponse } from "@/services/pavito_back/generic/response";
+
+export interface EnterpriseUsersResponse extends GenericStatusResponse {
     body: {
         pagination: Pagination;
         users: User[];

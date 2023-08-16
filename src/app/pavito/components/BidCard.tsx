@@ -51,15 +51,18 @@ export const BidCard = ({ bid, isLink=false, href="", onclick }: BidCardProps): 
                     {bid.razonSocial}
                 </Typography>
                 <Typography color={"#777"} fontSize={"13px"}>
-                    Valor de Licitación
+                    {bid.montoAdjudicado === 0 ? "Monto estimado" : "Monto adjudicado"}
                 </Typography>
                 <Typography
                     color={"primary"}
                     fontWeight={500}
                     fontSize={"20px"}
                     className="mb-2"
+                    sx={{
+                        fontStyle: bid.montoAdjudicado === 0 ? 'italic' : 'normal'
+                    }}
                 >
-                    S/. {new CustomNumber(bid.montoAdjudicado).format()}
+                    S/. {new CustomNumber(bid.montoAdjudicado === 0 ? bid.montoEstimado : bid.montoAdjudicado).format()}
                 </Typography>
             </Box>
             <Box

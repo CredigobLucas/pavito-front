@@ -72,7 +72,7 @@ export const LicenseCard = ({ license }: LicenseProps): JSX.Element => {
                             <ItemIconCard
                                 color="rgb(5, 150, 105)"
                                 backgroundIcon="rgb(209, 250, 229)"
-                                title="Users"
+                                title="Usuarios"
                                 content={`${license.assigned_user_quantity} de ${license.license_user_quantity}`}
                                 icon={<GroupIcon />}
                             />
