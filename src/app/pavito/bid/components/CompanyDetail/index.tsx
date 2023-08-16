@@ -3,7 +3,7 @@ import { getEnterpriseDetails } from "@/services/pavito_back/bids/enterprise_det
 import { useGlobalContext } from "@/app/context";
 import { useEffect, useState } from "react";
 import { PavitoEnterprise } from "@/domain/models";
-import { CircularProgress, Box } from "@mui/material";
+import { CircularProgress, Box, Card, Tooltip, Typography } from "@mui/material";
 import { CompanyDetailHeader } from "./CompanyDetailHeader";
 import { TitleBidDetail } from "../TitleBidDetail";
 import { ItemIconCard } from "@/app/components";
@@ -65,33 +65,9 @@ export const CompanyDetails = ({
                         enterpriseDetails={enterpriseDetails}
                         mype={mype}
                     />
+                    <TitleBidDetail title="Datos históricos"/>
                     <CardsContainer className="my-6">
                         <>
-                            {enterpriseDetails.montoLicitacionesPen > 0 && (
-                                <ItemIconCard
-                                    title="Monto de Licitaciones (S/.)"
-                                    content={`S/. ${new CustomNumber(enterpriseDetails.montoLicitacionesPen).format()}`}
-                                    icon={<PaidOutlined />}
-                                    color={"#2d9cdb"}
-                                />
-                            )}
-                            {enterpriseDetails.montoLicitacionesUsd > 0 && (
-                                <ItemIconCard
-                                    title="Monto de Licitaciones ($)"
-                                    content={`$ ${enterpriseDetails.montoLicitacionesUsd}`}
-                                    icon={<PaidOutlined />}
-                                    color={"#2d9cdb"}
-                                />
-                            )}
-                            {enterpriseDetails.montoLicitacionesUsd <= 0 &&
-                                enterpriseDetails.montoLicitacionesPen <= 0 && (
-                                    <ItemIconCard
-                                        title="Monto de Licitaciones"
-                                        content="Sin registros"
-                                        icon={<PaidOutlined />}
-                                        color={"#2d9cdb"}
-                                    />
-                                )}
                             <ItemIconCard
                                 title="Total de Licitaciones"
                                 content={
@@ -124,26 +100,8 @@ export const CompanyDetails = ({
                             />
                         </>
                     </CardsContainer>
-                    <TitleBidDetail title={"Detalle sanciones penalidades"} />
-
                     <CardsContainer className="my-6">
                         <>
-                            {enterpriseDetails.sumaPenalidadesPen > 0 && (
-                                <ItemIconCard
-                                    title="Penalidades soles"
-                                    content={`S/. ${enterpriseDetails.sumaPenalidadesPen}`}
-                                    icon={<PaidOutlined />}
-                                    color={"#2d9cdb"}
-                                />
-                            )}
-                            {enterpriseDetails.sumaPenalidadesUsd > 0 && (
-                                <ItemIconCard
-                                    title="Penalidades dólares"
-                                    content={`$ ${enterpriseDetails.sumaPenalidadesUsd}`}
-                                    icon={<PaidOutlined />}
-                                    color={"#2d9cdb"}
-                                />
-                            )}
                             <ItemIconCard
                                 title="Cantidad Penalidades"
                                 content={
@@ -156,21 +114,79 @@ export const CompanyDetails = ({
                             <ItemIconCard
                                 title="Cantidad de sanciones"
                                 content={
-                                    (enterpriseDetails.sancionesTemporales &&
-                                        enterpriseDetails.sancionesDefinitivas) ||
-                                    (enterpriseDetails.sancionesDefinitivas ===
-                                        0 &&
-                                        enterpriseDetails.sancionesTemporales ===
-                                            0)
-                                        ? enterpriseDetails.sancionesTemporales +
-                                          enterpriseDetails.sancionesDefinitivas
-                                        : "-"
+                                    enterpriseDetails.sancionesTemporales +
+                                    enterpriseDetails.sancionesDefinitivas
                                 }
                                 color="#ed726b"
-                                icon={<ReportProblemOutlined />}
+                                icon={
+                                    <Tooltip
+                                        title={
+                                            (enterpriseDetails.sancionesDefinitivas !== 0 ||
+                                                enterpriseDetails.sancionesTemporales !== 0
+                                            ) && (
+                                                <Box>
+                                                    <Typography variant="inherit">Sanciones temporales {enterpriseDetails.sancionesTemporales}</Typography>
+                                                    <Typography variant="inherit">Sanciones definitivas {enterpriseDetails.sancionesDefinitivas}</Typography>
+                                                </Box>
+                                            )
+                                        }
+                                    >
+                                        <ReportProblemOutlined />
+                                    </Tooltip>
+                                }
                             />
+                            {enterpriseDetails.sumaPenalidadesPen > 0 && (
+                                <ItemIconCard
+                                    title="Penalidades soles"
+                                    content={`S/. ${enterpriseDetails.sumaPenalidadesPen}`}
+                                    icon={<PaidOutlined />}
+                                    color={"#2d9cdb"}
+                                />
+                            )}
+                        </>
+                    </CardsContainer>
+                    <CardsContainer className="my-6">
+                        <>
+                        {enterpriseDetails.montoLicitacionesPen > 0 && (
+                                <ItemIconCard
+                                    title="Monto de Licitaciones (S/.)"
+                                    content={`S/. ${new CustomNumber(enterpriseDetails.montoLicitacionesPen).format()}`}
+                                    icon={<PaidOutlined />}
+                                    color={"#2d9cdb"}
+                                />
+                            )}
+                            {enterpriseDetails.montoLicitacionesUsd > 0 && (
+                                <ItemIconCard
+                                    title="Monto de Licitaciones ($)"
+                                    content={`$ ${enterpriseDetails.montoLicitacionesUsd}`}
+                                    icon={<PaidOutlined />}
+                                    color={"#2d9cdb"}
+                                />
+                            )}
+                            {enterpriseDetails.montoLicitacionesUsd <= 0 &&
+                                enterpriseDetails.montoLicitacionesPen <= 0 && (
+                                    <ItemIconCard
+                                        title="Monto de Licitaciones"
+                                        content="Sin registros"
+                                        icon={<PaidOutlined />}
+                                        color={"#2d9cdb"}
+                                    />
+                                )}
+                            {enterpriseDetails.sumaPenalidadesUsd > 0 && (
+                                <ItemIconCard
+                                    title="Penalidades dólares"
+                                    content={`$ ${enterpriseDetails.sumaPenalidadesUsd}`}
+                                    icon={<PaidOutlined />}
+                                    color={"#2d9cdb"}
+                                />
+                            )}
+                        </>
+                    </CardsContainer>
+                    <TitleBidDetail title="Indicadores"/>
+                    <CardsContainer className="my-6">
+                        <>
                             <ItemIconCard
-                                title="Riesgo de ser sancionado"
+                                title="Indicador de buen comportamiento"
                                 color={
                                     semaphoreColor[
                                         enterpriseDetails.colorSancion
