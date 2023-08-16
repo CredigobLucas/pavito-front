@@ -17,7 +17,7 @@ export const PavitoDataSearchContextProvider = ({
     const params = useSearchParams();
     const router = useRouter();
     const pathname = usePathname();
-    const { user } = useGlobalContext();
+    const { user, setOpenLoading } = useGlobalContext();
 
     const [companyLabel, setCompanyLabel] = useState<string | undefined>(
         undefined
@@ -35,12 +35,18 @@ export const PavitoDataSearchContextProvider = ({
         if (label && data && user?.id) {
             setCompanyLabel(label);
             setCompanyData(data);
-            getBidsByCompany(params.toString()).then((res) => {
-                const { licitaciones } = res.body;
-                setRuc(licitaciones[0].ruc);
-                setBids(licitaciones);
-            });
+            setOpenLoading(true);
+            getBidsByCompany(params.toString())
+                .then((res) => {
+                    const { licitaciones } = res.body;
+                    setRuc(licitaciones[0].ruc);
+                    setBids(licitaciones);
+                })
+                .finally(() => {
+                    setOpenLoading(false);
+                });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [params, user]);
 
     const updateUrlParams = (): void => {
