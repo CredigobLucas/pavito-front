@@ -1,6 +1,7 @@
-import { Paper, Box, Typography, Button } from "@mui/material";
+import { Paper, Box, Typography, Button, SxProps } from "@mui/material";
 import { Bid } from "@/domain/models";
 import { CustomNumber, IObject } from "@/app/utils";
+import { Theme } from "@emotion/react";
 import Link from "next/link";
 
 interface BidCardProps {
@@ -8,9 +9,16 @@ interface BidCardProps {
     isLink?: boolean;
     href?: string;
     onclick?: (bid: Bid) => void;
+    sx?: SxProps<Theme>;
 }
 
-export const BidCard = ({ bid, isLink=false, href="", onclick }: BidCardProps): JSX.Element => {
+export const BidCard = ({
+    bid,
+    isLink = false,
+    href = "",
+    onclick,
+    sx = {}
+}: BidCardProps): JSX.Element => {
     const gobierno: IObject = {
         GR: "Regional",
         GL: "Local",
@@ -23,6 +31,7 @@ export const BidCard = ({ bid, isLink=false, href="", onclick }: BidCardProps): 
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "space-between",
+                ...sx
             }}
             elevation={3}
         >
@@ -86,24 +95,28 @@ export const BidCard = ({ bid, isLink=false, href="", onclick }: BidCardProps): 
             <Box className="px-4 pb-3">
                 {isLink ? (
                     <Link href={href}>
-                        <Button variant="contained" className="p-2" fullWidth color="primary">
+                        <Button
+                            variant="contained"
+                            className="p-2"
+                            fullWidth
+                            color="primary"
+                        >
                             Más información
                         </Button>
                     </Link>
                 ) : (
-                    <Button 
-                        onClick={() : void => {
+                    <Button
+                        onClick={(): void => {
                             if (onclick) onclick(bid);
-                        }} 
-                        variant="contained" 
-                        className="p-2" 
-                        fullWidth 
+                        }}
+                        variant="contained"
+                        className="p-2"
+                        fullWidth
                         color="primary"
                     >
                         Más información
                     </Button>
                 )}
-                
             </Box>
         </Paper>
     );
