@@ -4,17 +4,23 @@ interface CardsContainerProps {
     children: React.ReactNode;
     component?: React.ElementType;
     className?: string;
+    mobileMode?: boolean;
 }
 
 export const CardsContainer = ({
     children,
     component = "div",
-    className = ""
+    className = "",
+    mobileMode = false
 }: CardsContainerProps): JSX.Element => {
     return (
         <Box
             component={component}
-            className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 ${className}`}
+            className={`grid gap-4 ${
+                mobileMode
+                    ? "grid-cols-1"
+                    : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+            } ${className}`}
         >
             {children}
         </Box>

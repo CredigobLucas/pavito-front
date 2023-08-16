@@ -11,12 +11,14 @@ interface TableBidDetailProps {
     data: PavitoBid;
     rows: TableBidRow[];
     className?: string;
+    mobileMode?: boolean;
 }
 
 export const TableBidDetail = ({
     data,
     rows,
-    className = ""
+    className = "",
+    mobileMode = false
 }: TableBidDetailProps): JSX.Element => {
     const nivelesGobierno: IObject = {
         GL: "Local",
@@ -30,22 +32,25 @@ export const TableBidDetail = ({
                     <Box
                         key={`${row.key}-${index}-bid-detail`}
                         component={"div"}
-                        className="flex w-full flex-col md:flex-row py-2"
+                        className={`flex w-full py-2 flex-col ${
+                            mobileMode ? "" : "md:flex-row"
+                        }`}
                     >
                         <SubtitleBidDetail
-                            className="w-full md:w-1/2"
+                            className={`w-full ${mobileMode ? "" : "md:w-1/2"}`}
                             subtitle={row.title}
                         />
                         <Box
-                            className="w-full md:w-1/2 mt-1 md:mt-0"
+                            className={`w-full mt-1 ${
+                                mobileMode ? "" : "md:w-1/2 md:mt-0"
+                            }`}
                             component={"span"}
                         >
                             {row.key === "nivelGobierno"
                                 ? nivelesGobierno[data[row.key]]
-                                : row.key === "montoAdjudicado" 
-                                ? new CustomNumber(data[row.key]).format() 
-                                : data[row.key]
-                            }
+                                : row.key === "montoAdjudicado"
+                                ? new CustomNumber(data[row.key]).format()
+                                : data[row.key]}
                         </Box>
                     </Box>
                 ))}

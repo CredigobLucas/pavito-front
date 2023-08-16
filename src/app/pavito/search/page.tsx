@@ -3,12 +3,12 @@ import { useGlobalContext } from "@/app/context";
 import { useLayoutEffect } from "react";
 import {
     Box,
-    Typography,
     Select,
     MenuItem,
     TextField,
     Paper,
-    Button
+    Button,
+    Grid
 } from "@mui/material";
 
 import { BidCard } from "../components/BidCard";
@@ -41,22 +41,6 @@ export default function PavitoFilter(): JSX.Element {
 
     return (
         <Box component={"section"} className="mt-5">
-            <Box className="flex justify-between mb-6">
-                <Typography
-                    className="font-bold mr-6"
-                    variant="h4"
-                    component="h1"
-                    sx={{
-                        color: (theme): string => {
-                            return theme.palette.mode === "dark"
-                                ? "default"
-                                : "primary";
-                        }
-                    }}
-                >
-                    Empresas
-                </Typography>
-            </Box>
             <Box
                 component={"div"}
                 className="flex flex-col lg:flex-row"
@@ -72,7 +56,7 @@ export default function PavitoFilter(): JSX.Element {
                         }
                     }}
                 >
-                    <Paper elevation={3} className="p-1">
+                    <Paper elevation={3} className="p-1 mb-3">
                         <AccordionForm
                             theme={theme.palette.mode}
                             label="Buscar por"
@@ -128,34 +112,13 @@ export default function PavitoFilter(): JSX.Element {
                             </Box>
                         </AccordionForm>
                     </Paper>
-                    <Box className="mt-4 mb-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1">
-                        {bids.map((bid, index) => {
-                            return (
-                                <Box
-                                    key={"bid-" + index}
-                                    className="p-0 my-2 md:mx-2 lg:mx-0 lg:my-2"
-                                >
-                                    <BidCard
-                                        bid={bid}
-                                        sx={{
-                                            height: "auto"
-                                        }}
-                                        onclick={(bid): void => {
-                                            setSelectedBid(bid);
-                                        }}
-                                    />
-                                </Box>
-                            );
-                        })}
-                    </Box>
-                </Box>
-                <Box component="section" className="w-full">
                     <Box component={"div"}>
                         {bids.length > 0 && (
                             <CompanyDetails
                                 ruc={bids[0].ruc}
                                 mype={bids[0].mype}
                                 hasMargin={false}
+                                mobileMode={true}
                             />
                         )}
                     </Box>
@@ -171,10 +134,23 @@ export default function PavitoFilter(): JSX.Element {
                                     participante:
                                         selectedBid.id_participante.toString()
                                 }}
+                                mobileMode={true}
                             />
                         )}
                     </Box>
                 </Box>
+                <Grid className="w-full" container>
+                    {bids.map((bid, index) => (
+                        <Grid className="p-3" item key={index} xs={12} md={6}>
+                            <BidCard
+                                bid={bid}
+                                onclick={(bid): void => {
+                                    setSelectedBid(bid);
+                                }}
+                            />
+                        </Grid>
+                    ))}
+                </Grid>
             </Box>
         </Box>
     );

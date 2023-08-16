@@ -60,7 +60,9 @@ export const BidCard = ({
                     {bid.razonSocial}
                 </Typography>
                 <Typography color={"#777"} fontSize={"13px"}>
-                    {bid.montoAdjudicado === 0 ? "Monto estimado" : "Monto adjudicado"}
+                    {bid.montoAdjudicado === 0
+                        ? "Monto estimado"
+                        : "Monto adjudicado"}
                 </Typography>
                 <Typography
                     color={"primary"}
@@ -68,10 +70,16 @@ export const BidCard = ({
                     fontSize={"20px"}
                     className="mb-2"
                     sx={{
-                        fontStyle: bid.montoAdjudicado === 0 ? 'italic' : 'normal'
+                        fontStyle:
+                            bid.montoAdjudicado === 0 ? "italic" : "normal"
                     }}
                 >
-                    S/. {new CustomNumber(bid.montoAdjudicado === 0 ? bid.montoEstimado : bid.montoAdjudicado).format()}
+                    S/.{" "}
+                    {new CustomNumber(
+                        bid.montoAdjudicado === 0
+                            ? bid.montoEstimado
+                            : bid.montoAdjudicado
+                    ).format()}
                 </Typography>
             </Box>
             <Box
@@ -109,7 +117,8 @@ export const BidCard = ({
                     </Link>
                 ) : (
                     <Button
-                        onClick={(): void => {
+                        onClick={(e): void => {
+                            e.preventDefault();
                             if (onclick) onclick(bid);
                         }}
                         variant="contained"

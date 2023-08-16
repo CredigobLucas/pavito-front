@@ -22,12 +22,14 @@ interface CompanyDetailsProps {
     ruc: string;
     mype: boolean;
     hasMargin?: boolean;
+    mobileMode?: boolean;
 }
 
 export const CompanyDetails = ({
     ruc,
     mype,
-    hasMargin = true
+    hasMargin = true,
+    mobileMode = false
 }: CompanyDetailsProps): JSX.Element => {
     const { user } = useGlobalContext();
     const [enterpriseDetails, setEnterpriseDetails] = useState<
@@ -67,9 +69,10 @@ export const CompanyDetails = ({
                         enterpriseDetails={enterpriseDetails}
                         mype={mype}
                         hasMargin={hasMargin}
+                        mobileMode={mobileMode}
                     />
-                    <TitleBidDetail title="Datos históricos" />
-                    <CardsContainer className="my-6">
+                    <TitleBidDetail className="mt-3" title="Datos históricos" />
+                    <CardsContainer mobileMode={mobileMode} className="my-6">
                         <>
                             <ItemIconCard
                                 title="Total de Licitaciones"
@@ -103,7 +106,7 @@ export const CompanyDetails = ({
                             />
                         </>
                     </CardsContainer>
-                    <CardsContainer className="my-6">
+                    <CardsContainer mobileMode={mobileMode} className="my-6">
                         <>
                             <ItemIconCard
                                 title="Cantidad Penalidades"
@@ -159,7 +162,7 @@ export const CompanyDetails = ({
                             )}
                         </>
                     </CardsContainer>
-                    <CardsContainer className="my-6">
+                    <CardsContainer mobileMode={mobileMode} className="my-6">
                         <>
                             {enterpriseDetails.montoLicitacionesPen > 0 && (
                                 <ItemIconCard
@@ -199,7 +202,7 @@ export const CompanyDetails = ({
                         </>
                     </CardsContainer>
                     <TitleBidDetail title="Indicadores" />
-                    <CardsContainer className="my-6">
+                    <CardsContainer mobileMode={mobileMode} className="my-6">
                         <>
                             <ItemIconCard
                                 title="Indicador de buen comportamiento"
@@ -212,8 +215,8 @@ export const CompanyDetails = ({
                                 icon={
                                     <Box
                                         sx={{
-                                            width: "2.9rem",
-                                            height: "2.8rem",
+                                            width: "55px",
+                                            height: "50px !important",
                                             borderRadius: "50%",
                                             backgroundColor:
                                                 semaphoreColor[

@@ -6,12 +6,14 @@ interface CompanyDetailHeaderProps {
     enterpriseDetails: PavitoEnterprise;
     mype: boolean;
     hasMargin?: boolean;
+    mobileMode?: boolean;
 }
 
 export const CompanyDetailHeader = ({
     enterpriseDetails,
     mype,
-    hasMargin = true
+    hasMargin = true,
+    mobileMode = false
 }: CompanyDetailHeaderProps): JSX.Element => {
     const firstLetterToUpperCase = (word: string): string => {
         return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
@@ -27,7 +29,13 @@ export const CompanyDetailHeader = ({
                     {enterpriseDetails.razonSocial}
                 </Typography>
             </Box>
-            <Box className="mt-2 flex w-full md:justify-between flex-col md:flex-row">
+            <Box
+                className={`mt-2 flex w-full ${
+                    mobileMode
+                        ? "flex-col"
+                        : "md:justify-between flex-col md:flex-row"
+                }`}
+            >
                 <Box>
                     <CompanyDetailHeaderItem
                         title={"RUC:"}
@@ -50,8 +58,6 @@ export const CompanyDetailHeader = ({
                             enterpriseDetails.departamento
                         )}, ${firstLetterToUpperCase(
                             enterpriseDetails.provincia
-                        )}, ${firstLetterToUpperCase(
-                            enterpriseDetails.distrito
                         )}`}
                     />
                     <CompanyDetailHeaderItem

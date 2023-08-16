@@ -17,9 +17,13 @@ export interface BidDetailParams {
 
 interface BidDetailProps {
     params: BidDetailParams | null;
+    mobileMode?: boolean;
 }
 
-export const BidDetail = ({ params }: BidDetailProps): JSX.Element => {
+export const BidDetail = ({
+    params,
+    mobileMode = false
+}: BidDetailProps): JSX.Element => {
     const { user } = useGlobalContext();
     const [bidDetail, setBidDetail] = useState<PavitoBid | undefined>(
         undefined
@@ -88,6 +92,7 @@ export const BidDetail = ({ params }: BidDetailProps): JSX.Element => {
                                 key: "sector"
                             }
                         ]}
+                        mobileMode={mobileMode}
                     />
                 </Box>
             )}

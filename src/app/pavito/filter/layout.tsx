@@ -5,9 +5,5 @@ export default function PavitoLayout({
 }: {
     children: React.ReactNode;
 }): JSX.Element {
-    return (
-        <PavitoDataContextProvider>
-                {children}
-        </PavitoDataContextProvider>
-    );
+    return <PavitoDataContextProvider>{children}</PavitoDataContextProvider>;
 }
