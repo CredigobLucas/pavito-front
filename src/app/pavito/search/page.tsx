@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 
 import { BidCard } from "../components/BidCard";
+import { CompanyDetails } from "../bid/components";
 
 import { AccordionForm } from "@/app/components";
 
@@ -61,7 +62,10 @@ export default function PavitoFilter(): JSX.Element {
             >
                 <Box
                     sx={{
-                        minWidth: "300px"
+                        width: {
+                            xs: "100%",
+                            lg: "500px"
+                        }
                     }}
                 >
                     <Paper elevation={3} className="p-1">
@@ -120,7 +124,7 @@ export default function PavitoFilter(): JSX.Element {
                             </Box>
                         </AccordionForm>
                     </Paper>
-                    <Box className="mt-4">
+                    <Box className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1">
                         {bids.map((bid, index) => {
                             return (
                                 <BidCard
@@ -136,8 +140,13 @@ export default function PavitoFilter(): JSX.Element {
                     </Box>
                 </Box>
                 <Box component="section" className="w-full">
-                    <Box component={"div"} sx={{ border: "1px solid orange" }}>
-                        empresa gaaa
+                    <Box component={"div"}>
+                        {bids.length > 0 && (
+                            <CompanyDetails
+                                ruc={bids[0].ruc}
+                                mype={bids[0].mype}
+                            />
+                        )}
                     </Box>
                     <Box
                         className="mt-6"

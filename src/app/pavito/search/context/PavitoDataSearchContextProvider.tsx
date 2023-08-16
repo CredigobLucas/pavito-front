@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { getBidsByCompany } from "@/services/pavito_back/bids/by_company";
 import { Bid } from "@/domain/models";
+import { useGlobalContext } from "@/app/context";
 
 export const PavitoDataSearchContextProvider = ({
     children
@@ -16,6 +17,7 @@ export const PavitoDataSearchContextProvider = ({
     const params = useSearchParams();
     const router = useRouter();
     const pathname = usePathname();
+    const { user } = useGlobalContext();
 
     const [companyLabel, setCompanyLabel] = useState<string | undefined>(
         undefined
@@ -29,7 +31,7 @@ export const PavitoDataSearchContextProvider = ({
     useEffect(() => {
         const label = params.get("company_label");
         const data = params.get("company_data");
-        if (label && data) {
+        if (label && data && user?.id) {
             setCompanyLabel(label);
             setCompanyData(data);
             getBidsByCompany(params.toString()).then((res) => {
@@ -38,7 +40,7 @@ export const PavitoDataSearchContextProvider = ({
                 setBids(licitaciones);
             });
         }
-    }, [params]);
+    }, [params, user]);
 
     const updateUrlParams = (): void => {
         const params = `?company_label=${companyLabel}&company_data=${companyData}`;
