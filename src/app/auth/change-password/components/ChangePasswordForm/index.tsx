@@ -34,7 +34,7 @@ export function ChangePasswordForm(): JSX.Element {
             });
             const response = await login({
                 email,
-                password
+                password: newPassword,
             });
             await setCookie({
                 name: "token",
