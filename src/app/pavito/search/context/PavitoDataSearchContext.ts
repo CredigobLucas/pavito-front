@@ -8,6 +8,8 @@ export interface IPavitoDataSearchContext {
     updateUrlParams: () => void;
     ruc: string | undefined;
     bids: Bid[];
+    selectedBid: Bid | undefined;
+    setSelectedBid: (bid: Bid | undefined) => void;
 }
 
 export const PavitoDataSearchContext = createContext<

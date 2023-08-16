@@ -12,6 +12,8 @@ import {
 } from "@mui/material";
 
 import { BidCard } from "../components/BidCard";
+import { BidDetail } from "../bid/components";
+
 import { CompanyDetails } from "../bid/components";
 
 import { AccordionForm } from "@/app/components";
@@ -27,7 +29,9 @@ export default function PavitoFilter(): JSX.Element {
         setCompanyData,
         setCompanyLabel,
         updateUrlParams,
-        bids
+        bids,
+        selectedBid,
+        setSelectedBid
     } = usePavitoDataSearchContext();
 
     useLayoutEffect(() => {
@@ -57,7 +61,7 @@ export default function PavitoFilter(): JSX.Element {
                 component={"div"}
                 className="flex flex-col lg:flex-row"
                 sx={{
-                    gap: "25px"
+                    columnGap: "50px"
                 }}
             >
                 <Box
@@ -124,17 +128,23 @@ export default function PavitoFilter(): JSX.Element {
                             </Box>
                         </AccordionForm>
                     </Paper>
-                    <Box className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1">
+                    <Box className="mt-4 mb-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1">
                         {bids.map((bid, index) => {
                             return (
-                                <BidCard
+                                <Box
                                     key={"bid-" + index}
-                                    bid={bid}
-                                    sx={{
-                                        height: "auto",
-                                        my: "20px"
-                                    }}
-                                />
+                                    className="p-0 my-2 md:mx-2 lg:mx-0 lg:my-2"
+                                >
+                                    <BidCard
+                                        bid={bid}
+                                        sx={{
+                                            height: "auto"
+                                        }}
+                                        onclick={(bid): void => {
+                                            setSelectedBid(bid);
+                                        }}
+                                    />
+                                </Box>
                             );
                         })}
                     </Box>
@@ -145,15 +155,24 @@ export default function PavitoFilter(): JSX.Element {
                             <CompanyDetails
                                 ruc={bids[0].ruc}
                                 mype={bids[0].mype}
+                                hasMargin={false}
                             />
                         )}
                     </Box>
-                    <Box
-                        className="mt-6"
-                        component={"div"}
-                        sx={{ border: "1px solid skyblue" }}
-                    >
-                        detalle licitacion gaaa
+                    <Box className="mt-6" component={"div"}>
+                        {selectedBid && (
+                            <BidDetail
+                                params={{
+                                    item: selectedBid.id_item.toString(),
+                                    licitacion:
+                                        selectedBid.id_licitacion.toString(),
+                                    milestone:
+                                        selectedBid.id_milestone.toString(),
+                                    participante:
+                                        selectedBid.id_participante.toString()
+                                }}
+                            />
+                        )}
                     </Box>
                 </Box>
             </Box>

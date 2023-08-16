@@ -5,17 +5,19 @@ import { CompanyDetailHeaderItem } from "./CompanyDetailHeaderItem";
 interface CompanyDetailHeaderProps {
     enterpriseDetails: PavitoEnterprise;
     mype: boolean;
+    hasMargin?: boolean;
 }
 
 export const CompanyDetailHeader = ({
     enterpriseDetails,
-    mype
+    mype,
+    hasMargin = true
 }: CompanyDetailHeaderProps): JSX.Element => {
     const firstLetterToUpperCase = (word: string): string => {
         return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
     };
     return (
-        <Box className="mt-6" component={"div"}>
+        <Box className={hasMargin ? "mt-6" : ""} component={"div"}>
             <Box className="w-full">
                 <Typography
                     variant={"h5"}

@@ -1,6 +1,6 @@
 "use client";
 import { Navbar } from "../components";
-import { Container } from "@mui/material";
+import { Box } from "@mui/material";
 import { PavitoDataSearchContextProvider } from "./search/context";
 export default function PavitoLayout({
     children
@@ -10,7 +10,9 @@ export default function PavitoLayout({
     return (
         <PavitoDataSearchContextProvider>
             <Navbar />
-            <Container component="main">{children}</Container>
+            <Box className="px-10" component="main">
+                {children}
+            </Box>
         </PavitoDataSearchContextProvider>
     );
 }

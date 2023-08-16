@@ -21,11 +21,13 @@ import { CustomNumber, IObject } from "@/app/utils";
 interface CompanyDetailsProps {
     ruc: string;
     mype: boolean;
+    hasMargin?: boolean;
 }
 
 export const CompanyDetails = ({
     ruc,
-    mype
+    mype,
+    hasMargin = true
 }: CompanyDetailsProps): JSX.Element => {
     const { user } = useGlobalContext();
     const [enterpriseDetails, setEnterpriseDetails] = useState<
@@ -64,8 +66,9 @@ export const CompanyDetails = ({
                     <CompanyDetailHeader
                         enterpriseDetails={enterpriseDetails}
                         mype={mype}
+                        hasMargin={hasMargin}
                     />
-                    <TitleBidDetail title="Datos históricos"/>
+                    <TitleBidDetail title="Datos históricos" />
                     <CardsContainer className="my-6">
                         <>
                             <ItemIconCard
@@ -121,12 +124,23 @@ export const CompanyDetails = ({
                                 icon={
                                     <Tooltip
                                         title={
-                                            (enterpriseDetails.sancionesDefinitivas !== 0 ||
-                                                enterpriseDetails.sancionesTemporales !== 0
-                                            ) && (
+                                            (enterpriseDetails.sancionesDefinitivas !==
+                                                0 ||
+                                                enterpriseDetails.sancionesTemporales !==
+                                                    0) && (
                                                 <Box>
-                                                    <Typography variant="inherit">Sanciones temporales {enterpriseDetails.sancionesTemporales}</Typography>
-                                                    <Typography variant="inherit">Sanciones definitivas {enterpriseDetails.sancionesDefinitivas}</Typography>
+                                                    <Typography variant="inherit">
+                                                        Sanciones temporales{" "}
+                                                        {
+                                                            enterpriseDetails.sancionesTemporales
+                                                        }
+                                                    </Typography>
+                                                    <Typography variant="inherit">
+                                                        Sanciones definitivas{" "}
+                                                        {
+                                                            enterpriseDetails.sancionesDefinitivas
+                                                        }
+                                                    </Typography>
                                                 </Box>
                                             )
                                         }
@@ -147,10 +161,12 @@ export const CompanyDetails = ({
                     </CardsContainer>
                     <CardsContainer className="my-6">
                         <>
-                        {enterpriseDetails.montoLicitacionesPen > 0 && (
+                            {enterpriseDetails.montoLicitacionesPen > 0 && (
                                 <ItemIconCard
                                     title="Monto de Licitaciones (S/.)"
-                                    content={`S/. ${new CustomNumber(enterpriseDetails.montoLicitacionesPen).format()}`}
+                                    content={`S/. ${new CustomNumber(
+                                        enterpriseDetails.montoLicitacionesPen
+                                    ).format()}`}
                                     icon={<PaidOutlined />}
                                     color={"#2d9cdb"}
                                 />
@@ -182,7 +198,7 @@ export const CompanyDetails = ({
                             )}
                         </>
                     </CardsContainer>
-                    <TitleBidDetail title="Indicadores"/>
+                    <TitleBidDetail title="Indicadores" />
                     <CardsContainer className="my-6">
                         <>
                             <ItemIconCard

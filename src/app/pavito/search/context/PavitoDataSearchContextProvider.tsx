@@ -27,6 +27,7 @@ export const PavitoDataSearchContextProvider = ({
     );
     const [ruc, setRuc] = useState<string | undefined>(undefined);
     const [bids, setBids] = useState<Bid[]>([]);
+    const [selectedBid, setSelectedBid] = useState<Bid | undefined>(undefined);
 
     useEffect(() => {
         const label = params.get("company_label");
@@ -54,7 +55,9 @@ export const PavitoDataSearchContextProvider = ({
         setCompanyData,
         updateUrlParams,
         ruc,
-        bids
+        bids,
+        selectedBid,
+        setSelectedBid
     };
 
     return (

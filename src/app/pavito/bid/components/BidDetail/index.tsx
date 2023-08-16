@@ -27,6 +27,7 @@ export const BidDetail = ({ params }: BidDetailProps): JSX.Element => {
 
     useEffect(() => {
         if (params && user && user.id) {
+            setBidDetail(undefined);
             getBidDetail({
                 item: params.item,
                 licitacion: params.licitacion,
