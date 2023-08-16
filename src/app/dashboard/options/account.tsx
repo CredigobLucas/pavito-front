@@ -5,6 +5,6 @@ export const accountOptions: MenuOption[] = [
     {
         title: "Perfil",
         icon: <Settings />,
-        path: "/managment/account/user"
+        path: "/management/account/user"
     }
 ];

@@ -3,7 +3,7 @@ import { getEnterpriseDetails } from "@/services/pavito_back/bids/enterprise_det
 import { useGlobalContext } from "@/app/context";
 import { useEffect, useState } from "react";
 import { PavitoEnterprise } from "@/domain/models";
-import { CircularProgress, Box, Card, Tooltip, Typography } from "@mui/material";
+import { CircularProgress, Box, Tooltip, Typography } from "@mui/material";
 import { CompanyDetailHeader } from "./CompanyDetailHeader";
 import { TitleBidDetail } from "../TitleBidDetail";
 import { ItemIconCard } from "@/app/components";

@@ -13,11 +13,11 @@ interface MenuOtionsProps {
 }
 const modules = [
     {
-        rootPath: "/managment/admin",
+        rootPath: "/management/admin",
         options: adminOptions
     },
     {
-        rootPath: "/managment/account",
+        rootPath: "/management/account",
         options: accountOptions
     }
 ];

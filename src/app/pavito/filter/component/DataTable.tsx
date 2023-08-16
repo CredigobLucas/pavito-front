@@ -30,7 +30,7 @@ export const DataTable = ({ bids }: DataTableProps): JSX.Element => {
                                 <Typography>Monto</Typography>
                             </Tooltip>
                         ),
-                        value: (row) => {
+                        value: (row: Bid): React.ReactNode => {
                             const isAdjudicadoZero = row.montoAdjudicado === 0;
                             return (
                                 <Tooltip title={isAdjudicadoZero ? "Monto estimado" : "Monto adjudicado"}>

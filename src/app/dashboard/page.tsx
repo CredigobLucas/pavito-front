@@ -17,7 +17,7 @@ export default function Dashboard(): JSX.Element {
             description: "Administra los usuarios y verifica tu licencia",
             icon: <Settings htmlColor="#0369A1" />,
             backgroundColor: "#BAE6FD",
-            link: "/managment/admin/accounts",
+            link: "/management/admin/accounts",
             menuOptions: adminOptions
         },
         {
@@ -25,7 +25,7 @@ export default function Dashboard(): JSX.Element {
             description: "Administra tu cuenta y tus datos personales",
             icon: <Person htmlColor="#047857" />,
             backgroundColor: "#D1FAE5",
-            link: "/managment/account/user",
+            link: "/management/account/user",
             menuOptions: accountOptions
         },
         {
