@@ -8,7 +8,8 @@ import {
     TextField,
     Paper,
     Button,
-    Grid
+    Grid,
+    Typography
 } from "@mui/material";
 
 import { BidCard } from "../components/BidCard";
@@ -139,18 +140,39 @@ export default function PavitoFilter(): JSX.Element {
                         )}
                     </Box>
                 </Box>
-                <Grid className="w-full" container>
-                    {bids.map((bid, index) => (
-                        <Grid className="p-3" item key={index} xs={12} md={6}>
-                            <BidCard
-                                bid={bid}
-                                onclick={(bid): void => {
-                                    setSelectedBid(bid);
-                                }}
-                            />
-                        </Grid>
-                    ))}
-                </Grid>
+                <Box className="w-full">
+                    <Typography
+                        className="font-bold mb-6"
+                        variant="h4"
+                        component="h1"
+                        sx={{
+                            color: (theme): string =>
+                                theme.palette.mode === "dark"
+                                    ? "default"
+                                    : "primary"
+                        }}
+                    >
+                        Contratos
+                    </Typography>
+                    <Grid container>
+                        {bids.map((bid, index) => (
+                            <Grid
+                                className="p-3"
+                                item
+                                key={index}
+                                xs={12}
+                                md={6}
+                            >
+                                <BidCard
+                                    bid={bid}
+                                    onclick={(bid): void => {
+                                        setSelectedBid(bid);
+                                    }}
+                                />
+                            </Grid>
+                        ))}
+                    </Grid>
+                </Box>
             </Box>
         </Box>
     );
