@@ -1,5 +1,6 @@
-export interface LoginResponse {
-    status: number;
+import { GenericStatusResponse } from "@/services/pavito_back/generic/response";
+
+export interface LoginResponse extends GenericStatusResponse {
     body: {
         authentication_result: {
             access_token: string;

@@ -1,13 +1,13 @@
 import { PavitoBackApi } from "../../../PavitoBackApi";
 import { ConfirmForgotPasswordPayload } from "../payload";
-import { ConfirmForgotPasswordResponse } from "../response";
 import { isAxiosError } from "axios";
 import { ErrorFactory } from "@/domain/errors/ErrorFactory";
+import { GenericResponse } from "@/services/pavito_back/generic/response";
 
-export const confirmForgotPassword = async (email: string, payload: ConfirmForgotPasswordPayload): Promise<ConfirmForgotPasswordResponse> => {
+export const confirmForgotPassword = async (email: string, payload: ConfirmForgotPasswordPayload): Promise<GenericResponse> => {
     const api = new PavitoBackApi();
     try {
-        const response: ConfirmForgotPasswordResponse = await api.put<ConfirmForgotPasswordResponse>(
+        const response: GenericResponse = await api.put<GenericResponse>(
             `/auth/confirm-forgot-password/${email}`,
             payload
         );
@@ -36,7 +36,7 @@ export const confirmForgotPassword = async (email: string, payload: ConfirmForgo
                 }
                 else {
                     throw ErrorFactory.create(
-                        "Error en el servidor, intente nuevamente.",
+                        "Error desconocido intente nuevamente.",
                         "BadRequest"
                     );
                 }

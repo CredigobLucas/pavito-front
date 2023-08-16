@@ -1,6 +1,7 @@
 import { Bid } from "@/domain/models";
-export interface GetBidResponse {
-    status: number;
+import { GenericStatusResponse } from "@/services/pavito_back/generic/response";
+
+export interface GetBidRespons extends GenericStatusResponse {
     body: {
         paginaVigente: number;
         numeroPaginas: number;

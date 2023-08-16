@@ -12,7 +12,6 @@ import {
     Paper,
     Button,
 } from "@mui/material";
-import { InputPasswordReveal } from "@/app/components/Password";
 
 
 const style = {
@@ -40,8 +39,6 @@ export const CreateUser = ({ open, close }: CreateUserProps): JSX.Element => {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [repeatPassword, setRepeatPassword] = useState("");
 
     const create = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
@@ -49,8 +46,7 @@ export const CreateUser = ({ open, close }: CreateUserProps): JSX.Element => {
             const response = await createUser({
                 last_name: lastName,
                 name: firstName,
-                email,
-                password
+                email
             });
             if (response.status === 201) {
                 openAlertMessage({
@@ -145,20 +141,6 @@ export const CreateUser = ({ open, close }: CreateUserProps): JSX.Element => {
                             }}
                             type="email"
                         />
-                        <InputPasswordReveal 
-                            label="Contraseña*"
-                            placeholder="Ingrese la contraseña"
-                            modifyPassword={(e: React.ChangeEvent<HTMLInputElement>): void => {
-                                setPassword(e.target.value);
-                            }}
-                        />
-                        <InputPasswordReveal 
-                            label="Repetir Contraseña*"
-                            placeholder="Repita la contraseña"
-                            modifyPassword={(e: React.ChangeEvent<HTMLInputElement>): void => {
-                                setRepeatPassword(e.target.value);
-                            }}
-                        />
                         <Box
                             component="div"
                             className="w-full flex justify-end"
@@ -181,7 +163,6 @@ export const CreateUser = ({ open, close }: CreateUserProps): JSX.Element => {
                                 size="small"
                                 className="capitalize font-bold"
                                 type="submit"
-                                disabled={password !== repeatPassword}
                             >
                                 Crear
                             </Button>

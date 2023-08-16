@@ -1,13 +1,13 @@
 import { PavitoBackApi } from "../../../PavitoBackApi";
 import { ForgotPasswordPayload } from "../payload";
-import { ForgotPasswordResponse } from "../response";
 import { isAxiosError } from "axios";
 import { ErrorFactory } from "@/domain/errors/ErrorFactory";
+import { GenericResponse } from "@/services/pavito_back/generic/response";
 
-export const forgotPassword = async (payload: ForgotPasswordPayload): Promise<ForgotPasswordResponse> => {
+export const forgotPassword = async (payload: ForgotPasswordPayload): Promise<GenericResponse> => {
     const api = new PavitoBackApi();
     try {
-        const response: ForgotPasswordResponse = await api.post<ForgotPasswordResponse>(
+        const response: GenericResponse = await api.post<GenericResponse>(
             "/auth/forgot-password",
             payload
         );

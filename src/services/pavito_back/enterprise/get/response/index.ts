@@ -1,5 +1,6 @@
 import { Enterprise } from "@/domain/models/Enterprise";
-export interface GetEnterpriseResponse {
-    status: number;
+import { GenericStatusResponse } from "@/services/pavito_back/generic/response";
+
+export interface GetEnterpriseResponse extends GenericStatusResponse {
     body: Enterprise;
 }
