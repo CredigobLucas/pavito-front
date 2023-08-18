@@ -34,7 +34,7 @@ const adaptToKeys: IObject = {
 
 export const FilterForm = (): JSX.Element => {
     const params = useSearchParams();
-    const { theme, avaibleRegions } = useGlobalContext();
+    const { theme, availableRegions } = useGlobalContext();
     const { sectors, setQueryFilter, filters, setFilters } = usePavitoDataFilterContext();
 
     const toDefault = (): void => {
@@ -43,7 +43,7 @@ export const FilterForm = (): JSX.Element => {
             amountTo: null,
             govLevel: "GL",
             sector: null,
-            region: avaibleRegions[0],
+            region: availableRegions[0],
             objLicitation: "Bien",
             daysAgo: "30",
             dateFrom: "",
@@ -52,7 +52,7 @@ export const FilterForm = (): JSX.Element => {
     };
 
     useLayoutEffect(() => {
-        if (avaibleRegions.length > 0) {
+        if (availableRegions.length > 0) {
             const queryParams: string = params.toString();
             if (queryParams) {
                 const queryObj: IObject = Object.fromEntries(
@@ -72,7 +72,7 @@ export const FilterForm = (): JSX.Element => {
                     copyFilters["dateTo"] = ""
                 }
                 if (!queryObj["department"]) {
-                    copyFilters["region"] = avaibleRegions[0];
+                    copyFilters["region"] = availableRegions[0];
                 }
                 if (!queryObj["sector"]) {
                     copyFilters["sector"] = "TODOS";
@@ -81,7 +81,7 @@ export const FilterForm = (): JSX.Element => {
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [params, avaibleRegions]);
+    }, [params, availableRegions]);
 
     return (
         <Paper
@@ -236,10 +236,10 @@ export const FilterForm = (): JSX.Element => {
                                     region: value || ""
                                 });
                             }}
-                            options={avaibleRegions}
+                            options={availableRegions}
                             value={filters.region || ""}
                             size="small"
-                            renderInput={(params): React.ReactNode => (
+                            renderInput={(params: AutocompleteRenderInputParams): React.ReactNode => (
                                 <TextField {...params} label="Regiones" />
                             )}
                         />

@@ -17,8 +17,7 @@ export interface IGlobalContext {
     openAlert: boolean;
     alertMessage: AlertMessage;
     setOpenAlert: (open: boolean) => void;
-    avaibleRegions: string[];
-
+    availableRegions: string[];
     openLoading: boolean;
     setOpenLoading: (open: boolean) => void;
 }

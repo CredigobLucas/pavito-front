@@ -13,7 +13,7 @@ interface LicenseProps {
 }
 
 export const LicenseCard = ({ license }: LicenseProps): JSX.Element => {
-    const { avaibleRegions } = useGlobalContext();
+    const { availableRegions } = useGlobalContext();
 
     return (
         <Box component="div" className="p-4" sx={{ width: "100%" }}>
@@ -86,7 +86,7 @@ export const LicenseCard = ({ license }: LicenseProps): JSX.Element => {
                         sx={{ height: "260px" }}
                     >
                         <Grid container component="div" className="mt-2">
-                            {avaibleRegions.map((region, index) => (
+                            {availableRegions.map((region, index) => (
                                 <Grid
                                     key={index}
                                     item
