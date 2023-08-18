@@ -21,6 +21,7 @@ import { useGlobalContext } from "@/app/context";
 import { usePavitoDataFilterContext } from "@/app/pavito/filter/context";
 import { IObject } from "@/app/utils";
 import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const adaptToKeys: IObject = {
     bid_min_amount: "amountFrom",
@@ -37,6 +38,8 @@ const adaptToKeys: IObject = {
 export const FilterForm = (): JSX.Element => {
     const params = useSearchParams();
     const { theme, availableRegions } = useGlobalContext();
+    const router = useRouter();
+
     const { sectors, setQueryFilter, filters, setFilters } =
         usePavitoDataFilterContext();
 
@@ -95,7 +98,15 @@ export const FilterForm = (): JSX.Element => {
                 setQueryFilter();
             }}
         >
-            <Tabs value={0} variant="fullWidth">
+            <Tabs
+                value={0}
+                variant="fullWidth"
+                onChange={(_, value): void => {
+                    if (value === 1) {
+                        router.push("/pavito/search");
+                    }
+                }}
+            >
                 <Tab label="Prospectos" className="capitalize" />
                 <Tab label="Empresas" className="capitalize" />
             </Tabs>

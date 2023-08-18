@@ -22,10 +22,11 @@ import { CompanyDetails } from "../bid/components";
 import { AccordionForm } from "@/app/components";
 
 import { usePavitoDataSearchContext } from "./context";
+import { useRouter } from "next/navigation";
 
 export default function PavitoFilter(): JSX.Element {
     const { setSectionTitle, theme } = useGlobalContext();
-
+    const router = useRouter();
     const {
         companyLabel,
         companyData,
@@ -60,7 +61,15 @@ export default function PavitoFilter(): JSX.Element {
                     }}
                 >
                     <Paper elevation={3} className="p-1 mb-3">
-                        <Tabs value={1} variant="fullWidth">
+                        <Tabs
+                            value={1}
+                            variant="fullWidth"
+                            onChange={(_, value): void => {
+                                if (value === 0) {
+                                    router.push("/pavito/filter");
+                                }
+                            }}
+                        >
                             <Tab label="Prospectos" className="capitalize" />
                             <Tab label="Empresas" className="capitalize" />
                         </Tabs>
