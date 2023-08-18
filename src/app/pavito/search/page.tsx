@@ -9,7 +9,9 @@ import {
     Paper,
     Button,
     Grid,
-    Typography
+    Typography,
+    Tabs,
+    Tab
 } from "@mui/material";
 
 import { BidCard } from "../components/BidCard";
@@ -58,6 +60,10 @@ export default function PavitoFilter(): JSX.Element {
                     }}
                 >
                     <Paper elevation={3} className="p-1 mb-3">
+                        <Tabs value={1} variant="fullWidth">
+                            <Tab label="Prospectos" className="capitalize" />
+                            <Tab label="Empresas" className="capitalize" />
+                        </Tabs>
                         <AccordionForm
                             theme={theme.palette.mode}
                             label="Buscar por"

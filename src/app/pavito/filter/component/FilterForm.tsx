@@ -11,7 +11,9 @@ import {
     Radio,
     FormControlLabel,
     Autocomplete,
-    AutocompleteRenderInputParams
+    AutocompleteRenderInputParams,
+    Tabs,
+    Tab
 } from "@mui/material";
 import { useLayoutEffect } from "react";
 import { AccordionForm } from "@/app/components";
@@ -35,7 +37,8 @@ const adaptToKeys: IObject = {
 export const FilterForm = (): JSX.Element => {
     const params = useSearchParams();
     const { theme, availableRegions } = useGlobalContext();
-    const { sectors, setQueryFilter, filters, setFilters } = usePavitoDataFilterContext();
+    const { sectors, setQueryFilter, filters, setFilters } =
+        usePavitoDataFilterContext();
 
     const toDefault = (): void => {
         setFilters({
@@ -68,8 +71,8 @@ export const FilterForm = (): JSX.Element => {
                 if (!queryObj["days_ago"]) {
                     copyFilters["daysAgo"] = "-1";
                 } else {
-                    copyFilters["dateFrom"] = ""
-                    copyFilters["dateTo"] = ""
+                    copyFilters["dateFrom"] = "";
+                    copyFilters["dateTo"] = "";
                 }
                 if (!queryObj["department"]) {
                     copyFilters["region"] = availableRegions[0];
@@ -92,17 +95,11 @@ export const FilterForm = (): JSX.Element => {
                 setQueryFilter();
             }}
         >
+            <Tabs value={0} variant="fullWidth">
+                <Tab label="Prospectos" className="capitalize" />
+                <Tab label="Empresas" className="capitalize" />
+            </Tabs>
             <Box className="w-full flex items-center justify-between p-4">
-                <Typography
-                    variant="body1"
-                    className="font-semibold"
-                    component="p"
-                    sx={{
-                        fontFamily: `'Nunito Sans', sans-serif !important`
-                    }}
-                >
-                    Filtros
-                </Typography>
                 <Typography
                     variant="body2"
                     component="p"
@@ -132,9 +129,7 @@ export const FilterForm = (): JSX.Element => {
                                     onChange={(e): void =>
                                         setFilters({
                                             ...filters,
-                                            amountFrom: parseInt(
-                                                e.target.value
-                                            )
+                                            amountFrom: parseInt(e.target.value)
                                         })
                                     }
                                 />
@@ -149,11 +144,11 @@ export const FilterForm = (): JSX.Element => {
                                     value={filters.amountTo}
                                     onChange={(
                                         e: React.ChangeEvent<HTMLInputElement>
-                                    ): void =>{
-                                        setFilters({...filters,
-                                            amountTo: parseInt(
-                                                e.target.value
-                                            )})
+                                    ): void => {
+                                        setFilters({
+                                            ...filters,
+                                            amountTo: parseInt(e.target.value)
+                                        });
                                     }}
                                 />
                             </Grid>
@@ -239,7 +234,9 @@ export const FilterForm = (): JSX.Element => {
                             options={availableRegions}
                             value={filters.region || ""}
                             size="small"
-                            renderInput={(params: AutocompleteRenderInputParams): React.ReactNode => (
+                            renderInput={(
+                                params: AutocompleteRenderInputParams
+                            ): React.ReactNode => (
                                 <TextField {...params} label="Regiones" />
                             )}
                         />
@@ -329,7 +326,7 @@ export const FilterForm = (): JSX.Element => {
                                         setFilters({
                                             ...filters,
                                             dateFrom: e.target.value
-                                        })
+                                        });
                                     }}
                                     InputLabelProps={{
                                         shrink: true
@@ -375,7 +372,7 @@ export const FilterForm = (): JSX.Element => {
                                         setFilters({
                                             ...filters,
                                             dateTo: e.target.value
-                                        })
+                                        });
                                     }}
                                 />
                             </Box>
