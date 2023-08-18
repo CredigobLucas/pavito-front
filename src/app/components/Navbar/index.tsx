@@ -25,7 +25,7 @@ import { useGlobalContext } from "@/app/context";
 import { useState } from "react";
 import { removeCookie } from "@/app/actions";
 import { CredigobLogo } from "../CredigobLogo";
-
+import Link from "next/link";
 
 interface NavbarProps {
     hasMenu?: boolean;
@@ -127,12 +127,17 @@ export const Navbar = ({
                         open={Boolean(anchorEl)}
                         onClose={handleClose}
                     >
-                        <MenuItem onClick={handleClose}>
-                            <ListItemIcon>
-                                <Person fontSize="small" />
-                            </ListItemIcon>
-                            <ListItemText primary="Mi Perfil" />
-                        </MenuItem>
+                        <Link
+                            href="/management/account/user"
+                            className="no-underline text-inherit"
+                        >
+                            <MenuItem onClick={handleClose}>
+                                <ListItemIcon>
+                                    <Person fontSize="small" />
+                                </ListItemIcon>
+                                <ListItemText primary="Mi Perfil" />
+                            </MenuItem>
+                        </Link>
                         <MenuItem
                             onClick={(): void => {
                                 toggleTheme();
