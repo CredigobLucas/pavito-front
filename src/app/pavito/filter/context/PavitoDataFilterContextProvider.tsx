@@ -29,7 +29,7 @@ export const PavitoDataContextProvider = ({
 }: {
     children: React.ReactNode;
 }): JSX.Element => {
-    const { setOpenLoading, openAlertMessage, avaibleRegions } = useGlobalContext();
+    const { setOpenLoading, openAlertMessage, availableRegions } = useGlobalContext();
     const router = useRouter();
     const pathname = usePathname();
     const params = useSearchParams();
@@ -130,7 +130,7 @@ export const PavitoDataContextProvider = ({
     };
 
     useEffect(() => {
-        if (avaibleRegions.length > 0) {
+        if (availableRegions.length > 0) {
             const queryParams = params.toString()
             if(queryParams !== "") getBidsP(params.toString());
             else {
@@ -140,14 +140,14 @@ export const PavitoDataContextProvider = ({
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [params, avaibleRegions]);
+    }, [params, availableRegions]);
 
     const adaptFilter = (): IObject => {
         const obj: IObject = CLEAN_NULL_VALUES({
             ...filters,
             sector: filters.sector === "TODOS" ? null : filters.sector,
             daysAgo: filters.daysAgo === "-1" ? null : filters.daysAgo,
-            region: filters.region ? filters.region : avaibleRegions[0]
+            region: filters.region ? filters.region : availableRegions[0]
             
         });
 

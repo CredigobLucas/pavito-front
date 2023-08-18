@@ -29,7 +29,7 @@ export const GlobalContextProvider = ({
     const [openLoading, setOpenLoading] = useState<boolean>(false);
 
     const [openAlert, setOpenAlert] = useState<boolean>(false);
-    const [avaibleRegions, setAvaibleRegions] = useState<string[]>([]);
+    const [availableRegions, setAvailableRegions] = useState<string[]>([]);
     const [alertMessage, setAlertMessage] = useState<AlertMessage>({
         horizontal: "left",
         vertical: "top",
@@ -53,7 +53,7 @@ export const GlobalContextProvider = ({
             setTheme(darkTheme);
         }
     };
-    const getAvaibleRegions = (): void => {
+    const getAvailableRegions = (): void => {
         const permissions = user?.groups.map((group) => {
             return group.permissions;
         });
@@ -74,13 +74,14 @@ export const GlobalContextProvider = ({
                 index === self.findIndex((t) => t.id === region.id)
         );
         if (regionsWithoutDuplicates) {
-            setAvaibleRegions(
-                regionsWithoutDuplicates.map((region) => region.value)
-            );
+            const availableRegions = regionsWithoutDuplicates.map((region) => region.value);
+            availableRegions.sort();
+            availableRegions.unshift("Todos");
+            setAvailableRegions(availableRegions);
         }
     };
     useEffect(() => {
-        getAvaibleRegions();
+        getAvailableRegions();
     }, [user]);
 
     const value: IGlobalContext = {
@@ -98,7 +99,7 @@ export const GlobalContextProvider = ({
         alertMessage: alertMessage,
         openLoading: openLoading,
         setOpenLoading: setOpenLoading,
-        avaibleRegions: avaibleRegions
+        availableRegions: availableRegions
     };
 
     return (
