@@ -25,6 +25,7 @@ import { useRouter } from "next/navigation";
 import { inactiveUser } from "@/services/pavito_back/user/inactive";
 import { activeUser } from "@/services/pavito_back/user/active";
 import { CreateUser } from "./components/CreateUser";
+import { EditUser } from "./components/EditUser";
 
 export default function Admin(): JSX.Element {
     const [rows, setRows] = useState<User[]>([]);
@@ -33,12 +34,13 @@ export default function Admin(): JSX.Element {
     const [totalPages, setTotalPages] = useState<number>(0);
     const [onlyActive, setOnlyActive] = useState<boolean>(false);
     const [openCreateUser, setOpenCreateUser] = useState<boolean>(false);
+    const [openEditUser, setOpenEditUser] = useState<boolean>(false);
 
     const {
         user: userLogged,
         openAlertMessage,
         setOpenLoading,
-        setSectionTitle,
+        setSectionTitle
     } = useGlobalContext();
 
     const [anchorActions, setAnchorActions] = useState<null | HTMLElement>(
@@ -82,7 +84,7 @@ export default function Admin(): JSX.Element {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     useMemo(() => {
-        if(userLogged?.id) {
+        if (userLogged?.id) {
             getAllUsers();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -279,21 +281,19 @@ export default function Admin(): JSX.Element {
                                 component="div"
                                 className="flex justify-center"
                             >
-                                {user.id !== userLogged?.id && (
-                                    <IconButton
-                                        onClick={(
-                                            e: React.MouseEvent<
-                                                HTMLButtonElement,
-                                                MouseEvent
-                                            >
-                                        ): void => {
-                                            setSelectedUser(user);
-                                            setAnchorActions(e.currentTarget);
-                                        }}
-                                    >
-                                        <MoreVert color="primary" />
-                                    </IconButton>
-                                )}
+                                <IconButton
+                                    onClick={(
+                                        e: React.MouseEvent<
+                                            HTMLButtonElement,
+                                            MouseEvent
+                                        >
+                                    ): void => {
+                                        setSelectedUser(user);
+                                        setAnchorActions(e.currentTarget);
+                                    }}
+                                >
+                                    <MoreVert color="primary" />
+                                </IconButton>
                             </Box>
                         )
                     }
@@ -312,7 +312,6 @@ export default function Admin(): JSX.Element {
                     count={totalPages}
                     page={page}
                     shape="rounded"
-                    
                     onChange={(
                         _e: React.ChangeEvent<unknown>,
                         page: number
@@ -328,26 +327,46 @@ export default function Admin(): JSX.Element {
                     setAnchorActions(null);
                 }}
             >
+                {selectedUser?.id !== userLogged?.id && (
+                    <MenuItem
+                        onClick={(): void => {
+                            if (selectedUser) {
+                                if (selectedUser.is_active) {
+                                    inactive(selectedUser.id);
+                                } else {
+                                    active(selectedUser.id);
+                                }
+                                return;
+                            }
+                            setAnchorActions(null);
+                        }}
+                    >
+                        {selectedUser?.is_active ? "Desactivar" : "Activar"}
+                    </MenuItem>
+                )}
                 <MenuItem
                     onClick={(): void => {
-                        if (selectedUser) {
-                            if (selectedUser.is_active) {
-                                inactive(selectedUser.id);
-                            } else {
-                                active(selectedUser.id);
-                            }
-                            return;
-                        }
+                        setOpenEditUser(true);
                         setAnchorActions(null);
                     }}
                 >
-                    {selectedUser?.is_active ? "Desactivar" : "Activar"}
+                    Editar
                 </MenuItem>
             </Menu>
             <CreateUser
                 open={openCreateUser}
                 close={(reload: boolean): void => {
                     setOpenCreateUser(false);
+                    if (reload) {
+                        getAllUsers();
+                    }
+                }}
+            />
+            <EditUser
+                open={openEditUser}
+                selectedUser={selectedUser}
+                close={(reload: boolean): void => {
+                    setOpenEditUser(false);
                     if (reload) {
                         getAllUsers();
                     }
