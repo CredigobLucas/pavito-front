@@ -39,8 +39,13 @@ export const PavitoDataSearchContextProvider = ({
             getBidsByCompany(params.toString())
                 .then((res) => {
                     const { licitaciones } = res.body;
-                    setRuc(licitaciones[0].ruc);
-                    setBids(licitaciones);
+                    if (licitaciones.length > 0) {
+                        setRuc(licitaciones[0].ruc);
+                        setBids(licitaciones);
+                    } else {
+                        setRuc(undefined);
+                        setBids([]);
+                    }
                 })
                 .finally(() => {
                     setOpenLoading(false);
