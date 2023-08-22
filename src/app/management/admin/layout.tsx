@@ -2,7 +2,6 @@
 import { useLayoutEffect, useState } from "react";
 import { useGlobalContext } from "../../context";
 import { useRouter } from "next/navigation";
-import { Box } from "@mui/material";
 
 export default function ManagmentLayout({
     children
