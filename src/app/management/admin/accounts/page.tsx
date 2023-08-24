@@ -8,7 +8,6 @@ import {
     Pagination,
     Chip,
     Select,
-    Switch,
     Checkbox,
     Menu,
     MenuItem,
