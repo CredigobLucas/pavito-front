@@ -26,6 +26,7 @@ import { inactiveUser } from "@/services/pavito_back/user/inactive";
 import { activeUser } from "@/services/pavito_back/user/active";
 import { CreateUser } from "./components/CreateUser";
 import { EditUser } from "./components/EditUser";
+import { resendInvitationMessage } from "@/services/pavito_back/auth/resend-invitation-message";
 
 export default function Admin(): JSX.Element {
     const [rows, setRows] = useState<User[]>([]);
@@ -165,6 +166,34 @@ export default function Admin(): JSX.Element {
             setOpenLoading(false);
         }
     };
+
+    const resendInvitation = async (email: string): Promise<void> => {
+        try {
+            setOpenLoading(true);
+            await resendInvitationMessage({
+                email
+            });
+            openAlertMessage({
+                horizontal: "center",
+                vertical: "top",
+                severity: "success",
+                message: "El correo de bienvenida se reenvió correctamente"
+            });
+        }
+        catch (error) {
+            if (error instanceof TError) {
+                openAlertMessage({
+                    horizontal: "center",
+                    vertical: "top",
+                    severity: "error",
+                    message: error.message
+                });
+            }
+        }
+        finally {
+            setOpenLoading(false);
+        }
+    }
 
     return (
         <GeneralContainer
@@ -351,6 +380,15 @@ export default function Admin(): JSX.Element {
                     }}
                 >
                     Editar
+                </MenuItem>
+                <MenuItem
+                    onClick={(): void => {
+                        if (selectedUser)
+                            resendInvitation(selectedUser.email);
+                        setAnchorActions(null);
+                    }}
+                >
+                    Reenviar correo de invitación
                 </MenuItem>
             </Menu>
             <CreateUser
