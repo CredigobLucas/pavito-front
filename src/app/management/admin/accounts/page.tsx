@@ -8,7 +8,7 @@ import {
     Pagination,
     Chip,
     Select,
-    Switch,
+    Checkbox,
     Menu,
     MenuItem,
     IconButton,
@@ -270,7 +270,7 @@ export default function Admin(): JSX.Element {
                 <FormControlLabel
                     className="mr-5"
                     control={
-                        <Switch
+                        <Checkbox
                             size="small"
                             checked={onlyActive}
                             onChange={(): void => {
@@ -278,7 +278,7 @@ export default function Admin(): JSX.Element {
                             }}
                         />
                     }
-                    label={onlyActive ? "Todos" : "Solo activos"}
+                    label={"Solo activos"}
                 />
             </Box>
             <PavitoTable<User>
