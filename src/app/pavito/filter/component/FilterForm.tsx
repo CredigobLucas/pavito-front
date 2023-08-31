@@ -37,13 +37,19 @@ const adaptToKeys: IObject = {
 
 export const FilterForm = (): JSX.Element => {
     const params = useSearchParams();
-    const { theme, availableRegions } = useGlobalContext();
+    const { theme, availableRegions, openAlertMessage } = useGlobalContext();
     const router = useRouter();
 
     const { sectors, setQueryFilter, filters, setFilters } =
         usePavitoDataFilterContext();
 
     const toDefault = (): void => {
+        openAlertMessage({
+            horizontal: "center",
+            vertical: "top",
+            severity: "success",
+            message: "Filtros limpiados correctamente"
+        })
         setFilters({
             amountFrom: null,
             amountTo: null,
