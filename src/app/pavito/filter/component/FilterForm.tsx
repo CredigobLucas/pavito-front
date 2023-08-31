@@ -22,6 +22,7 @@ import { usePavitoDataFilterContext } from "@/app/pavito/filter/context";
 import { IObject } from "@/app/utils";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
+import { PavitoDataFilters } from "@/domain/interface/PavitoDataFilters";
 
 const adaptToKeys: IObject = {
     bid_min_amount: "amountFrom",
@@ -63,6 +64,25 @@ export const FilterForm = (): JSX.Element => {
         });
     };
 
+    const saveFiltersAsPreset = (): void => {
+        openAlertMessage({
+            horizontal: "center",
+            vertical: "top",
+            severity: "success",
+            message: "Filtros guardados como predeterminado correctamente"
+        })
+        localStorage.setItem("filtrosProspectos", JSON.stringify(filters));
+    };
+
+    const parseObjectToPavitoDataFilters = (obj: IObject): PavitoDataFilters => {
+        Object.keys(obj).forEach((key: string) => {
+            if (adaptToKeys[key]) {
+                obj[adaptToKeys[key]] = obj[key];
+            }
+        });
+        return obj as PavitoDataFilters;
+    };
+
     useLayoutEffect(() => {
         if (availableRegions.length > 0) {
             const queryParams: string = params.toString();
@@ -70,13 +90,7 @@ export const FilterForm = (): JSX.Element => {
                 const queryObj: IObject = Object.fromEntries(
                     new URLSearchParams(queryParams)
                 );
-                const copyFilters = { ...filters };
-
-                Object.keys(queryObj).forEach((key: string) => {
-                    if (adaptToKeys[key]) {
-                        copyFilters[adaptToKeys[key]] = queryObj[key];
-                    }
-                });
+                const copyFilters = parseObjectToPavitoDataFilters(queryObj);
                 if (!queryObj["days_ago"]) {
                     copyFilters["daysAgo"] = "-1";
                 } else {
@@ -90,6 +104,13 @@ export const FilterForm = (): JSX.Element => {
                     copyFilters["sector"] = "TODOS";
                 }
                 setFilters(copyFilters);
+            }
+            else {
+                const prospectFilters: string | null = localStorage.getItem("filtrosProspectos");            
+                if (prospectFilters) {
+                    const copyFilters = parseObjectToPavitoDataFilters(JSON.parse(prospectFilters));
+                    setFilters(copyFilters);
+                }
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -402,6 +423,7 @@ export const FilterForm = (): JSX.Element => {
                         variant="outlined"
                         className="capitalize font-semibold py-2 mr-4"
                         type="button"
+                        onClick={saveFiltersAsPreset}
                     >
                         Predeterminado
                     </Button>
