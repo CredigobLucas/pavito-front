@@ -1,6 +1,6 @@
 "use client";
 import { useGlobalContext } from "@/app/context";
-import { useLayoutEffect } from "react";
+import { useLayoutEffect, useState } from "react";
 import {
     Box,
     Select,
@@ -8,13 +8,10 @@ import {
     TextField,
     Paper,
     Button,
-    Grid,
-    Typography,
     Tabs,
     Tab
 } from "@mui/material";
 
-import { BidCard } from "../components/BidCard";
 import { BidDetail } from "../bid/components";
 
 import { CompanyDetails } from "../bid/components";
@@ -23,9 +20,12 @@ import { AccordionForm } from "@/app/components";
 
 import { usePavitoDataSearchContext } from "./context";
 import { useRouter } from "next/navigation";
+import { DataGrid } from "../filter/component/DataGrid";
+import { DataTable, DisplayMode, FilterHeader, ToggleViewFilter } from "../filter/component";
+import { Bid } from "@/domain/models";
 
-export default function PavitoFilter(): JSX.Element {
-    const { setSectionTitle, theme } = useGlobalContext();
+export default function PavitoSearch(): JSX.Element {
+    const { setSectionTitle, theme, openAlertMessage } = useGlobalContext();
     const router = useRouter();
     const {
         companyLabel,
@@ -42,6 +42,18 @@ export default function PavitoFilter(): JSX.Element {
         setSectionTitle("logo");
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+    const [displayData, setDisplayData] = useState<DisplayMode>(
+        DisplayMode.TableView
+    );
+    const alertAndSetSelectedBid = (bid: Bid): void => {
+        openAlertMessage({
+            horizontal: "center",
+            vertical: "top",
+            severity: "success",
+            message: "El detalle de la licitación aparecerá más abajo"
+        })
+        setSelectedBid(bid);
+    }
 
     return (
         <Box component={"section"} className="mt-5">
@@ -76,6 +88,7 @@ export default function PavitoFilter(): JSX.Element {
                         <AccordionForm
                             theme={theme.palette.mode}
                             label="Buscar por"
+                            defaultExpanded={true}
                         >
                             <Box
                                 component={"form"}
@@ -156,37 +169,27 @@ export default function PavitoFilter(): JSX.Element {
                     </Box>
                 </Box>
                 <Box className="w-full">
-                    <Typography
-                        className="font-bold mb-6"
-                        variant="h4"
-                        component="h1"
-                        sx={{
-                            color: (theme): string =>
-                                theme.palette.mode === "dark"
-                                    ? "default"
-                                    : "primary"
-                        }}
+                    <Box
+                        component={"div"}
+                        className="w-full flex items-end justify-center mt-6 flex-col"
                     >
-                        Contratos
-                    </Typography>
-                    <Grid container>
-                        {bids.map((bid, index) => (
-                            <Grid
-                                className="p-3"
-                                item
-                                key={index}
-                                xs={12}
-                                md={6}
-                            >
-                                <BidCard
-                                    bid={bid}
-                                    onclick={(bid): void => {
-                                        setSelectedBid(bid);
-                                    }}
-                                />
-                            </Grid>
-                        ))}
-                    </Grid>
+                        <FilterHeader title={"Contratos"}/>
+                        <ToggleViewFilter displayData={displayData} changeDisplayMode={setDisplayData}/>
+                    </Box>
+                    <Box className="mt-6">
+                        {displayData === DisplayMode.GridView && (
+                            <DataGrid
+                                bids={bids}
+                                onclick={alertAndSetSelectedBid}
+                            />
+                        )}
+                        {displayData === DisplayMode.TableView && (
+                            <DataTable 
+                                bids={bids}
+                                onclick={alertAndSetSelectedBid}
+                            />
+                        )}
+                    </Box>
                 </Box>
             </Box>
         </Box>

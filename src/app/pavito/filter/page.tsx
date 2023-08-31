@@ -46,8 +46,8 @@ export default function PavitoFilter(): JSX.Element {
                     component={"div"}
                     className="w-full flex items-end justify-center mt-6 flex-col"
                 >
-                    <FilterHeader />
-                    <ToggleViewFilter changeDisplayMode={setDisplayData} />
+                    <FilterHeader title={"Prospectos"}/>
+                    <ToggleViewFilter displayData={displayData} changeDisplayMode={setDisplayData} />
                 </Box>
                 <Box className="mt-6">
                     {displayData === DisplayMode.GridView && (
