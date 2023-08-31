@@ -7,9 +7,9 @@ import {
     MenuItem,
     TextField,
     Paper,
-    Button,
     Tabs,
-    Tab
+    Tab,
+    Divider
 } from "@mui/material";
 
 import { BidDetail } from "../bid/components";
@@ -23,6 +23,8 @@ import { useRouter } from "next/navigation";
 import { DataGrid } from "../filter/component/DataGrid";
 import { DataTable, DisplayMode, FilterHeader, ToggleViewFilter } from "../filter/component";
 import { Bid } from "@/domain/models";
+import { Buttons } from "../filter/component/Buttons";
+import { FILTROS_CONTRATOS, SAVE_FILTERS_AS_PRESET } from "@/app/utils/storage";
 
 export default function PavitoSearch(): JSX.Element {
     const { setSectionTitle, theme, openAlertMessage } = useGlobalContext();
@@ -55,6 +57,16 @@ export default function PavitoSearch(): JSX.Element {
         setSelectedBid(bid);
     }
 
+    useLayoutEffect((): void => {
+        const contractFilters: string | null = localStorage.getItem(FILTROS_CONTRATOS);   
+        if (contractFilters) {
+            const { companyLabel, companyData } = JSON.parse(contractFilters);
+            setCompanyLabel(companyLabel);
+            setCompanyData(companyData);
+            updateUrlParams();
+        }         
+    });
+
     return (
         <Box component={"section"} className="mt-5">
             <Box
@@ -72,7 +84,15 @@ export default function PavitoSearch(): JSX.Element {
                         }
                     }}
                 >
-                    <Paper elevation={3} className="p-1 mb-3">
+                    <Paper 
+                        elevation={3}
+                        className="p-1 mb-3"
+                        component={"form"}
+                        onSubmit={(e): void => {
+                            e.preventDefault();
+                            updateUrlParams();
+                        }}
+                    >
                         <Tabs
                             value={1}
                             variant="fullWidth"
@@ -85,17 +105,11 @@ export default function PavitoSearch(): JSX.Element {
                             <Tab label="Prospectos" className="capitalize" />
                             <Tab label="Empresas" className="capitalize" />
                         </Tabs>
-                        <AccordionForm
-                            theme={theme.palette.mode}
-                            label="Buscar por"
-                            defaultExpanded={true}
-                        >
-                            <Box
-                                component={"form"}
-                                onSubmit={(e): void => {
-                                    e.preventDefault();
-                                    updateUrlParams();
-                                }}
+                        <Box>
+                            <AccordionForm
+                                theme={theme.palette.mode}
+                                label="Buscar por"
+                                defaultExpanded={true}
                             >
                                 <Select
                                     id="demo-simple-select"
@@ -128,18 +142,15 @@ export default function PavitoSearch(): JSX.Element {
                                             : "text"
                                     }
                                 />
-                                <Box className="w-full flex items-center mt-4">
-                                    <Button
-                                        variant="contained"
-                                        className="capitalize font-semibold py-2"
-                                        type="submit"
-                                        fullWidth
-                                    >
-                                        Buscar
-                                    </Button>
-                                </Box>
-                            </Box>
-                        </AccordionForm>
+                            </AccordionForm>
+                        </Box>
+                        <Divider />
+                        <Buttons saveFiltersAsPreset={(): void => {
+                            SAVE_FILTERS_AS_PRESET(FILTROS_CONTRATOS, {
+                                companyLabel,
+                                companyData,
+                            }, openAlertMessage)
+                        }}/>
                     </Paper>
                     <Box component={"div"}>
                         {bids.length > 0 && (

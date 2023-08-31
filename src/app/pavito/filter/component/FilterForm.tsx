@@ -4,7 +4,6 @@ import {
     Paper,
     Box,
     Divider,
-    Button,
     TextField,
     Grid,
     RadioGroup,
@@ -19,22 +18,11 @@ import { useLayoutEffect } from "react";
 import { AccordionForm } from "@/app/components";
 import { useGlobalContext } from "@/app/context";
 import { usePavitoDataFilterContext } from "@/app/pavito/filter/context";
-import { IObject } from "@/app/utils";
+import { IObject, PARSE_OBJECT_TO_PAVITO_DATA_FILTERS } from "@/app/utils";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
-import { PavitoDataFilters } from "@/domain/interface/PavitoDataFilters";
-
-const adaptToKeys: IObject = {
-    bid_min_amount: "amountFrom",
-    bid_max_amount: "amountTo",
-    gov_level: "govLevel",
-    sector: "sector",
-    department: "region",
-    bid_obj: "objLicitation",
-    days_ago: "daysAgo",
-    initial_date: "dateFrom",
-    final_date: "dateTo"
-};
+import { Buttons } from "./Buttons";
+import { FILTROS_PROSPECTOS, SAVE_FILTERS_AS_PRESET } from "@/app/utils/storage";
 
 export const FilterForm = (): JSX.Element => {
     const params = useSearchParams();
@@ -64,33 +52,14 @@ export const FilterForm = (): JSX.Element => {
         });
     };
 
-    const saveFiltersAsPreset = (): void => {
-        openAlertMessage({
-            horizontal: "center",
-            vertical: "top",
-            severity: "success",
-            message: "Filtros guardados como predeterminado correctamente"
-        })
-        localStorage.setItem("filtrosProspectos", JSON.stringify(filters));
-    };
-
-    const parseObjectToPavitoDataFilters = (obj: IObject): PavitoDataFilters => {
-        Object.keys(obj).forEach((key: string) => {
-            if (adaptToKeys[key]) {
-                obj[adaptToKeys[key]] = obj[key];
-            }
-        });
-        return obj as PavitoDataFilters;
-    };
-
-    useLayoutEffect(() => {
+    useLayoutEffect((): void => {
         if (availableRegions.length > 0) {
             const queryParams: string = params.toString();
             if (queryParams) {
                 const queryObj: IObject = Object.fromEntries(
                     new URLSearchParams(queryParams)
                 );
-                const copyFilters = parseObjectToPavitoDataFilters(queryObj);
+                const copyFilters = PARSE_OBJECT_TO_PAVITO_DATA_FILTERS(queryObj);
                 if (!queryObj["days_ago"]) {
                     copyFilters["daysAgo"] = "-1";
                 } else {
@@ -106,9 +75,9 @@ export const FilterForm = (): JSX.Element => {
                 setFilters(copyFilters);
             }
             else {
-                const prospectFilters: string | null = localStorage.getItem("filtrosProspectos");            
+                const prospectFilters: string | null = localStorage.getItem(FILTROS_PROSPECTOS);            
                 if (prospectFilters) {
-                    const copyFilters = parseObjectToPavitoDataFilters(JSON.parse(prospectFilters));
+                    const copyFilters = PARSE_OBJECT_TO_PAVITO_DATA_FILTERS(JSON.parse(prospectFilters));
                     setFilters(copyFilters);
                 }
             }
@@ -418,23 +387,9 @@ export const FilterForm = (): JSX.Element => {
                     </AccordionForm>
                 </Box>
                 <Divider />
-                <Box className="p-4 w-full flex items-center justify-end">
-                    <Button
-                        variant="outlined"
-                        className="capitalize font-semibold py-2 mr-4"
-                        type="button"
-                        onClick={saveFiltersAsPreset}
-                    >
-                        Predeterminado
-                    </Button>
-                    <Button
-                        variant="contained"
-                        className="capitalize font-semibold py-2"
-                        type="submit"
-                    >
-                        Buscar
-                    </Button>
-                </Box>
+                <Buttons saveFiltersAsPreset={(): void => {
+                    SAVE_FILTERS_AS_PRESET(FILTROS_PROSPECTOS, filters, openAlertMessage)
+                }}/>
             </Box>
         </Paper>
     );
