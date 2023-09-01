@@ -9,7 +9,6 @@ export const getBids = async (query: string): Promise<GetBidResponse> => {
         const response: GetBidResponse = await api.get<GetBidResponse>(
             `/licitaciones?${query}`
         );
-        console.log(response);
         return response;
     } catch (error) {
         if (isAxiosError(error)) {

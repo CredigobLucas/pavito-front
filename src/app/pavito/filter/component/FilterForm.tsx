@@ -14,7 +14,7 @@ import {
     Tabs,
     Tab
 } from "@mui/material";
-import { useEffect, useLayoutEffect } from "react";
+import { useLayoutEffect } from "react";
 import { AccordionForm } from "@/app/components";
 import { useGlobalContext } from "@/app/context";
 import { usePavitoDataFilterContext } from "@/app/pavito/filter/context";
