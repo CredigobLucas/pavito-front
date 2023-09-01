@@ -4,7 +4,6 @@ import {
     Paper,
     Box,
     Divider,
-    Button,
     TextField,
     Grid,
     RadioGroup,
@@ -19,58 +18,39 @@ import { useLayoutEffect } from "react";
 import { AccordionForm } from "@/app/components";
 import { useGlobalContext } from "@/app/context";
 import { usePavitoDataFilterContext } from "@/app/pavito/filter/context";
-import { IObject } from "@/app/utils";
+import { IObject, PARSE_OBJECT_TO_PAVITO_DATA_FILTERS } from "@/app/utils";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
-
-const adaptToKeys: IObject = {
-    bid_min_amount: "amountFrom",
-    bid_max_amount: "amountTo",
-    gov_level: "govLevel",
-    sector: "sector",
-    department: "region",
-    bid_obj: "objLicitation",
-    days_ago: "daysAgo",
-    initial_date: "dateFrom",
-    final_date: "dateTo"
-};
+import { Buttons } from "./Buttons";
+import { FILTROS_PROSPECTOS, SAVE_FILTERS_AS_PRESET } from "@/app/utils/storage";
+import { DEFAULT_PAVITO_DATA_FILTERS } from "@/app/utils/filters";
 
 export const FilterForm = (): JSX.Element => {
     const params = useSearchParams();
-    const { theme, availableRegions } = useGlobalContext();
+    const { theme, availableRegions, openAlertMessage } = useGlobalContext();
     const router = useRouter();
 
     const { sectors, setQueryFilter, filters, setFilters } =
         usePavitoDataFilterContext();
 
     const toDefault = (): void => {
-        setFilters({
-            amountFrom: null,
-            amountTo: null,
-            govLevel: "GL",
-            sector: null,
-            region: availableRegions[0],
-            objLicitation: "Bien",
-            daysAgo: "30",
-            dateFrom: "",
-            dateTo: ""
-        });
+        openAlertMessage({
+            horizontal: "center",
+            vertical: "top",
+            severity: "success",
+            message: "Filtros limpiados correctamente"
+        })
+        setFilters(DEFAULT_PAVITO_DATA_FILTERS);
     };
-
-    useLayoutEffect(() => {
+    
+    useLayoutEffect((): void => {
         if (availableRegions.length > 0) {
             const queryParams: string = params.toString();
             if (queryParams) {
                 const queryObj: IObject = Object.fromEntries(
                     new URLSearchParams(queryParams)
                 );
-                const copyFilters = { ...filters };
-
-                Object.keys(queryObj).forEach((key: string) => {
-                    if (adaptToKeys[key]) {
-                        copyFilters[adaptToKeys[key]] = queryObj[key];
-                    }
-                });
+                const copyFilters = PARSE_OBJECT_TO_PAVITO_DATA_FILTERS(queryObj);
                 if (!queryObj["days_ago"]) {
                     copyFilters["daysAgo"] = "-1";
                 } else {
@@ -84,6 +64,13 @@ export const FilterForm = (): JSX.Element => {
                     copyFilters["sector"] = "TODOS";
                 }
                 setFilters(copyFilters);
+            }
+            else {
+                const prospectFilters: string | null = localStorage.getItem(FILTROS_PROSPECTOS);            
+                if (prospectFilters) {
+                    const copyFilters = PARSE_OBJECT_TO_PAVITO_DATA_FILTERS(JSON.parse(prospectFilters));
+                    setFilters(copyFilters);
+                }
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -209,14 +196,12 @@ export const FilterForm = (): JSX.Element => {
                             disablePortal
                             options={sectors}
                             size="small"
-                            value={filters.sector || ""}
-                            onChange={(
-                                _e: React.SyntheticEvent<Element, Event>,
-                                value: string | null
-                            ): void => {
+                            value={filters.sector}
+                            onChange={(_e: React.SyntheticEvent<Element, Event>, 
+                                value: string | null): void => {
                                 setFilters({
                                     ...filters,
-                                    sector: value
+                                    sector: value || "TODOS"
                                 });
                             }}
                             getOptionLabel={(option: string): string => {
@@ -236,14 +221,15 @@ export const FilterForm = (): JSX.Element => {
                     <AccordionForm theme={theme.palette.mode} label="Region">
                         <Autocomplete
                             disablePortal
-                            onChange={(_e, value): void => {
+                            onChange={(_e: React.SyntheticEvent<Element, Event>, 
+                                value: string | null): void => {
                                 setFilters({
                                     ...filters,
-                                    region: value || ""
+                                    region: value || "Todos"
                                 });
                             }}
                             options={availableRegions}
-                            value={filters.region || ""}
+                            value={filters.region}
                             size="small"
                             renderInput={(
                                 params: AutocompleteRenderInputParams
@@ -391,22 +377,9 @@ export const FilterForm = (): JSX.Element => {
                     </AccordionForm>
                 </Box>
                 <Divider />
-                <Box className="p-4 w-full flex items-center justify-end">
-                    <Button
-                        variant="outlined"
-                        className="capitalize font-semibold py-2 mr-4"
-                        type="button"
-                    >
-                        Predeterminado
-                    </Button>
-                    <Button
-                        variant="contained"
-                        className="capitalize font-semibold py-2"
-                        type="submit"
-                    >
-                        Buscar
-                    </Button>
-                </Box>
+                <Buttons saveFiltersAsPreset={(): void => {
+                    SAVE_FILTERS_AS_PRESET(FILTROS_PROSPECTOS, filters, openAlertMessage)
+                }}/>
             </Box>
         </Paper>
     );

@@ -15,7 +15,7 @@ export default function PavitoBid(): JSX.Element {
     const [bidDetailParams, setBidDetailParams] =
         useState<BidDetailParams | null>(null);
 
-    useLayoutEffect(() => {
+    useLayoutEffect((): void => {
         setSectionTitle("logo");
         setRuc(params.get("ruc") || "");
         setMype(params.get("mype") === "true");

@@ -6,7 +6,6 @@ import Link from "next/link";
 
 interface BidCardProps {
     bid: Bid;
-    isLink?: boolean;
     href?: string;
     onclick?: (bid: Bid) => void;
     sx?: SxProps<Theme>;
@@ -14,7 +13,6 @@ interface BidCardProps {
 
 export const BidCard = ({
     bid,
-    isLink = false,
     href = "",
     onclick,
     sx = {}
@@ -48,17 +46,22 @@ export const BidCard = ({
                     borderTopRightRadius: "15px"
                 }}
             >
-                <Typography color={"#777"} fontSize={"13px"}>
-                    Razón Social
-                </Typography>
-                <Typography
-                    color={"primary"}
-                    fontWeight={500}
-                    fontSize={"20px"}
-                    className="mb-2"
+                <Box 
+                    component={"div"}
+                    hidden={onclick !== undefined}
                 >
-                    {bid.razonSocial}
-                </Typography>
+                    <Typography color={"#777"} fontSize={"13px"}>
+                        Razón Social
+                    </Typography>
+                    <Typography
+                        color={"primary"}
+                        fontWeight={500}
+                        fontSize={"20px"}
+                        className="mb-2"
+                    >
+                        {bid.razonSocial}
+                    </Typography>
+                </Box>
                 <Typography color={"#777"} fontSize={"13px"}>
                     {bid.montoAdjudicado === 0
                         ? "Monto estimado"
@@ -104,18 +107,7 @@ export const BidCard = ({
                 </Typography>
             </Box>
             <Box className="px-4 pb-3">
-                {isLink ? (
-                    <Link href={href}>
-                        <Button
-                            variant="contained"
-                            className="p-2"
-                            fullWidth
-                            color="primary"
-                        >
-                            Más información
-                        </Button>
-                    </Link>
-                ) : (
+                {onclick ? (
                     <Button
                         onClick={(e): void => {
                             e.preventDefault();
@@ -128,6 +120,17 @@ export const BidCard = ({
                     >
                         Más información
                     </Button>
+                ) : (
+                    <Link href={href}>
+                        <Button
+                            variant="contained"
+                            className="p-2"
+                            fullWidth
+                            color="primary"
+                        >
+                            Más información
+                        </Button>
+                    </Link>
                 )}
             </Box>
         </Paper>

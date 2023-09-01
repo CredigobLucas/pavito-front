@@ -1,20 +1,17 @@
 "use client";
 import { useGlobalContext } from "@/app/context";
-import { useLayoutEffect } from "react";
+import { useLayoutEffect, useState } from "react";
 import {
     Box,
     Select,
     MenuItem,
     TextField,
     Paper,
-    Button,
-    Grid,
-    Typography,
     Tabs,
-    Tab
+    Tab,
+    Divider
 } from "@mui/material";
 
-import { BidCard } from "../components/BidCard";
 import { BidDetail } from "../bid/components";
 
 import { CompanyDetails } from "../bid/components";
@@ -22,10 +19,15 @@ import { CompanyDetails } from "../bid/components";
 import { AccordionForm } from "@/app/components";
 
 import { usePavitoDataSearchContext } from "./context";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { DataGrid } from "../filter/component/DataGrid";
+import { DataTable, DisplayMode, FilterHeader, ToggleViewFilter } from "../filter/component";
+import { Bid } from "@/domain/models";
+import { Buttons } from "../filter/component/Buttons";
+import { FILTROS_CONTRATOS, SAVE_FILTERS_AS_PRESET } from "@/app/utils/storage";
 
-export default function PavitoFilter(): JSX.Element {
-    const { setSectionTitle, theme } = useGlobalContext();
+export default function PavitoSearch(): JSX.Element {
+    const { setSectionTitle, theme, openAlertMessage } = useGlobalContext();
     const router = useRouter();
     const {
         companyLabel,
@@ -35,11 +37,35 @@ export default function PavitoFilter(): JSX.Element {
         updateUrlParams,
         bids,
         selectedBid,
-        setSelectedBid
+        setSelectedBid,
     } = usePavitoDataSearchContext();
+    const params = useSearchParams();
 
-    useLayoutEffect(() => {
+    const [displayData, setDisplayData] = useState<DisplayMode>(
+        DisplayMode.TableView
+    );
+    const alertAndSetSelectedBid = (bid: Bid): void => {
+        openAlertMessage({
+            horizontal: "center",
+            vertical: "top",
+            severity: "success",
+            message: "El detalle de la licitación aparecerá más abajo"
+        })
+        setSelectedBid(bid);
+    }
+
+    useLayoutEffect((): void => {
         setSectionTitle("logo");
+        const queryParams: string = params.toString();
+        if (!queryParams) {
+            const contractFilters: string | null = localStorage.getItem(FILTROS_CONTRATOS);   
+            if (contractFilters) {
+                const { companyLabel, companyData } = JSON.parse(contractFilters);
+                setCompanyLabel(companyLabel);
+                setCompanyData(companyData);
+                router.push(`/pavito/search?company_label=${companyLabel}&company_data=${companyData}`);
+            }
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -60,7 +86,15 @@ export default function PavitoFilter(): JSX.Element {
                         }
                     }}
                 >
-                    <Paper elevation={3} className="p-1 mb-3">
+                    <Paper 
+                        elevation={3}
+                        className="p-1 mb-3"
+                        component={"form"}
+                        onSubmit={(e): void => {
+                            e.preventDefault();
+                            updateUrlParams();
+                        }}
+                    >
                         <Tabs
                             value={1}
                             variant="fullWidth"
@@ -73,16 +107,11 @@ export default function PavitoFilter(): JSX.Element {
                             <Tab label="Prospectos" className="capitalize" />
                             <Tab label="Empresas" className="capitalize" />
                         </Tabs>
-                        <AccordionForm
-                            theme={theme.palette.mode}
-                            label="Buscar por"
-                        >
-                            <Box
-                                component={"form"}
-                                onSubmit={(e): void => {
-                                    e.preventDefault();
-                                    updateUrlParams();
-                                }}
+                        <Box>
+                            <AccordionForm
+                                theme={theme.palette.mode}
+                                label="Buscar por"
+                                defaultExpanded={true}
                             >
                                 <Select
                                     id="demo-simple-select"
@@ -105,7 +134,7 @@ export default function PavitoFilter(): JSX.Element {
                                     fullWidth
                                     size="small"
                                     value={companyData || ""}
-                                    onChange={(e): void => {
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
                                         setCompanyData(e.target.value);
                                     }}
                                     required
@@ -115,18 +144,15 @@ export default function PavitoFilter(): JSX.Element {
                                             : "text"
                                     }
                                 />
-                                <Box className="w-full flex items-center mt-4">
-                                    <Button
-                                        variant="contained"
-                                        className="capitalize font-semibold py-2"
-                                        type="submit"
-                                        fullWidth
-                                    >
-                                        Buscar
-                                    </Button>
-                                </Box>
-                            </Box>
-                        </AccordionForm>
+                            </AccordionForm>
+                        </Box>
+                        <Divider />
+                        <Buttons saveFiltersAsPreset={(): void => {
+                            SAVE_FILTERS_AS_PRESET(FILTROS_CONTRATOS, {
+                                companyLabel,
+                                companyData,
+                            }, openAlertMessage)
+                        }}/>
                     </Paper>
                     <Box component={"div"}>
                         {bids.length > 0 && (
@@ -156,37 +182,27 @@ export default function PavitoFilter(): JSX.Element {
                     </Box>
                 </Box>
                 <Box className="w-full">
-                    <Typography
-                        className="font-bold mb-6"
-                        variant="h4"
-                        component="h1"
-                        sx={{
-                            color: (theme): string =>
-                                theme.palette.mode === "dark"
-                                    ? "default"
-                                    : "primary"
-                        }}
+                    <Box
+                        component={"div"}
+                        className="w-full flex items-end justify-center mt-6 flex-col"
                     >
-                        Contratos
-                    </Typography>
-                    <Grid container>
-                        {bids.map((bid, index) => (
-                            <Grid
-                                className="p-3"
-                                item
-                                key={index}
-                                xs={12}
-                                md={6}
-                            >
-                                <BidCard
-                                    bid={bid}
-                                    onclick={(bid): void => {
-                                        setSelectedBid(bid);
-                                    }}
-                                />
-                            </Grid>
-                        ))}
-                    </Grid>
+                        <FilterHeader title={"Contratos"}/>
+                        <ToggleViewFilter displayData={displayData} changeDisplayMode={setDisplayData}/>
+                    </Box>
+                    <Box className="mt-6">
+                        {displayData === DisplayMode.GridView && (
+                            <DataGrid
+                                bids={bids}
+                                onclick={alertAndSetSelectedBid}
+                            />
+                        )}
+                        {displayData === DisplayMode.TableView && (
+                            <DataTable 
+                                bids={bids}
+                                onclick={alertAndSetSelectedBid}
+                            />
+                        )}
+                    </Box>
                 </Box>
             </Box>
         </Box>

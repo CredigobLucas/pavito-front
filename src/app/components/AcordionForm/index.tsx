@@ -10,11 +10,13 @@ interface AccordionFormProps {
     children: React.ReactNode;
     label: string;
     theme: string;
+    defaultExpanded?: boolean;
 }
 export const AccordionForm = ({
     children,
     label,
-    theme
+    theme,
+    defaultExpanded = false,
 }: AccordionFormProps): JSX.Element => {
     return (
         <Accordion
@@ -23,6 +25,7 @@ export const AccordionForm = ({
                 boxShadow: "none"
             }}
             className="w-full"
+            defaultExpanded={defaultExpanded}
         >
             <AccordionSummary expandIcon={<ExpandMore />}>
                 <Typography

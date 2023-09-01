@@ -4,7 +4,13 @@ import { useGlobalContext } from "@/app/context";
 import { ShareOutlined, SortByAlphaOutlined } from "@mui/icons-material";
 import { Box, Typography, IconButton } from "@mui/material";
 
-export const FilterHeader = (): JSX.Element => {
+interface FilterHeaderProps {
+    title: string;
+}
+
+export const FilterHeader = ({
+    title
+}: FilterHeaderProps): JSX.Element => {
     const { openAlertMessage } = useGlobalContext();
 
     return (
@@ -21,7 +27,7 @@ export const FilterHeader = (): JSX.Element => {
                         theme.palette.mode === "dark" ? "default" : "primary"
                 }}
             >
-                Prospectos
+                {title}
             </Typography>
             <Box>
                 <IconButton

@@ -11,6 +11,7 @@ import { useGlobalContext } from "@/app/context";
 import { PavitoDataFilters } from "@/domain/interface/PavitoDataFilters";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { CALC_DAYS_AGO, CLEAN_NULL_VALUES, IObject } from "@/app/utils";
+import { DEFAULT_PAVITO_DATA_FILTERS } from "@/app/utils/filters";
 
 const keysToAdapt: IObject = {
     amountFrom: "bid_min_amount",
@@ -47,17 +48,7 @@ export const PavitoDataContextProvider = ({
     const [pageSize, setPageSize] = useState<number>(10);
     const [total, setTotal] = useState<number>(100);
 
-    const [filters, setFilters] = useState<PavitoDataFilters>({
-        amountFrom: null,
-        amountTo: null,
-        govLevel: "GL",
-        sector: null,
-        region: "",
-        objLicitation: "Bien",
-        daysAgo: "30",
-        dateFrom: "",
-        dateTo: ""
-    });
+    const [filters, setFilters] = useState<PavitoDataFilters>(DEFAULT_PAVITO_DATA_FILTERS);
 
     const getBidsP = async (query: string): Promise<void> => {
         try {
@@ -84,7 +75,7 @@ export const PavitoDataContextProvider = ({
                 severity: "error",
                 message: "Error al obtener las licitaciones"
             });
-        }finally {
+        } finally {
             setOpenLoading(false);
         }
     };
@@ -110,6 +101,7 @@ export const PavitoDataContextProvider = ({
             setPageSize(pageSizeP);
             setPage(0);
         }
+
         updateUrlParams({
             filter: convertFilterToQuery(),
             pagination: `page_number=${
@@ -129,10 +121,12 @@ export const PavitoDataContextProvider = ({
         router.push(pathname + "?" + params);
     };
 
-    useEffect(() => {
+    useEffect((): void => {
         if (availableRegions.length > 0) {
             const queryParams = params.toString()
-            if(queryParams !== "") getBidsP(params.toString());
+            if (queryParams !== "") {
+                getBidsP(params.toString());
+            }
             else {
                 const filter = convertFilterToQuery();
                 const pagination = `page_number=1&items_per_page=10`;
@@ -154,7 +148,8 @@ export const PavitoDataContextProvider = ({
         const adaptedObj: IObject = {};
         Object.keys(obj).forEach((key: string) => {
             if (obj[key]) {
-                adaptedObj[keysToAdapt[key]] = obj[key];
+                if (key in keysToAdapt)
+                    adaptedObj[keysToAdapt[key]] = obj[key];
             }
         });
         return adaptedObj;

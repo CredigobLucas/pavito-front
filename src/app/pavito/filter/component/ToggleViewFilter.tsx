@@ -2,7 +2,6 @@
 
 import { GridViewOutlined, TableViewOutlined } from "@mui/icons-material";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
-import { useState } from "react";
 
 export enum DisplayMode {
     GridView = "grid-view",
@@ -10,14 +9,13 @@ export enum DisplayMode {
 }
 
 interface ToggleViewFilterProps {
+    displayData: DisplayMode;
     changeDisplayMode: (displayMode: DisplayMode) => void;
 }
 export const ToggleViewFilter = ({
+    displayData,
     changeDisplayMode
 }: ToggleViewFilterProps): JSX.Element => {
-    const [displayData, setDisplayData] = useState<DisplayMode>(
-        DisplayMode.GridView
-    );
     return (
         <ToggleButtonGroup
             value={displayData}
@@ -27,7 +25,6 @@ export const ToggleViewFilter = ({
                 value: React.SetStateAction<DisplayMode>
             ): void => {
                 if (value) {
-                    setDisplayData(value);
                     changeDisplayMode(value as DisplayMode);
                 }
             }}

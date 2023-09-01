@@ -7,9 +7,10 @@ import LinkIcon from '@mui/icons-material/Link';
 
 interface DataTableProps {
     bids: Bid[];
+    onclick?: (bid: Bid) => void;
 }
 
-export const DataTable = ({ bids }: DataTableProps): JSX.Element => {
+export const DataTable = ({ bids, onclick }: DataTableProps): JSX.Element => {
     const gobierno: IObject = {
         GR: "Regional",
         GL: "Local",
@@ -20,10 +21,11 @@ export const DataTable = ({ bids }: DataTableProps): JSX.Element => {
             <PavitoTable
                 convertCard={false}
                 columns={[
-                    {
+                    ...(onclick !== undefined ? []
+                    : [{
                         label: "Razon Social",
-                        value: (row) => row.razonSocial
-                    },
+                        value: (row: Bid) => row.razonSocial,
+                    }]),
                     {
                         label: (
                             <Tooltip title="Los montos estimados aparecen en cursiva.">
@@ -65,19 +67,36 @@ export const DataTable = ({ bids }: DataTableProps): JSX.Element => {
                     },
                     {
                         label: "",
-                        value: (row) => 
-                        <Tooltip title="Ver detalle">
-                            <IconButton
-                                style={
-                                    {
-                                        color: '#544892',
-                                    }
-                                } 
-                                href={`/pavito/bid?item=${row.id_item}&licitacion=${row.id_licitacion}&milestone=${row.id_milestone}&participante=${row.id_participante}&ruc=${row.ruc}&mype=${row.mype}`}
-                            >
-                                <LinkIcon/>
-                            </IconButton>
-                        </Tooltip>
+                        value: (row) => (
+                            onclick ? (
+                                <Tooltip title="Ver detalle">
+                                    <IconButton
+                                        style={
+                                            {
+                                                color: '#544892',
+                                            }
+                                        } 
+                                        onClick={(): void => onclick(row)}
+                                    >
+                                        <LinkIcon/>
+                                    </IconButton>
+                                </Tooltip>
+                            ) : (
+                                <Tooltip title="Ver detalle">
+                                    <IconButton
+                                        style={
+                                            {
+                                                color: '#544892',
+                                            }
+                                        } 
+                                        href={`/pavito/bid?item=${row.id_item}&licitacion=${row.id_licitacion}&milestone=${row.id_milestone}&participante=${row.id_participante}&ruc=${row.ruc}&mype=${row.mype}`}
+                                    >
+                                        <LinkIcon/>
+                                    </IconButton>
+                                </Tooltip>
+                            )
+                        )
+                        
                     },
                 ]}
                 rows={bids}
