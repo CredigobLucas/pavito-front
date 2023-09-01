@@ -75,7 +75,7 @@ export const PavitoDataContextProvider = ({
                 severity: "error",
                 message: "Error al obtener las licitaciones"
             });
-        }finally {
+        } finally {
             setOpenLoading(false);
         }
     };
@@ -101,6 +101,7 @@ export const PavitoDataContextProvider = ({
             setPageSize(pageSizeP);
             setPage(0);
         }
+
         updateUrlParams({
             filter: convertFilterToQuery(),
             pagination: `page_number=${
@@ -120,10 +121,12 @@ export const PavitoDataContextProvider = ({
         router.push(pathname + "?" + params);
     };
 
-    useEffect(() => {
+    useEffect((): void => {
         if (availableRegions.length > 0) {
             const queryParams = params.toString()
-            if(queryParams !== "") getBidsP(params.toString());
+            if (queryParams !== "") {
+                getBidsP(params.toString());
+            }
             else {
                 const filter = convertFilterToQuery();
                 const pagination = `page_number=1&items_per_page=10`;
@@ -145,7 +148,8 @@ export const PavitoDataContextProvider = ({
         const adaptedObj: IObject = {};
         Object.keys(obj).forEach((key: string) => {
             if (obj[key]) {
-                adaptedObj[keysToAdapt[key]] = obj[key];
+                if (key in keysToAdapt)
+                    adaptedObj[keysToAdapt[key]] = obj[key];
             }
         });
         return adaptedObj;
