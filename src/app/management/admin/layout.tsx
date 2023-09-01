@@ -11,7 +11,7 @@ export default function ManagmentLayout({
     const { user, openAlertMessage } = useGlobalContext();
     const router = useRouter();
     const [authorized, setAuthorized] = useState<boolean>(false);
-    useLayoutEffect(() => {
+    useLayoutEffect((): void => {
         if (user?.id) {
             if (user.is_admin) {
                 setAuthorized(true);

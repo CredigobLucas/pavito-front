@@ -39,7 +39,7 @@ export const EditUser = ({
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
 
-    useLayoutEffect(() => {
+    useLayoutEffect((): void => {
         if (selectedUser) {
             setFirstName(selectedUser.name);
             setLastName(selectedUser.last_name);

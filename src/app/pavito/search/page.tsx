@@ -19,7 +19,7 @@ import { CompanyDetails } from "../bid/components";
 import { AccordionForm } from "@/app/components";
 
 import { usePavitoDataSearchContext } from "./context";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { DataGrid } from "../filter/component/DataGrid";
 import { DataTable, DisplayMode, FilterHeader, ToggleViewFilter } from "../filter/component";
 import { Bid } from "@/domain/models";
@@ -37,13 +37,10 @@ export default function PavitoSearch(): JSX.Element {
         updateUrlParams,
         bids,
         selectedBid,
-        setSelectedBid
+        setSelectedBid,
     } = usePavitoDataSearchContext();
+    const params = useSearchParams();
 
-    useLayoutEffect(() => {
-        setSectionTitle("logo");
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
     const [displayData, setDisplayData] = useState<DisplayMode>(
         DisplayMode.TableView
     );
@@ -58,13 +55,18 @@ export default function PavitoSearch(): JSX.Element {
     }
 
     useLayoutEffect((): void => {
-        const contractFilters: string | null = localStorage.getItem(FILTROS_CONTRATOS);   
-        if (contractFilters) {
-            const { companyLabel, companyData } = JSON.parse(contractFilters);
-            setCompanyLabel(companyLabel);
-            setCompanyData(companyData);
-            router.push(`/pavito/search?company_label=${companyLabel}&company_data=${companyData}`);
+        setSectionTitle("logo");
+        const queryParams: string = params.toString();
+        if (!queryParams) {
+            const contractFilters: string | null = localStorage.getItem(FILTROS_CONTRATOS);   
+            if (contractFilters) {
+                const { companyLabel, companyData } = JSON.parse(contractFilters);
+                setCompanyLabel(companyLabel);
+                setCompanyData(companyData);
+                router.push(`/pavito/search?company_label=${companyLabel}&company_data=${companyData}`);
+            }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
