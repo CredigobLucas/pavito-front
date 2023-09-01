@@ -14,7 +14,7 @@ import {
     Tabs,
     Tab
 } from "@mui/material";
-import { useLayoutEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import { AccordionForm } from "@/app/components";
 import { useGlobalContext } from "@/app/context";
 import { usePavitoDataFilterContext } from "@/app/pavito/filter/context";
@@ -42,7 +42,7 @@ export const FilterForm = (): JSX.Element => {
         })
         setFilters(DEFAULT_PAVITO_DATA_FILTERS);
     };
-
+    
     useLayoutEffect((): void => {
         if (availableRegions.length > 0) {
             const queryParams: string = params.toString();
