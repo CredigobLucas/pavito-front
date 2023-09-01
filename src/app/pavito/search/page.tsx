@@ -63,9 +63,9 @@ export default function PavitoSearch(): JSX.Element {
             const { companyLabel, companyData } = JSON.parse(contractFilters);
             setCompanyLabel(companyLabel);
             setCompanyData(companyData);
-            updateUrlParams();
-        }         
-    });
+            router.push(`/pavito/search?company_label=${companyLabel}&company_data=${companyData}`);
+        }
+    }, []);
 
     return (
         <Box component={"section"} className="mt-5">
@@ -132,7 +132,7 @@ export default function PavitoSearch(): JSX.Element {
                                     fullWidth
                                     size="small"
                                     value={companyData || ""}
-                                    onChange={(e): void => {
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
                                         setCompanyData(e.target.value);
                                     }}
                                     required

@@ -23,6 +23,7 @@ import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { Buttons } from "./Buttons";
 import { FILTROS_PROSPECTOS, SAVE_FILTERS_AS_PRESET } from "@/app/utils/storage";
+import { DEFAULT_PAVITO_DATA_FILTERS } from "@/app/utils/filters";
 
 export const FilterForm = (): JSX.Element => {
     const params = useSearchParams();
@@ -39,17 +40,7 @@ export const FilterForm = (): JSX.Element => {
             severity: "success",
             message: "Filtros limpiados correctamente"
         })
-        setFilters({
-            amountFrom: null,
-            amountTo: null,
-            govLevel: "GL",
-            sector: null,
-            region: availableRegions[0],
-            objLicitation: "Bien",
-            daysAgo: "30",
-            dateFrom: "",
-            dateTo: ""
-        });
+        setFilters(DEFAULT_PAVITO_DATA_FILTERS);
     };
 
     useLayoutEffect((): void => {
@@ -205,14 +196,12 @@ export const FilterForm = (): JSX.Element => {
                             disablePortal
                             options={sectors}
                             size="small"
-                            value={filters.sector || ""}
-                            onChange={(
-                                _e: React.SyntheticEvent<Element, Event>,
-                                value: string | null
-                            ): void => {
+                            value={filters.sector}
+                            onChange={(_e: React.SyntheticEvent<Element, Event>, 
+                                value: string | null): void => {
                                 setFilters({
                                     ...filters,
-                                    sector: value
+                                    sector: value || "Todos"
                                 });
                             }}
                             getOptionLabel={(option: string): string => {
@@ -232,14 +221,15 @@ export const FilterForm = (): JSX.Element => {
                     <AccordionForm theme={theme.palette.mode} label="Region">
                         <Autocomplete
                             disablePortal
-                            onChange={(_e, value): void => {
+                            onChange={(_e: React.SyntheticEvent<Element, Event>, 
+                                value: string | null): void => {
                                 setFilters({
                                     ...filters,
-                                    region: value || ""
+                                    region: value || "Todos"
                                 });
                             }}
                             options={availableRegions}
-                            value={filters.region || ""}
+                            value={filters.region}
                             size="small"
                             renderInput={(
                                 params: AutocompleteRenderInputParams
