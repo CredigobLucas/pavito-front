@@ -124,7 +124,7 @@ export const FilterForm = (): JSX.Element => {
                                     size="small"
                                     type="number"
                                     value={filters.amountFrom || ""}
-                                    onChange={(e): void =>
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>): void =>
                                         setFilters({
                                             ...filters,
                                             amountFrom: parseInt(e.target.value)
@@ -161,14 +161,14 @@ export const FilterForm = (): JSX.Element => {
                     >
                         <RadioGroup
                             value={filters.govLevel}
-                            onChange={(
-                                _e: React.ChangeEvent<HTMLInputElement>,
-                                value: string
-                            ): void => {
-                                setFilters({
-                                    ...filters,
-                                    govLevel: value
-                                });
+                            onClick={(e: React.MouseEvent<HTMLInputElement>): void => {
+                                const value: string | undefined = (e.target as HTMLInputElement).value;
+                                if (value !== undefined && value !== filters.govLevel) {
+                                    setFilters({
+                                        ...filters,
+                                        govLevel: value
+                                    });
+                                }
                             }}
                         >
                             <FormControlLabel
@@ -247,14 +247,14 @@ export const FilterForm = (): JSX.Element => {
                     >
                         <RadioGroup
                             value={filters.objLicitation}
-                            onChange={(
-                                _e: React.ChangeEvent<HTMLInputElement>,
-                                value: string
-                            ): void => {
-                                setFilters({
-                                    ...filters,
-                                    objLicitation: value
-                                });
+                            onClick={(e: React.MouseEvent<HTMLInputElement>): void => {
+                                const value: string | undefined = (e.target as HTMLInputElement).value;
+                                if (value !== undefined && value !== filters.objLicitation) {
+                                    setFilters({
+                                        ...filters,
+                                        objLicitation: value
+                                    });
+                                }
                             }}
                         >
                             <FormControlLabel
@@ -275,16 +275,18 @@ export const FilterForm = (): JSX.Element => {
                     <AccordionForm theme={theme.palette.mode} label="Fechas">
                         <RadioGroup
                             value={filters.daysAgo}
-                            onChange={(
-                                _e: React.ChangeEvent<HTMLInputElement>,
-                                value: string
+                            onClick={(
+                                e: React.MouseEvent<HTMLInputElement>,
                             ): void => {
-                                setFilters({
-                                    ...filters,
-                                    daysAgo: value,
-                                    dateFrom: "",
-                                    dateTo: ""
-                                });
+                                const value: string | undefined = (e.target as HTMLInputElement).value;
+                                if (value !== undefined && value !== filters.daysAgo) {
+                                    setFilters({
+                                        ...filters,
+                                        daysAgo: value,
+                                        dateFrom: "",
+                                        dateTo: ""
+                                    });
+                                }
                             }}
                         >
                             <FormControlLabel

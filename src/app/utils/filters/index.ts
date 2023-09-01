@@ -9,5 +9,5 @@ export const DEFAULT_PAVITO_DATA_FILTERS: PavitoDataFilters = {
     objLicitation: "Bien",
     daysAgo: "60",
     dateFrom: "",
-    dateTo: ""
+    dateTo: "",
 }
