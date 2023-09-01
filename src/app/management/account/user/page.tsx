@@ -7,7 +7,7 @@ import { Box, Grid } from "@mui/material";
 
 export default function Account(): JSX.Element {
     const { setSectionTitle, user } = useGlobalContext();
-    useEffect(() => {
+    useEffect((): void => {
         setSectionTitle("Perfil");
     }, []);
 

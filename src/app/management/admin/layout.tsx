@@ -3,7 +3,7 @@ import { useLayoutEffect, useState } from "react";
 import { useGlobalContext } from "../../context";
 import { useRouter } from "next/navigation";
 
-export default function ManagmentLayout({
+export default function AdminLayout({
     children
 }: {
     children: React.ReactNode;

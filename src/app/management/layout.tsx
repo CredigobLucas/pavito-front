@@ -5,7 +5,7 @@ import { Box, Container, Drawer } from "@mui/material";
 import { useState } from "react";
 
 
-export default function ManagmentLayout({
+export default function ManagementLayout({
     children
 }: {
     children: React.ReactNode;
