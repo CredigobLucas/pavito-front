@@ -201,7 +201,7 @@ export const FilterForm = (): JSX.Element => {
                                 value: string | null): void => {
                                 setFilters({
                                     ...filters,
-                                    sector: value || "Todos"
+                                    sector: value || "TODOS"
                                 });
                             }}
                             getOptionLabel={(option: string): string => {
