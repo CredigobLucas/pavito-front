@@ -58,7 +58,7 @@ export function PavitoTable<Data>({
                                             if (theme.palette.mode === "dark") {
                                                 return "#050506 !important";
                                             }
-                                            return "inherit !important  ";
+                                            return "white !important  ";
                                         },
                                         borderTopLeftRadius:
                                             index === 0 ? "15px" : "0px",
