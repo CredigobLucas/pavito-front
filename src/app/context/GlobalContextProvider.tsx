@@ -80,7 +80,7 @@ export const GlobalContextProvider = ({
             setAvailableRegions(availableRegions);
         }
     };
-    useEffect(() => {
+    useEffect((): void => {
         getAvailableRegions();
     }, [user]);
 
