@@ -29,6 +29,10 @@ export const PavitoDataSearchContextProvider = ({
     const [bids, setBids] = useState<Bid[]>([]);
     const [selectedBid, setSelectedBid] = useState<Bid | undefined>(undefined);
 
+    const [page, setPage] = useState<number>(0);
+    const [pageSize, setPageSize] = useState<number>(10);
+    const [total, setTotal] = useState<number>(100);
+
     useEffect(() => {
         const label = params.get("company_label");
         const data = params.get("company_data");
@@ -38,10 +42,11 @@ export const PavitoDataSearchContextProvider = ({
             setOpenLoading(true);
             getBidsByCompany(params.toString())
                 .then((res) => {
-                    const { licitaciones } = res.body;
+                    const { licitaciones, numeroPaginas } = res.body;
                     if (licitaciones.length > 0) {
                         setRuc(licitaciones[0].ruc);
                         setBids(licitaciones);
+                        setTotal(numeroPaginas);
                     } else {
                         setRuc(undefined);
                         setBids([]);
@@ -54,9 +59,45 @@ export const PavitoDataSearchContextProvider = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [params, user]);
 
-    const updateUrlParams = (): void => {
-        const params = `?company_label=${companyLabel}&company_data=${companyData}`;
-        router.push(`${pathname}${params}`);
+    const setQueryPagination = ({
+        pageP,
+        pageSizeP
+    }: {
+        pageP?: number;
+        pageSizeP?: number;
+    }): void => {
+        if (pageP !== undefined) {
+            setPage(pageP);
+        }
+        if (pageSizeP) {
+            setPageSize(pageSizeP);
+            setPage(0);
+        }
+
+        updateUrlParams({
+            filter: `company_label=${companyLabel}&company_data=${companyData}`,
+            pagination: `page_number=${
+                pageSizeP ? 1 : pageP !== undefined ? pageP + 1 : page + 1
+            }&items_per_page=${pageSizeP ? pageSizeP : pageSize}`
+        });
+    };
+
+    const updateUrlParams = ({
+        filter,
+        pagination
+    }: {
+        filter: string;
+        pagination: string;
+    }): void => {
+        const params = `${filter}&${pagination}`;
+        router.push(pathname + "?" + params);
+    };
+
+    const updateUrlAndUpdate = (): void => {
+        updateUrlParams({
+            filter: `company_label=${companyLabel}&company_data=${companyData}`,
+            pagination: `page_number=${page + 1}&items_per_page=${pageSize}`
+        });
     };
 
     const value: IPavitoDataSearchContext = {
@@ -64,11 +105,15 @@ export const PavitoDataSearchContextProvider = ({
         setCompanyLabel,
         companyData,
         setCompanyData,
-        updateUrlParams,
+        updateUrlParams: updateUrlAndUpdate,
         ruc,
         bids,
         selectedBid,
-        setSelectedBid
+        setSelectedBid,
+        page,
+        pageSize,
+        total,
+        setQueryPagination
     };
 
     return (

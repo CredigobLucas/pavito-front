@@ -10,6 +10,10 @@ export interface IPavitoDataSearchContext {
     bids: Bid[];
     selectedBid: Bid | undefined;
     setSelectedBid: (bid: Bid | undefined) => void;
+    page: number;
+    pageSize: number;
+    total: number;
+    setQueryPagination: (data: { pageP?: number; pageSizeP?: number }) => void;
 }
 
 export const PavitoDataSearchContext = createContext<

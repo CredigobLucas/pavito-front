@@ -21,10 +21,16 @@ import { AccordionForm } from "@/app/components";
 import { usePavitoDataSearchContext } from "./context";
 import { useRouter, useSearchParams } from "next/navigation";
 import { DataGrid } from "../filter/component/DataGrid";
-import { DataTable, DisplayMode, FilterHeader, ToggleViewFilter } from "../filter/component";
+import {
+    DataTable,
+    DisplayMode,
+    FilterHeader,
+    ToggleViewFilter
+} from "../filter/component";
 import { Bid } from "@/domain/models";
 import { Buttons } from "../filter/component/Buttons";
 import { FILTROS_CONTRATOS, SAVE_FILTERS_AS_PRESET } from "@/app/utils/storage";
+import { SearchPagination } from "./component/SearchPagination";
 
 export default function PavitoSearch(): JSX.Element {
     const { setSectionTitle, theme, openAlertMessage } = useGlobalContext();
@@ -37,7 +43,7 @@ export default function PavitoSearch(): JSX.Element {
         updateUrlParams,
         bids,
         selectedBid,
-        setSelectedBid,
+        setSelectedBid
     } = usePavitoDataSearchContext();
     const params = useSearchParams();
 
@@ -50,20 +56,24 @@ export default function PavitoSearch(): JSX.Element {
             vertical: "top",
             severity: "success",
             message: "El detalle de la licitación aparecerá más abajo"
-        })
+        });
         setSelectedBid(bid);
-    }
+    };
 
     useLayoutEffect((): void => {
         setSectionTitle("logo");
         const queryParams: string = params.toString();
         if (!queryParams) {
-            const contractFilters: string | null = localStorage.getItem(FILTROS_CONTRATOS);   
+            const contractFilters: string | null =
+                localStorage.getItem(FILTROS_CONTRATOS);
             if (contractFilters) {
-                const { companyLabel, companyData } = JSON.parse(contractFilters);
+                const { companyLabel, companyData } =
+                    JSON.parse(contractFilters);
                 setCompanyLabel(companyLabel);
                 setCompanyData(companyData);
-                router.push(`/pavito/search?company_label=${companyLabel}&company_data=${companyData}`);
+                router.push(
+                    `/pavito/search?company_label=${companyLabel}&company_data=${companyData}`
+                );
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -86,7 +96,7 @@ export default function PavitoSearch(): JSX.Element {
                         }
                     }}
                 >
-                    <Paper 
+                    <Paper
                         elevation={3}
                         className="p-1 mb-3"
                         component={"form"}
@@ -134,7 +144,9 @@ export default function PavitoSearch(): JSX.Element {
                                     fullWidth
                                     size="small"
                                     value={companyData || ""}
-                                    onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
+                                    onChange={(
+                                        e: React.ChangeEvent<HTMLInputElement>
+                                    ): void => {
                                         setCompanyData(e.target.value);
                                     }}
                                     required
@@ -147,12 +159,18 @@ export default function PavitoSearch(): JSX.Element {
                             </AccordionForm>
                         </Box>
                         <Divider />
-                        <Buttons saveFiltersAsPreset={(): void => {
-                            SAVE_FILTERS_AS_PRESET(FILTROS_CONTRATOS, {
-                                companyLabel,
-                                companyData,
-                            }, openAlertMessage)
-                        }}/>
+                        <Buttons
+                            saveFiltersAsPreset={(): void => {
+                                SAVE_FILTERS_AS_PRESET(
+                                    FILTROS_CONTRATOS,
+                                    {
+                                        companyLabel,
+                                        companyData
+                                    },
+                                    openAlertMessage
+                                );
+                            }}
+                        />
                     </Paper>
                     <Box component={"div"}>
                         {bids.length > 0 && (
@@ -186,8 +204,11 @@ export default function PavitoSearch(): JSX.Element {
                         component={"div"}
                         className="w-full flex items-end justify-center mt-6 flex-col"
                     >
-                        <FilterHeader title={"Contratos"}/>
-                        <ToggleViewFilter displayData={displayData} changeDisplayMode={setDisplayData}/>
+                        <FilterHeader title={"Contratos"} />
+                        <ToggleViewFilter
+                            displayData={displayData}
+                            changeDisplayMode={setDisplayData}
+                        />
                     </Box>
                     <Box className="mt-6">
                         {displayData === DisplayMode.GridView && (
@@ -197,12 +218,13 @@ export default function PavitoSearch(): JSX.Element {
                             />
                         )}
                         {displayData === DisplayMode.TableView && (
-                            <DataTable 
+                            <DataTable
                                 bids={bids}
                                 onclick={alertAndSetSelectedBid}
                             />
                         )}
                     </Box>
+                    <SearchPagination />
                 </Box>
             </Box>
         </Box>
