@@ -177,7 +177,7 @@ export default function PavitoSearch(): JSX.Element {
                             <CompanyDetails
                                 ruc={bids[0].ruc}
                                 mype={bids[0].mype}
-                                hasMargin={false}
+                                hasMargin={true}
                                 mobileMode={true}
                             />
                         )}
