@@ -30,7 +30,7 @@ export const PavitoDataContextProvider = ({
 }: {
     children: React.ReactNode;
 }): JSX.Element => {
-    const { setOpenLoading, openAlertMessage, availableRegions } = useGlobalContext();
+    const { setOpenLoading, openAlertMessage, availableRegions, user } = useGlobalContext();
     const router = useRouter();
     const pathname = usePathname();
     const params = useSearchParams();
@@ -85,7 +85,7 @@ export const PavitoDataContextProvider = ({
     const setQueryFilterAndUpdate = (filters? : PavitoDataFilters): void => {
         updateUrlParams({
             filter: filters ? convertFilterToQuery(filters) : convertFilterToQuery(),
-            pagination: "page_number=1&items_per_page=10"
+            pagination: `page_number=1&items_per_page=${pageSize}`
         });
     };
 
@@ -124,19 +124,21 @@ export const PavitoDataContextProvider = ({
     };
 
     useEffect((): void => {
-        if (availableRegions.length > 0) {
-            const queryParams = params.toString()
-            if (queryParams !== "") {
-                getBidsP(params.toString());
-            }
-            else {
-                const filter = convertFilterToQuery();
-                const pagination = `page_number=1&items_per_page=10`;
-                getBidsP(`${filter}&${pagination}`);
+        if (user?.id) {
+            if (availableRegions.length > 0) {
+                const queryParams = params.toString()
+                if (queryParams !== "") {
+                    getBidsP(params.toString());
+                }
+                else {
+                    const filter = convertFilterToQuery();
+                    const pagination = `page_number=1&items_per_page=10`;
+                    getBidsP(`${filter}&${pagination}`);
+                }
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [params, availableRegions]);
+    }, [params, availableRegions, user?.id]);
 
     const adaptFilter = (filter?: PavitoDataFilters): IObject => {
         const filtersToAdapt: IObject = filter ? filter : filters;

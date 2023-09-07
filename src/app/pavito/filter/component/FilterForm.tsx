@@ -48,7 +48,6 @@ export const FilterForm = (): JSX.Element => {
     useLayoutEffect((): void => {
         if (availableRegions.length > 0) {
             const queryParams: string = params.toString();
-            console.log(queryParams);
             if (queryParams) {
                 const queryObj: IObject = Object.fromEntries(
                     new URLSearchParams(queryParams)
@@ -72,12 +71,9 @@ export const FilterForm = (): JSX.Element => {
             }
             else {
                 const prospectFilters: string | null = localStorage.getItem(FILTROS_PROSPECTOS); 
-                console.log("xd");
                 if (prospectFilters) {
                     const storageFilters = JSON.parse(prospectFilters) as PavitoDataFilters;
-                    console.log("hola");
                     setFilters(storageFilters);
-                    console.log(storageFilters);
                     setQueryFilter(storageFilters);
                 }
             }
