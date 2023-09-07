@@ -5,7 +5,7 @@ import { PavitoDataFilters } from "@/domain/interface/PavitoDataFilters";
 export interface IPavitoDataFilterContext {
     bids: Bid[];
     sectors: string[];
-    setQueryFilter: () => void;
+    setQueryFilter: (filters?: PavitoDataFilters) => void;
     page: number;
     pageSize: number;
     total: number | undefined;

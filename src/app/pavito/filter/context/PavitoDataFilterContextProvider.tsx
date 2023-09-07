@@ -82,9 +82,9 @@ export const PavitoDataContextProvider = ({
         }
     };
 
-    const setQueryFilterAndUpdate = (): void => {
+    const setQueryFilterAndUpdate = (filters? : PavitoDataFilters): void => {
         updateUrlParams({
-            filter: convertFilterToQuery(),
+            filter: filters ? convertFilterToQuery(filters) : convertFilterToQuery(),
             pagination: "page_number=1&items_per_page=10"
         });
     };
@@ -138,12 +138,13 @@ export const PavitoDataContextProvider = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [params, availableRegions]);
 
-    const adaptFilter = (): IObject => {
+    const adaptFilter = (filter?: PavitoDataFilters): IObject => {
+        const filtersToAdapt: IObject = filter ? filter : filters;
         const obj: IObject = CLEAN_NULL_VALUES({
-            ...filters,
-            sector: filters.sector === "TODOS" ? null : filters.sector,
-            daysAgo: filters.daysAgo === "-1" ? null : filters.daysAgo,
-            region: filters.region ? filters.region : availableRegions[0]
+            ...filtersToAdapt,
+            sector: filtersToAdapt.sector === "TODOS" ? null : filtersToAdapt.sector,
+            daysAgo: filtersToAdapt.daysAgo === "-1" ? null : filtersToAdapt.daysAgo,
+            region: filtersToAdapt.region ? filtersToAdapt.region : availableRegions[0]
             
         });
 
@@ -157,8 +158,8 @@ export const PavitoDataContextProvider = ({
         return adaptedObj;
     };
 
-    const convertFilterToQuery = (): string => {
-        const adaptedObj: IObject = adaptFilter();
+    const convertFilterToQuery = (filters?: PavitoDataFilters): string => {
+        const adaptedObj: IObject = adaptFilter(filters);
         if (adaptedObj["days_ago"]) {
             const [start, end] = CALC_DAYS_AGO(adaptedObj["days_ago"]);
             adaptedObj["initial_date"] = start;
