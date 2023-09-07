@@ -2,10 +2,12 @@ import { Box, Button } from "@mui/material"
 
 interface ButtonsProps {
     saveFiltersAsPreset: () => void
+    setTotal: (total: number | undefined) => void
 }
 
 export const Buttons = ({
-    saveFiltersAsPreset
+    saveFiltersAsPreset,
+    setTotal
 }: ButtonsProps): JSX.Element => {
     return (
         <Box className="p-4 w-full flex items-center justify-end">
@@ -21,6 +23,9 @@ export const Buttons = ({
                 variant="contained"
                 className="capitalize font-semibold py-2"
                 type="submit"
+                onClick={(): void => {
+                    setTotal(undefined)
+                }}
             >
                 Buscar
             </Button>

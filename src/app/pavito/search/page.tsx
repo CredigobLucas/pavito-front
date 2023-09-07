@@ -12,9 +12,6 @@ import {
     Divider
 } from "@mui/material";
 
-import { BidDetail } from "../bid/components";
-
-import { CompanyDetails } from "../bid/components";
 
 import { AccordionForm } from "@/app/components";
 
@@ -27,7 +24,6 @@ import {
     FilterHeader,
     ToggleViewFilter
 } from "../filter/component";
-import { Bid } from "@/domain/models";
 import { Buttons } from "../filter/component/Buttons";
 import { FILTROS_CONTRATOS, SAVE_FILTERS_AS_PRESET } from "@/app/utils/storage";
 import { SearchPagination } from "./component/SearchPagination";
@@ -42,23 +38,13 @@ export default function PavitoSearch(): JSX.Element {
         setCompanyLabel,
         updateUrlParams,
         bids,
-        selectedBid,
-        setSelectedBid
+        setTotal,
     } = usePavitoDataSearchContext();
     const params = useSearchParams();
 
     const [displayData, setDisplayData] = useState<DisplayMode>(
         DisplayMode.TableView
     );
-    const alertAndSetSelectedBid = (bid: Bid): void => {
-        openAlertMessage({
-            horizontal: "center",
-            vertical: "top",
-            severity: "success",
-            message: "El detalle de la licitación aparecerá más abajo"
-        });
-        setSelectedBid(bid);
-    };
 
     useLayoutEffect((): void => {
         setSectionTitle("logo");
@@ -170,34 +156,9 @@ export default function PavitoSearch(): JSX.Element {
                                     openAlertMessage
                                 );
                             }}
+                            setTotal={setTotal}
                         />
                     </Paper>
-                    <Box component={"div"}>
-                        {bids.length > 0 && (
-                            <CompanyDetails
-                                ruc={bids[0].ruc}
-                                mype={bids[0].mype}
-                                hasMargin={true}
-                                mobileMode={true}
-                            />
-                        )}
-                    </Box>
-                    <Box className="mt-6" component={"div"}>
-                        {selectedBid && (
-                            <BidDetail
-                                params={{
-                                    item: selectedBid.id_item.toString(),
-                                    licitacion:
-                                        selectedBid.id_licitacion.toString(),
-                                    milestone:
-                                        selectedBid.id_milestone.toString(),
-                                    participante:
-                                        selectedBid.id_participante.toString()
-                                }}
-                                mobileMode={true}
-                            />
-                        )}
-                    </Box>
                 </Box>
                 <Box className="w-full">
                     <Box
@@ -214,13 +175,11 @@ export default function PavitoSearch(): JSX.Element {
                         {displayData === DisplayMode.GridView && (
                             <DataGrid
                                 bids={bids}
-                                onclick={alertAndSetSelectedBid}
                             />
                         )}
                         {displayData === DisplayMode.TableView && (
                             <DataTable
                                 bids={bids}
-                                onclick={alertAndSetSelectedBid}
                             />
                         )}
                     </Box>

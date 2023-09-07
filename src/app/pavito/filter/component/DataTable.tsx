@@ -7,10 +7,9 @@ import LinkIcon from '@mui/icons-material/Link';
 
 interface DataTableProps {
     bids: Bid[];
-    onclick?: (bid: Bid) => void;
 }
 
-export const DataTable = ({ bids, onclick }: DataTableProps): JSX.Element => {
+export const DataTable = ({ bids }: DataTableProps): JSX.Element => {
     const gobierno: IObject = {
         GR: "Regional",
         GL: "Local",
@@ -21,11 +20,10 @@ export const DataTable = ({ bids, onclick }: DataTableProps): JSX.Element => {
             <PavitoTable
                 convertCard={false}
                 columns={[
-                    ...(onclick !== undefined ? []
-                    : [{
+                    {
                         label: "Razon Social",
                         value: (row: Bid) => row.razonSocial,
-                    }]),
+                    },
                     {
                         label: (
                             <Tooltip title="Los montos estimados aparecen en cursiva.">
@@ -68,20 +66,7 @@ export const DataTable = ({ bids, onclick }: DataTableProps): JSX.Element => {
                     {
                         label: "",
                         value: (row) => (
-                            onclick ? (
-                                <Tooltip title="Ver detalle">
-                                    <IconButton
-                                        style={
-                                            {
-                                                color: '#544892',
-                                            }
-                                        } 
-                                        onClick={(): void => onclick(row)}
-                                    >
-                                        <LinkIcon/>
-                                    </IconButton>
-                                </Tooltip>
-                            ) : (
+                            (
                                 <Tooltip title="Ver detalle">
                                     <IconButton
                                         style={

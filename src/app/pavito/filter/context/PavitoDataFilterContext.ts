@@ -8,7 +8,8 @@ export interface IPavitoDataFilterContext {
     setQueryFilter: () => void;
     page: number;
     pageSize: number;
-    total: number;
+    total: number | undefined;
+    setTotal: (total: number | undefined) => void;
     setQueryPagination: (data: { pageP?: number; pageSizeP?: number }) => void;
     filters: PavitoDataFilters;
     setFilters: (filters: PavitoDataFilters) => void;

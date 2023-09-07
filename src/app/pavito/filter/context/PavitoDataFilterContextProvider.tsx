@@ -46,15 +46,17 @@ export const PavitoDataContextProvider = ({
     const [bids, setBids] = useState<Bid[]>([]);
     const [page, setPage] = useState<number>(0);
     const [pageSize, setPageSize] = useState<number>(10);
-    const [total, setTotal] = useState<number>(100);
+    const [total, setTotal] = useState<number | undefined>(undefined);
 
     const [filters, setFilters] = useState<PavitoDataFilters>(DEFAULT_PAVITO_DATA_FILTERS);
 
     const getBidsP = async (query: string): Promise<void> => {
         try {
             setOpenLoading(true);
-            const response = await getBids(query);
-            
+            let finalQuery: string = query;
+            if (total !== undefined)
+                finalQuery += `&total_num_pages=${total}`;
+            const response = await getBids(finalQuery);
             const paramsObj: IObject = {};
             const paramsArray = query.split("&");
             paramsArray.forEach((param: string) => {
@@ -176,6 +178,7 @@ export const PavitoDataContextProvider = ({
         page: page,
         pageSize: pageSize,
         total: total,
+        setTotal: setTotal,
         setQueryPagination: setQueryPaginationAndUpdate,
         filters: filters,
         setFilters: setFilters,

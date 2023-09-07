@@ -25,10 +25,9 @@ const ADAPT_TO_KEYS: IObject = {
 };
 
 export const PARSE_OBJECT_TO_PAVITO_DATA_FILTERS = (obj: IObject): PavitoDataFilters => {
-    Object.keys(obj).forEach((key: string) => {
-        if (ADAPT_TO_KEYS[key]) {
-            obj[ADAPT_TO_KEYS[key]] = obj[key];
-        }
+    const response = {} as PavitoDataFilters;
+    Object.keys(ADAPT_TO_KEYS).forEach((key: string) => {
+        response[ADAPT_TO_KEYS[key]] = obj[key];
     });
-    return obj as PavitoDataFilters;
+    return response as PavitoDataFilters;
 };
