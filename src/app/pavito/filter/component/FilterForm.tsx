@@ -24,13 +24,15 @@ import { useRouter } from "next/navigation";
 import { Buttons } from "./Buttons";
 import { FILTROS_PROSPECTOS, SAVE_FILTERS_AS_PRESET } from "@/app/utils/storage";
 import { DEFAULT_PAVITO_DATA_FILTERS } from "@/app/utils/filters";
+import isEqual from 'lodash/isEqual';
+import { PavitoDataFilters } from "@/domain/interface/PavitoDataFilters";
 
 export const FilterForm = (): JSX.Element => {
     const params = useSearchParams();
     const { theme, availableRegions, openAlertMessage } = useGlobalContext();
     const router = useRouter();
 
-    const { sectors, setQueryFilter, filters, setFilters } =
+    const { sectors, setQueryFilter, filters, setFilters, setTotal } =
         usePavitoDataFilterContext();
 
     const toDefault = (): void => {
@@ -52,24 +54,27 @@ export const FilterForm = (): JSX.Element => {
                 );
                 const copyFilters = PARSE_OBJECT_TO_PAVITO_DATA_FILTERS(queryObj);
                 if (!queryObj["days_ago"]) {
-                    copyFilters["daysAgo"] = "-1";
+                    copyFilters.daysAgo = "-1";
                 } else {
-                    copyFilters["dateFrom"] = "";
-                    copyFilters["dateTo"] = "";
+                    copyFilters.dateFrom = "";
+                    copyFilters.dateTo = "";
                 }
                 if (!queryObj["department"]) {
-                    copyFilters["region"] = availableRegions[0];
+                    copyFilters.region = availableRegions[0];
                 }
                 if (!queryObj["sector"]) {
-                    copyFilters["sector"] = "TODOS";
+                    copyFilters.sector = "TODOS";
                 }
-                setFilters(copyFilters);
+                if (!isEqual(copyFilters, filters)) {
+                    setFilters(copyFilters);
+                }
             }
             else {
-                const prospectFilters: string | null = localStorage.getItem(FILTROS_PROSPECTOS);            
+                const prospectFilters: string | null = localStorage.getItem(FILTROS_PROSPECTOS); 
                 if (prospectFilters) {
-                    const copyFilters = PARSE_OBJECT_TO_PAVITO_DATA_FILTERS(JSON.parse(prospectFilters));
-                    setFilters(copyFilters);
+                    const storageFilters = JSON.parse(prospectFilters) as PavitoDataFilters;
+                    setFilters(storageFilters);
+                    setQueryFilter(storageFilters);
                 }
             }
         }
@@ -80,7 +85,7 @@ export const FilterForm = (): JSX.Element => {
         <Paper
             component={"form"}
             elevation={3}
-            onSubmit={(e): void => {
+            onSubmit={(e: React.FormEvent<HTMLFormElement>): void => {
                 e.preventDefault();
                 setQueryFilter();
             }}
@@ -379,9 +384,12 @@ export const FilterForm = (): JSX.Element => {
                     </AccordionForm>
                 </Box>
                 <Divider />
-                <Buttons saveFiltersAsPreset={(): void => {
-                    SAVE_FILTERS_AS_PRESET(FILTROS_PROSPECTOS, filters, openAlertMessage)
-                }}/>
+                <Buttons 
+                    saveFiltersAsPreset={(): void => {
+                        SAVE_FILTERS_AS_PRESET(FILTROS_PROSPECTOS, filters, openAlertMessage)
+                    }}
+                    setTotal={setTotal}
+                />
             </Box>
         </Paper>
     );
