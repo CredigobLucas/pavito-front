@@ -3,7 +3,6 @@
 
 import { Modal, Box, Paper } from "@mui/material";
 
-
 interface LoaderProps {
     open: boolean;
 }
@@ -27,10 +26,9 @@ export const Loader = ({ open }: LoaderProps): JSX.Element => {
                             width: "90%",
                             height: "90%"
                         }}
-                        src="https://i.gifer.com/6oa.gif"
+                        src="https://i.gifer.com/g0R9.gif"
                         alt="loader"
                     />
-                    
                 </Paper>
             </Box>
         </Modal>
