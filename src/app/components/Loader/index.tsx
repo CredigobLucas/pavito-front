@@ -20,7 +20,7 @@ export const Loader = ({ open }: LoaderProps): JSX.Element => {
                 }}
                 component="div"
             >
-                <span class="loader"></span>
+                <span className="loader"></span>
             </Box>
         </Modal>
     );
