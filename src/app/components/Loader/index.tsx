@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import "index.css";
+import "./index.css";
 import { Modal, Box } from "@mui/material";
 
 interface LoaderProps {
