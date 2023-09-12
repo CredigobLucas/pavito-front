@@ -10,7 +10,7 @@ export const SearchPagination = (): JSX.Element => {
     return (
         <TablePagination
             className="mt-6"
-            count={total}
+            count={total ? total : 0}
             page={page}
             rowsPerPage={pageSize}
             onPageChange={(_, page: number): void => {

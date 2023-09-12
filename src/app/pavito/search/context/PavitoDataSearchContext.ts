@@ -12,7 +12,8 @@ export interface IPavitoDataSearchContext {
     setSelectedBid: (bid: Bid | undefined) => void;
     page: number;
     pageSize: number;
-    total: number;
+    total: number | undefined;
+    setTotal: (total: number | undefined) => void;
     setQueryPagination: (data: { pageP?: number; pageSizeP?: number }) => void;
 }
 

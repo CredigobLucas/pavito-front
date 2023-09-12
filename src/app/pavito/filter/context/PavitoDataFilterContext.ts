@@ -5,10 +5,11 @@ import { PavitoDataFilters } from "@/domain/interface/PavitoDataFilters";
 export interface IPavitoDataFilterContext {
     bids: Bid[];
     sectors: string[];
-    setQueryFilter: () => void;
+    setQueryFilter: (filters?: PavitoDataFilters) => void;
     page: number;
     pageSize: number;
-    total: number;
+    total: number | undefined;
+    setTotal: (total: number | undefined) => void;
     setQueryPagination: (data: { pageP?: number; pageSizeP?: number }) => void;
     filters: PavitoDataFilters;
     setFilters: (filters: PavitoDataFilters) => void;

@@ -30,7 +30,7 @@ export const PavitoDataContextProvider = ({
 }: {
     children: React.ReactNode;
 }): JSX.Element => {
-    const { setOpenLoading, openAlertMessage, availableRegions } = useGlobalContext();
+    const { setOpenLoading, openAlertMessage, availableRegions, user } = useGlobalContext();
     const router = useRouter();
     const pathname = usePathname();
     const params = useSearchParams();
@@ -46,15 +46,17 @@ export const PavitoDataContextProvider = ({
     const [bids, setBids] = useState<Bid[]>([]);
     const [page, setPage] = useState<number>(0);
     const [pageSize, setPageSize] = useState<number>(10);
-    const [total, setTotal] = useState<number>(100);
+    const [total, setTotal] = useState<number | undefined>(undefined);
 
     const [filters, setFilters] = useState<PavitoDataFilters>(DEFAULT_PAVITO_DATA_FILTERS);
 
     const getBidsP = async (query: string): Promise<void> => {
         try {
             setOpenLoading(true);
-            const response = await getBids(query);
-            
+            let finalQuery: string = query;
+            if (total !== undefined)
+                finalQuery += `&total_num_pages=${total}`;
+            const response = await getBids(finalQuery);
             const paramsObj: IObject = {};
             const paramsArray = query.split("&");
             paramsArray.forEach((param: string) => {
@@ -80,10 +82,10 @@ export const PavitoDataContextProvider = ({
         }
     };
 
-    const setQueryFilterAndUpdate = (): void => {
+    const setQueryFilterAndUpdate = (filters? : PavitoDataFilters): void => {
         updateUrlParams({
-            filter: convertFilterToQuery(),
-            pagination: "page_number=1&items_per_page=10"
+            filter: filters ? convertFilterToQuery(filters) : convertFilterToQuery(),
+            pagination: `page_number=1&items_per_page=${pageSize}`
         });
     };
 
@@ -122,26 +124,29 @@ export const PavitoDataContextProvider = ({
     };
 
     useEffect((): void => {
-        if (availableRegions.length > 0) {
-            const queryParams = params.toString()
-            if (queryParams !== "") {
-                getBidsP(params.toString());
-            }
-            else {
-                const filter = convertFilterToQuery();
-                const pagination = `page_number=1&items_per_page=10`;
-                getBidsP(`${filter}&${pagination}`);
+        if (user?.id) {
+            if (availableRegions.length > 0) {
+                const queryParams = params.toString()
+                if (queryParams !== "") {
+                    getBidsP(params.toString());
+                }
+                else {
+                    const filter = convertFilterToQuery();
+                    const pagination = `page_number=1&items_per_page=10`;
+                    getBidsP(`${filter}&${pagination}`);
+                }
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [params, availableRegions]);
+    }, [params, availableRegions, user?.id]);
 
-    const adaptFilter = (): IObject => {
+    const adaptFilter = (filter?: PavitoDataFilters): IObject => {
+        const filtersToAdapt: IObject = filter ? filter : filters;
         const obj: IObject = CLEAN_NULL_VALUES({
-            ...filters,
-            sector: filters.sector === "TODOS" ? null : filters.sector,
-            daysAgo: filters.daysAgo === "-1" ? null : filters.daysAgo,
-            region: filters.region ? filters.region : availableRegions[0]
+            ...filtersToAdapt,
+            sector: filtersToAdapt.sector === "TODOS" ? null : filtersToAdapt.sector,
+            daysAgo: filtersToAdapt.daysAgo === "-1" ? null : filtersToAdapt.daysAgo,
+            region: filtersToAdapt.region ? filtersToAdapt.region : availableRegions[0]
             
         });
 
@@ -155,8 +160,8 @@ export const PavitoDataContextProvider = ({
         return adaptedObj;
     };
 
-    const convertFilterToQuery = (): string => {
-        const adaptedObj: IObject = adaptFilter();
+    const convertFilterToQuery = (filters?: PavitoDataFilters): string => {
+        const adaptedObj: IObject = adaptFilter(filters);
         if (adaptedObj["days_ago"]) {
             const [start, end] = CALC_DAYS_AGO(adaptedObj["days_ago"]);
             adaptedObj["initial_date"] = start;
@@ -176,6 +181,7 @@ export const PavitoDataContextProvider = ({
         page: page,
         pageSize: pageSize,
         total: total,
+        setTotal: setTotal,
         setQueryPagination: setQueryPaginationAndUpdate,
         filters: filters,
         setFilters: setFilters,

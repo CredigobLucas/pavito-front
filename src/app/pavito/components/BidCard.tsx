@@ -7,14 +7,12 @@ import Link from "next/link";
 interface BidCardProps {
     bid: Bid;
     href?: string;
-    onclick?: (bid: Bid) => void;
     sx?: SxProps<Theme>;
 }
 
 export const BidCard = ({
     bid,
     href = "",
-    onclick,
     sx = {}
 }: BidCardProps): JSX.Element => {
     const gobierno: IObject = {
@@ -48,7 +46,6 @@ export const BidCard = ({
             >
                 <Box 
                     component={"div"}
-                    hidden={onclick !== undefined}
                 >
                     <Typography color={"#777"} fontSize={"13px"}>
                         Razón Social
@@ -107,12 +104,8 @@ export const BidCard = ({
                 </Typography>
             </Box>
             <Box className="px-4 pb-3">
-                {onclick ? (
+                <Link href={href}>
                     <Button
-                        onClick={(e): void => {
-                            e.preventDefault();
-                            if (onclick) onclick(bid);
-                        }}
                         variant="contained"
                         className="p-2"
                         fullWidth
@@ -120,18 +113,7 @@ export const BidCard = ({
                     >
                         Más información
                     </Button>
-                ) : (
-                    <Link href={href}>
-                        <Button
-                            variant="contained"
-                            className="p-2"
-                            fullWidth
-                            color="primary"
-                        >
-                            Más información
-                        </Button>
-                    </Link>
-                )}
+                </Link>
             </Box>
         </Paper>
     );

@@ -31,16 +31,19 @@ export const PavitoDataSearchContextProvider = ({
 
     const [page, setPage] = useState<number>(0);
     const [pageSize, setPageSize] = useState<number>(10);
-    const [total, setTotal] = useState<number>(100);
+    const [total, setTotal] = useState<number | undefined>(undefined);
 
-    useEffect(() => {
+    useEffect((): void => {
         const label = params.get("company_label");
         const data = params.get("company_data");
         if (label && data && user?.id) {
             setCompanyLabel(label);
             setCompanyData(data);
             setOpenLoading(true);
-            getBidsByCompany(params.toString())
+            let paramsString = params.toString();
+            if (total !== undefined)
+                paramsString += `&total_num_pages=${total}`;
+            getBidsByCompany(paramsString)
                 .then((res) => {
                     const { licitaciones, numeroPaginas } = res.body;
                     if (licitaciones.length > 0) {
@@ -94,9 +97,10 @@ export const PavitoDataSearchContextProvider = ({
     };
 
     const updateUrlAndUpdate = (): void => {
+        setPage(0);
         updateUrlParams({
             filter: `company_label=${companyLabel}&company_data=${companyData}`,
-            pagination: `page_number=${page + 1}&items_per_page=${pageSize}`
+            pagination: `page_number=1&items_per_page=${pageSize}`
         });
     };
 
@@ -113,6 +117,7 @@ export const PavitoDataSearchContextProvider = ({
         page,
         pageSize,
         total,
+        setTotal,
         setQueryPagination
     };
 
