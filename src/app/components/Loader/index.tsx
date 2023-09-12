@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import "./index.css";
-import { Modal, Box } from "@mui/material";
+import { Modal } from "@mui/material";
 
 interface LoaderProps {
     open: boolean;
@@ -9,19 +9,16 @@ interface LoaderProps {
 
 export const Loader = ({ open }: LoaderProps): JSX.Element => {
     return (
-        <Modal open={open}>
-            <Box
-                sx={{
-                    width: "200px",
-                    height: "200px",
-                    position: "absolute",
-                    top: "calc(50% - 100px)",
-                    left: "calc(50% - 100px)"
-                }}
-                component="div"
-            >
-                <span className="loader"></span>
-            </Box>
+        <Modal
+            component={"div"}
+            open={open}
+            sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center"
+            }}
+        >
+            <span className="loader"></span>
         </Modal>
     );
 };
