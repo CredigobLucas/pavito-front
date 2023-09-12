@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-
-import { Modal, Box, Paper } from "@mui/material";
+import "index.css";
+import { Modal, Box } from "@mui/material";
 
 interface LoaderProps {
     open: boolean;
@@ -20,16 +20,7 @@ export const Loader = ({ open }: LoaderProps): JSX.Element => {
                 }}
                 component="div"
             >
-                <Paper elevation={3}>
-                    <img
-                        style={{
-                            width: "90%",
-                            height: "90%"
-                        }}
-                        src="https://i.gifer.com/g0R9.gif"
-                        alt="loader"
-                    />
-                </Paper>
+                <span class="loader"></span>
             </Box>
         </Modal>
     );
